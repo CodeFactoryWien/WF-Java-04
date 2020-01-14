@@ -1,10 +1,16 @@
 package hotel.room;
 
+import java.util.ArrayList;
+
 public class superiorDoubleRoom extends room {
-    private double price = 360.25;
-    private int capacity = 4;
-    private double size = 180.34;
-    private String description = "Superior Doubleroom";
+
+    public superiorDoubleRoom(ArrayList<String> facilitys) {
+        this.price = 360.25;
+        this.capacity = 4;
+        this.size = 180.34;
+        this.description = "Superior Doubleroom";
+        this.facilitys = facilitys;
+    }
 
     //Getter//
     public double getPrice() {
@@ -19,6 +25,10 @@ public class superiorDoubleRoom extends room {
 
     public String getDescription() {
         return description;
+    }
+
+    public ArrayList<String> getFacilitys() {
+        return facilitys;
     }
 
     //Setter//
@@ -36,5 +46,9 @@ public class superiorDoubleRoom extends room {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setFacilitys(ArrayList<String> facilitys) {
+        this.facilitys = facilitys;
     }
 }
