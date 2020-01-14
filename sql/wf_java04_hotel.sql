@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 14. Jan 2020 um 13:58
+-- Erstellungszeit: 14. Jan 2020 um 15:49
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -42,6 +42,25 @@ CREATE TABLE `bookings` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `customers`
+--
+
+CREATE TABLE `customers` (
+  `customerID` tinyint(4) NOT NULL,
+  `firstName` varchar(55) NOT NULL,
+  `lastName` varchar(55) NOT NULL,
+  `companyName` int(11) NOT NULL,
+  `birthDate` date NOT NULL,
+  `address` varchar(55) NOT NULL,
+  `zipCode` smallint(6) NOT NULL,
+  `country` varchar(55) NOT NULL,
+  `phoneNumber` int(11) NOT NULL,
+  `email` varchar(55) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `guests`
 --
 
@@ -55,15 +74,16 @@ CREATE TABLE `guests` (
   `country` varchar(55) NOT NULL,
   `phoneNumber` varchar(55) NOT NULL,
   `email` varchar(55) NOT NULL,
-  `passportNr` int(11) NOT NULL
+  `passportNr` int(11) NOT NULL,
+  `fk_customerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `guests`
 --
 
-INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `birthDate`, `address`, `zipCode`, `country`, `phoneNumber`, `email`, `passportNr`) VALUES
-(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', 147258369);
+INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `birthDate`, `address`, `zipCode`, `country`, `phoneNumber`, `email`, `passportNr`, `fk_customerID`) VALUES
+(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', 147258369, 0);
 
 -- --------------------------------------------------------
 
@@ -135,6 +155,12 @@ ALTER TABLE `bookings`
   ADD PRIMARY KEY (`bookingID`);
 
 --
+-- Indizes für die Tabelle `customers`
+--
+ALTER TABLE `customers`
+  ADD PRIMARY KEY (`customerID`);
+
+--
 -- Indizes für die Tabelle `guests`
 --
 ALTER TABLE `guests`
@@ -173,6 +199,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `bookings`
   MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `customers`
+--
+ALTER TABLE `customers`
+  MODIFY `customerID` tinyint(4) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `guests`
