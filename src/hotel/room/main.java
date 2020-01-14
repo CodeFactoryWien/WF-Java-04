@@ -1,4 +1,4 @@
-package room;
+package hotel.room;
 
 import java.util.Arrays;
 

@@ -1,6 +1,6 @@
-package room;
+package hotel.room;
 
-public class superiorDoubleRoom {
+public class superiorDoubleRoom extends room {
     private double price = 360.25;
     private int capacity = 4;
     private double size = 180.34;
