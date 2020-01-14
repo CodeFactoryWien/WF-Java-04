@@ -1,4 +1,4 @@
-package room;
+package hotel.room;
 
 public class doubleRoom extends room {
     private double price = 160.25;
