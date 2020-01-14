@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Base64;
+import java.util.stream.BaseStream;
+
 public class Main extends Application {
 
     @Override
