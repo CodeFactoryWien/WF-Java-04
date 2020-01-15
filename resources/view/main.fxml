@@ -9,5 +9,7 @@
             <Button fx:id="createGuest" text="Create Guest" onMouseClicked="#call_createGuestController"/>
             <!-- Report -->
             <Button fx:id="createRoom" text="Create Room" onMouseClicked="#call_createRoomController"/>
+            <!-- Booking -->
+            <Button fx:id="createBooking" text="New Booking" onMouseClicked="#call_createBookingController"/>
         </HBox>
 </Scene>

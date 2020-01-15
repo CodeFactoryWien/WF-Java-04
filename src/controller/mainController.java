@@ -11,4 +11,9 @@ public class mainController {
         createRoomController C = new createRoomController();
         C.createRoom();
     }
+
+    public void call_createBookingController() throws Exception {
+        createBookingController C = new createBookingController();
+        C.createBooking();
+    }
 }
