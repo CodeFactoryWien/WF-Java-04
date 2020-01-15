@@ -1,12 +1,12 @@
-package hotel;
+package Hotel;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
-public class Guest {
+public class guest {
     private int id;
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private LocalDate birthDate;
     private String adress;
     private int zipCode;
     private String country;
@@ -14,7 +14,7 @@ public class Guest {
     private String email;
     private int passportNumber;
 
-    public Guest(int id, String firstName, String lastName, Date birthDate, String adress, int zipCode,
+    public guest(int id, String firstName, String lastName, LocalDate birthDate, String adress, int zipCode,
                  String country, String phone, String email, int passportNumber) {
         this.id = id;
         this.firstName = firstName;
