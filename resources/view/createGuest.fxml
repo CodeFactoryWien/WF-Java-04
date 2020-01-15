@@ -1,45 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.Scene?>
+<?import javafx.scene.text.*?>
 
-<Scene fx:controller="controller.createGuestController"
-       xmlns:fx="http://javafx.com/fxml">
-        <VBox>
-            <!-- First Name -->
-            <Label text="First Name"/>
-            <TextField fx:id="firstName"/>
+<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.createGuestController">
+        <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="225.0" style="-fx-background-color: lightblue;">
 
             <!-- Last Name -->
-            <Label text="Last Name"/>
-            <TextField fx:id="lastName"/>
+            <Label text="choose / add new guest">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin></Label>
+
+
+            <!-- Last Name -->
+            <Label text="Last Name" />
+            <TextField fx:id="lastName">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
+
+            <!-- First Name -->
+            <Label text="First Name" />
+            <TextField fx:id="firstName">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
 
             <!-- Birthdate -->
-            <Label text="Birthdate"/>
-            <DatePicker fx:id="birthDate"/>
+            <Label text="Birthdate" />
+            <DatePicker fx:id="birthDate">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></DatePicker>
 
             <!-- Address -->
-            <Label text="Address"/>
-            <TextField fx:id="address"/>
+            <Label text="Address" />
+            <TextField fx:id="address">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
             <!-- ZIP Code -->
-            <Label text="ZIP Code"/>
-            <TextField fx:id="zipCode"/>
+            <Label text="ZIP Code" />
+            <TextField fx:id="country">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
 
             <!-- Country -->
-            <Label text="Country"/>
-            <TextField fx:id="country"/>
+            <Label text="Country" />
+            <TextField fx:id="zipCode">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
 
             <!-- Phone -->
-            <Label text="Phone"/>
-            <TextField fx:id="phone"/>
+            <Label text="Phone" />
+            <TextField fx:id="phone">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
 
             <!-- EMail -->
-            <Label text="EMail"/>
-            <TextField fx:id="eMail"/>
+            <Label text="EMail" />
+            <TextField fx:id="eMail">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
 
             <!-- Passport Number -->
-            <Label text="Passport Number"/>
-            <TextField fx:id="passportNumber"/>
+            <Label text="Passport Number" />
+            <TextField fx:id="passportNumber">
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin></TextField>
 
-            <Button text="Submit" onMouseClicked="#sendGuestData"/>
+
+
+
+      <HBox prefHeight="21.0" prefWidth="215.0" style="-fx-border-color: blue;">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="190.0" prefWidth="215.0">
+         <children>
+             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="back" />
+             <Button onMouseClicked="#sendGuestData" prefHeight="23.0" prefWidth="114.0" text="finish reservation" />
+         </children>
+      </HBox>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
         </VBox>
 </Scene>
