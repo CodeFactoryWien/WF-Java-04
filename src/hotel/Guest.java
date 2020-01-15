@@ -12,10 +12,10 @@ public class Guest {
     private String country;
     private String phone;
     private String email;
-    private int passportNumber;
+    private String passportNumber;
 
     public Guest(int id, String firstName, String lastName, LocalDate birthDate, String address, int zipCode,
-                 String country, String phone, String email, int passportNumber) {
+                 String country, String phone, String email, String passportNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
