@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -9,7 +10,7 @@ import javafx.stage.Stage;
 
 public class createBookingController {
 
-    private Stage bookingStage;
+    private Stage S;
 
     @FXML
     private ChoiceBox roomType;
@@ -23,14 +24,18 @@ public class createBookingController {
     private Label pricePerDay;
     @FXML
     private Label totalPrice;
+    @FXML
+    private Button cancel;
+    @FXML
+    private Button next;
 
 
-    public void createBooking() throws Exception {
+    public void start() throws Exception {
 
-        bookingStage = new Stage();
-        bookingStage.setTitle("Hotel Managing Software");
-        bookingStage.setScene(FXMLLoader.load(getClass().getResource("/view/createBooking.fxml")));
-        bookingStage.show();
+        S = new Stage();
+        S.setTitle("Hotel Managing Software");
+        S.setScene(FXMLLoader.load(getClass().getResource("/view/createBooking.fxml")));
+        S.show();
     }
 
     public void fillDataBox() {
@@ -41,11 +46,13 @@ public class createBookingController {
     }
 
     public void next() throws Exception {
-        createGuestController C = new createGuestController();
-                C.createGuest();
+        S = (Stage) next.getScene().getWindow();
+        S.setScene(FXMLLoader.load(getClass().getResource("/view/createGuest.fxml")));
     }
 
-    public void close() {
+    public void exit() {
+        S = (Stage) cancel.getScene().getWindow();
+        S.close();
     }
 
 

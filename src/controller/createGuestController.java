@@ -2,11 +2,16 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class createGuestController {
+
+    private Stage S;
 
     @FXML
     private TextField firstName;
@@ -26,26 +31,22 @@ public class createGuestController {
     private TextField eMail;
     @FXML
     private TextField passportNumber;
+    @FXML
+    private Button cancel;
 
-
-    void createGuest() throws Exception {
-
-        Stage stage2 = new Stage();
-        stage2.setTitle("Hotel Managing Software");
-        stage2.setScene(FXMLLoader.load(getClass().getResource("/view/createGuest.fxml")));
-        stage2.show();
+    public void start() throws IOException {
+        Stage S = new Stage();
+        S.setTitle("Hotel Managing Software");
+        S.setScene(FXMLLoader.load(getClass().getResource("/view/createGuest.fxml")));
+        S.show();
     }
 
-    public void sendGuestData () throws Exception {
+    public void sendGuestData() throws Exception {
+        S.setTitle("TTDSFDF");
+    }
 
-        System.out.println(firstName.getText());
-        System.out.println(lastName.getText());
-        System.out.println(birthDate.getValue());
-        System.out.println(address.getText());
-        System.out.println(zipCode.getText());
-        System.out.println(country.getText());
-        System.out.println(phone.getText());
-        System.out.println(eMail.getText());
-        System.out.println(passportNumber.getText());
+    public void exit() {
+        S = (Stage) cancel.getScene().getWindow();
+        S.close();
     }
 }

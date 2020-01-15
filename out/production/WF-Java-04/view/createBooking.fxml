@@ -79,7 +79,7 @@
       </HBox>
       <HBox alignment="BOTTOM_CENTER" prefHeight="190.0" prefWidth="215.0">
          <children>
-            <Button fx:id="cancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="cancel booking" onMouseClicked="#close"/>
+            <Button fx:id="cancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="cancel booking" onMouseClicked="#exit"/>
             <Button fx:id="test" mnemonicParsing="false" prefHeight="22.0" prefWidth="88.0" text="Button" onMouseClicked="#fillDataBox"/>
       
                   <Button fx:id="next" prefHeight="23.0" prefWidth="114.0" text="next step (guest)" onMouseClicked="#next"/>
