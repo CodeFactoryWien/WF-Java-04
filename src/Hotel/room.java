@@ -1,19 +1,19 @@
-package Hotel;
+package hotel;
 
-public class room {
+public class Room {
     private String type;
     private double price;
     private int capacity;
     private double size;
     private String description;
-    private String facilitys;
+    private String facilities;
 
-    public room(String type, double price, int capacity, double size, String description, String facilitys) {
+    public Room(String type, double price, int capacity, double size, String description, String facilities) {
         this.type = type;
         this.price = price;
         this.capacity = capacity;
         this.size = size;
         this.description = description;
-        this.facilitys = facilitys;
+        this.facilities = facilities;
     }
 }
