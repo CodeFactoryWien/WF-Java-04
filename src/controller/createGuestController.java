@@ -1,5 +1,6 @@
 package controller;
 
+import hotel.Guest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -48,5 +49,20 @@ public class createGuestController {
     public void exit() {
         S = (Stage) cancel.getScene().getWindow();
         S.close();
+
+    public void sendGuestData (){
+
+        System.out.println(firstName.getText());
+        System.out.println(lastName.getText());
+        System.out.println(birthDate.getValue());
+        System.out.println(address.getText());
+        System.out.println(zipCode.getText());
+        System.out.println(country.getText());
+        System.out.println(phone.getText());
+        System.out.println(eMail.getText());
+        System.out.println(passportNumber.getText());
+
+        Guest G = new Guest(1, firstName.getText(), lastName.getText(), birthDate.getValue(), address.getText(), Integer.parseInt(zipCode.getText()),
+                country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
     }
 }
