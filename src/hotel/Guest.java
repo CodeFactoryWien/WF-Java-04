@@ -2,7 +2,7 @@ package Hotel;
 
 import java.time.LocalDate;
 
-public class guest {
+public class Guest {
     private int id;
     private String firstName;
     private String lastName;
@@ -14,7 +14,7 @@ public class guest {
     private String email;
     private int passportNumber;
 
-    public guest(int id, String firstName, String lastName, LocalDate birthDate, String adress, int zipCode,
+    public Guest(int id, String firstName, String lastName, LocalDate birthDate, String adress, int zipCode,
                  String country, String phone, String email, int passportNumber) {
         this.id = id;
         this.firstName = firstName;

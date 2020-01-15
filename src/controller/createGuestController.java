@@ -1,6 +1,6 @@
 package controller;
 
-import Hotel.guest;
+import Hotel.Guest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
@@ -49,7 +49,7 @@ public class createGuestController {
         System.out.println(eMail.getText());
         System.out.println(passportNumber.getText());
 
-        guest G = new guest(1, firstName.getText(), lastName.getText(), birthDate.getValue(), address.getText(), Integer.parseInt(zipCode.getText()),
+        Guest G = new Guest(1, firstName.getText(), lastName.getText(), birthDate.getValue(), address.getText(), Integer.parseInt(zipCode.getText()),
                 country.getText(), phone.getText(), eMail.getText(), Integer.parseInt(passportNumber.getText()));
     }
 }
