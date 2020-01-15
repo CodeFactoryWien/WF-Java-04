@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 15. Jan 2020 um 12:24
+-- Erstellungszeit: 15. Jan 2020 um 13:19
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -49,14 +49,21 @@ CREATE TABLE `customers` (
   `customerID` tinyint(4) NOT NULL,
   `firstName` varchar(55) NOT NULL,
   `lastName` varchar(55) NOT NULL,
-  `companyName` int(11) NOT NULL,
+  `companyName` varchar(155) NOT NULL,
   `birthDate` date NOT NULL,
   `address` varchar(55) NOT NULL,
   `zipCode` smallint(6) NOT NULL,
   `country` varchar(55) NOT NULL,
-  `phoneNumber` int(11) NOT NULL,
+  `phoneNumber` varchar(55) NOT NULL,
   `email` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `customers`
+--
+
+INSERT INTO `customers` (`customerID`, `firstName`, `lastName`, `companyName`, `birthDate`, `address`, `zipCode`, `country`, `phoneNumber`, `email`) VALUES
+(1, 'Dummy', 'Account', 'Dummy GmbH', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '123', 'dummy@domain.com');
 
 -- --------------------------------------------------------
 
@@ -109,6 +116,52 @@ CREATE TABLE `rooms` (
   `roomSize` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Daten für Tabelle `rooms`
+--
+
+INSERT INTO `rooms` (`roomID`, `fk_roomTypeID`, `roomSize`) VALUES
+(1, 1, 38),
+(2, 1, 38),
+(3, 1, 39),
+(4, 1, 40),
+(5, 1, 40),
+(6, 2, 42),
+(7, 2, 42),
+(8, 2, 43),
+(9, 2, 44),
+(10, 2, 44),
+(11, 3, 48),
+(12, 3, 48),
+(13, 3, 49),
+(14, 3, 49),
+(15, 3, 50),
+(16, 4, 52),
+(17, 4, 53),
+(18, 4, 54),
+(19, 4, 54),
+(20, 4, 55),
+(21, 5, 100),
+(22, 5, 101),
+(23, 5, 101),
+(24, 5, 103),
+(25, 5, 104),
+(26, 6, 107),
+(27, 6, 107),
+(28, 6, 108),
+(29, 6, 109),
+(30, 6, 110),
+(31, 7, 117),
+(32, 7, 118),
+(33, 7, 118),
+(34, 7, 119),
+(35, 7, 120),
+(36, 8, 123),
+(37, 8, 124),
+(38, 8, 125),
+(39, 8, 125),
+(40, 8, 126);
+
 -- --------------------------------------------------------
 
 --
@@ -119,7 +172,7 @@ CREATE TABLE `roomtype` (
   `roomTypeID` tinyint(4) NOT NULL,
   `roomTypeName` varchar(155) NOT NULL,
   `roomTypeCapacity` tinyint(4) NOT NULL,
-  `roomTypeFacilites` varchar(555) NOT NULL,
+  `roomTypeFacilities` varchar(555) NOT NULL,
   `roomTypePrice` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -127,15 +180,15 @@ CREATE TABLE `roomtype` (
 -- Daten für Tabelle `roomtype`
 --
 
-INSERT INTO `roomtype` (`roomTypeID`, `roomTypeName`, `roomTypeCapacity`, `roomTypeFacilites`, `roomTypePrice`) VALUES
+INSERT INTO `roomtype` (`roomTypeID`, `roomTypeName`, `roomTypeCapacity`, `roomTypeFacilities`, `roomTypePrice`) VALUES
 (1, 'Single Room', 1, 'WLAN, Shower, TV, Safe, ', 59.9),
 (2, 'Single Room with Balcony', 1, 'WLAN, Shower, TV, Safe, Balcony', 69.9),
 (3, 'Double Room', 2, 'WLAN, Shower, TV, Safe', 99.9),
 (4, 'Double Room with Balcony', 2, 'WLAN, Shower, TV, Safe, Balcony', 109.9),
 (5, 'Suite', 4, 'WLAN, Bathtub, TV, Safe,', 199.9),
-(6, 'Suite with Balcony', 4, 'WLAN, Bathtub, TV, Safe,', 229.9),
+(6, 'Suite with Balcony', 4, 'WLAN, Bathtub, TV, Safe, Balcony', 229.9),
 (7, 'Superior Double Room', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine,', 299.9),
-(8, 'Superior Double Room', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine, Balcony', 339.9);
+(8, 'Superior Double Room with Balcony', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine, Balcony', 339.9);
 
 -- --------------------------------------------------------
 
@@ -168,6 +221,14 @@ CREATE TABLE `users` (
   `userFirstName` varchar(55) NOT NULL,
   `userLastName` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `users`
+--
+
+INSERT INTO `users` (`userID`, `userIsAdmin`, `userName`, `userPassword`, `userFirstName`, `userLastName`) VALUES
+(1, 1, 'Admin', 'admin', 'System', 'Administrator'),
+(2, 0, 'User', 'user', 'Reception', 'Desk 1');
 
 --
 -- Indizes der exportierten Tabellen
@@ -235,7 +296,7 @@ ALTER TABLE `bookings`
 -- AUTO_INCREMENT für Tabelle `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customerID` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `customerID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `guests`
@@ -253,7 +314,7 @@ ALTER TABLE `invoices`
 -- AUTO_INCREMENT für Tabelle `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `roomID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `roomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT für Tabelle `services`
@@ -265,7 +326,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `userID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

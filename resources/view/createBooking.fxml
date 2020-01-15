@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.createBookingController">
+        <VBox fx:id="departure" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="225.0" style="-fx-background-color: lightblue;">
+
+
+            <Label text="book a room">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin></Label>
+
+            <Label text="Room Type" />
+      <ChoiceBox fx:id="roomTyp" prefWidth="150.0">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </ChoiceBox>
+
+
+            <Label text="Check In" />
+            <DatePicker fx:id="arrival">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin></DatePicker>
+
+
+            <Label text="Check Out" />
+      <DatePicker>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
+      </DatePicker>
+      <HBox prefHeight="56.0" prefWidth="215.0" style="-fx-border-color: blue;">
+         <children>
+            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0">
+               <children>
+            
+                      
+                        <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="108.0" text="free rooms:" textAlignment="RIGHT" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="108.0" text="price per day :" textAlignment="RIGHT" />
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="108.0" text="total price" textAlignment="RIGHT" />
+               </children>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="55.0" prefWidth="100.0" style="-fx-background-color: white;">
+               <children>
+                  <Label fx:id="freeRooms" prefHeight="17.0" prefWidth="108.0" text="0" textAlignment="RIGHT">
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="pricePerDay" prefHeight="17.0" prefWidth="108.0" text="60" textAlignment="RIGHT">
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="totalPrice" prefHeight="17.0" prefWidth="108.0" text="360" textAlignment="RIGHT">
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="190.0" prefWidth="215.0">
+         <children>
+            <Button fx:id="cancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="cancel booking" onMouseClicked="#close"/>
+            <Button fx:id="test" mnemonicParsing="false" prefHeight="22.0" prefWidth="88.0" text="Button" onMouseClicked="#fillDataBox"/>
+      
+                  <Button fx:id="next" prefHeight="23.0" prefWidth="114.0" text="next step (guest)" onMouseClicked="#next"/>
+         </children>
+      </HBox>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+        </VBox>
+</Scene>
