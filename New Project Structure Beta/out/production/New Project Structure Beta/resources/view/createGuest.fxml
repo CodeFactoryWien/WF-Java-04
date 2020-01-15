@@ -1,0 +1,45 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.Scene?>
+
+<Scene fx:controller="controller.createGuestController"
+       xmlns:fx="http://javafx.com/fxml">
+        <VBox>
+            <!-- First Name -->
+            <Label text="First Name"/>
+            <TextField fx:id="firstName"/>
+
+            <!-- Last Name -->
+            <Label text="Last Name"/>
+            <TextField fx:id="lastName"/>
+
+            <!-- Birthdate -->
+            <Label text="Birthdate"/>
+            <DatePicker fx:id="birthDate"/>
+
+            <!-- Address -->
+            <Label text="Address"/>
+            <TextField fx:id="address"/>
+            <!-- ZIP Code -->
+            <Label text="ZIP Code"/>
+            <TextField fx:id="zipCode"/>
+
+            <!-- Country -->
+            <Label text="Country"/>
+            <TextField fx:id="country"/>
+
+            <!-- Phone -->
+            <Label text="Phone"/>
+            <TextField fx:id="phone"/>
+
+            <!-- EMail -->
+            <Label text="EMail"/>
+            <TextField fx:id="eMail"/>
+
+            <!-- Passport Number -->
+            <Label text="Passport Number"/>
+            <TextField fx:id="passportNumber"/>
+
+            <Button text="Submit" onMouseClicked="#sendGuestData"/>
+        </VBox>
+</Scene>
