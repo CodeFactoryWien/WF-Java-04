@@ -26,3 +26,9 @@ hs_err_pid*
 .xml
 .idea
 *.iml
+out/production/WF-Java-04/META-INF/WF-Java-04.kotlin_module
+New Project Structure Beta/out/production/New Project Structure Beta/resources/view/module-info.java
+New Project Structure Beta/out/production/New Project Structure Beta/META-INF/New Project Structure Beta.kotlin_module
+.idea/misc.xml
+WF-Java-04.iml
+/out/
