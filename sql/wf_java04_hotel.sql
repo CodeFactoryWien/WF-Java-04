@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 14. Jan 2020 um 15:49
+-- Erstellungszeit: 15. Jan 2020 um 12:24
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -105,12 +105,37 @@ CREATE TABLE `invoices` (
 
 CREATE TABLE `rooms` (
   `roomID` int(11) NOT NULL,
-  `roomType` tinyint(4) NOT NULL,
-  `roomCapacity` tinyint(4) NOT NULL,
-  `roomPrice` int(11) NOT NULL,
-  `roomSize` tinyint(4) NOT NULL,
-  `roomFacilites` varchar(555) NOT NULL
+  `fk_roomTypeID` tinyint(4) NOT NULL,
+  `roomSize` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `roomtype`
+--
+
+CREATE TABLE `roomtype` (
+  `roomTypeID` tinyint(4) NOT NULL,
+  `roomTypeName` varchar(155) NOT NULL,
+  `roomTypeCapacity` tinyint(4) NOT NULL,
+  `roomTypeFacilites` varchar(555) NOT NULL,
+  `roomTypePrice` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `roomtype`
+--
+
+INSERT INTO `roomtype` (`roomTypeID`, `roomTypeName`, `roomTypeCapacity`, `roomTypeFacilites`, `roomTypePrice`) VALUES
+(1, 'Single Room', 1, 'WLAN, Shower, TV, Safe, ', 59.9),
+(2, 'Single Room with Balcony', 1, 'WLAN, Shower, TV, Safe, Balcony', 69.9),
+(3, 'Double Room', 2, 'WLAN, Shower, TV, Safe', 99.9),
+(4, 'Double Room with Balcony', 2, 'WLAN, Shower, TV, Safe, Balcony', 109.9),
+(5, 'Suite', 4, 'WLAN, Bathtub, TV, Safe,', 199.9),
+(6, 'Suite with Balcony', 4, 'WLAN, Bathtub, TV, Safe,', 229.9),
+(7, 'Superior Double Room', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine,', 299.9),
+(8, 'Superior Double Room', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine, Balcony', 339.9);
 
 -- --------------------------------------------------------
 
@@ -177,6 +202,12 @@ ALTER TABLE `invoices`
 --
 ALTER TABLE `rooms`
   ADD PRIMARY KEY (`roomID`);
+
+--
+-- Indizes für die Tabelle `roomtype`
+--
+ALTER TABLE `roomtype`
+  ADD PRIMARY KEY (`roomTypeID`);
 
 --
 -- Indizes für die Tabelle `services`
