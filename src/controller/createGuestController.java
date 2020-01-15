@@ -1,6 +1,6 @@
 package controller;
 
-import Hotel.guest;
+import hotel.Guest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
