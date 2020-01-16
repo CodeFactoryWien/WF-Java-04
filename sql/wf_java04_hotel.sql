@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 16. Jan 2020 um 14:40
+-- Erstellungszeit: 16. Jan 2020 um 15:22
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -81,7 +81,7 @@ CREATE TABLE `guests` (
   `country` varchar(55) NOT NULL,
   `phoneNumber` varchar(55) NOT NULL,
   `email` varchar(55) NOT NULL,
-  `passportNr` varchar(55) NOT NULL,
+  `passportNr` int(11) NOT NULL,
   `fk_customerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -90,7 +90,7 @@ CREATE TABLE `guests` (
 --
 
 INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `birthDate`, `address`, `zipCode`, `country`, `phoneNumber`, `email`, `passportNr`, `fk_customerID`) VALUES
-(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', '147258369', 0);
+(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', 147258369, 0);
 
 -- --------------------------------------------------------
 
@@ -199,13 +199,87 @@ INSERT INTO `roomtype` (`roomTypeID`, `roomTypeName`, `roomTypeCapacity`, `roomT
 CREATE TABLE `services` (
   `serviceID` tinyint(4) NOT NULL,
   `fk_bookingID` tinyint(4) NOT NULL,
-  `movieID` tinyint(4) NOT NULL,
+  `fk_movieID` tinyint(4) NOT NULL,
   `movieDate` date NOT NULL,
-  `wellnessID` tinyint(4) NOT NULL,
+  `fk_wellnessID` tinyint(4) NOT NULL,
   `wellnessDate` date NOT NULL,
-  `minibarID` tinyint(4) NOT NULL,
+  `fk_minibarID` int(11) NOT NULL,
   `minibarDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `serv_minibar`
+--
+
+CREATE TABLE `serv_minibar` (
+  `mbID` int(11) NOT NULL,
+  `mbItem` varchar(128) DEFAULT NULL,
+  `mbItemDescription` varchar(1024) DEFAULT NULL,
+  `mbPrice` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `serv_minibar`
+--
+
+INSERT INTO `serv_minibar` (`mbID`, `mbItem`, `mbItemDescription`, `mbPrice`) VALUES
+(1, 'Snickers', 'Snickers ist ein Schokoriegel mit Karamell, Erdnüssen und einer weichen, weißen Nougat-ähnlichen Masse.', 3),
+(2, 'Coke 0,2l', 'Flasche Coca Cola', 7),
+(3, 'Burgunder 0,2l', 'Flasche Burgunder', 12),
+(4, 'Valser 0,2l', 'Bottle Valser Water', 3),
+(5, 'Pringels Mini 40g', 'Mit 40 Gramm superleckeren Pringles hast du immer einen Snack parat', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `serv_movies`
+--
+
+CREATE TABLE `serv_movies` (
+  `movieID` int(11) NOT NULL,
+  `movieName` varchar(128) DEFAULT NULL,
+  `movieDescription` varchar(1024) DEFAULT NULL,
+  `moivePrice` double DEFAULT NULL,
+  `movieSeen` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `serv_movies`
+--
+
+INSERT INTO `serv_movies` (`movieID`, `movieName`, `movieDescription`, `moivePrice`, `movieSeen`) VALUES
+(1, '1917', 'Two young British soldiers during the First World War are given an impossible mission: deliver a message deep in enemy territory that will stop 1,600 men, and one of the soldiers\' brothers, from walking straight into a deadly trap.', 2.99, 4),
+(2, 'Star Wars: Episode IX - Der Aufstieg Skywalkers', 'The surviving members of the resistance face the First Order once again, and the legendary conflict between the Jedi and the Sith reaches its peak bringing the Skywalker saga to its end.', 3.99, NULL),
+(3, 'Once Upon a Time in Hollywood', 'A faded television actor and his stunt double strive to achieve fame and success in the film industry during the final years of Hollywood\'s Golden Age in 1969 Los Angeles.', 2.99, NULL),
+(4, 'Joker', 'In Gotham City, mentally troubled comedian Arthur Fleck is disregarded and mistreated by society. He then embarks on a downward spiral of revolution and bloody crime. This path brings him face-to-face with his alter-ego: the Joker.', 2.99, NULL),
+(5, 'Cats', 'A tribe of cats called the Jellicles must decide yearly which one will ascend to the Heaviside Layer and come back to a new Jellicle life.', 3.99, NULL),
+(6, 'The Irishman', 'A mob hitman recalls his possible involvement with the slaying of Jimmy Hoffa.', 2.99, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `serv_wellness`
+--
+
+CREATE TABLE `serv_wellness` (
+  `wellnessID` int(11) NOT NULL,
+  `wellnessName` varchar(128) DEFAULT NULL,
+  `wellnessDescription` varchar(1024) DEFAULT NULL,
+  `wellnessPrice` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `serv_wellness`
+--
+
+INSERT INTO `serv_wellness` (`wellnessID`, `wellnessName`, `wellnessDescription`, `wellnessPrice`) VALUES
+(1, 'Sauna', NULL, 5),
+(2, 'Classic Massage', 'The classic massage is based on targeted massage treatments that relieve tension and have a very positive effect on the muscles', 9),
+(3, 'Thai Massage', NULL, 10),
+(4, 'Hot Stone – Massage', 'The hot stone massage gently processes and massages the acupuncture points and meridians of the body with heated, smooth lava stones and warm aromatic oil. The hot stone foot, hand and face massages are also particularly pleasant types of massage with hot stones.', 12),
+(5, 'Shiatsu Massage', 'The Shiatsu massage originally comes from Japan and is a special finger pressure massage. Touch, gentle pressure, leaning and massage of certain parts of the body are used. Basically, it is about balancing the body, relieving tension and releasing the energy flows.', 12);
 
 -- --------------------------------------------------------
 
@@ -277,6 +351,24 @@ ALTER TABLE `services`
   ADD PRIMARY KEY (`serviceID`);
 
 --
+-- Indizes für die Tabelle `serv_minibar`
+--
+ALTER TABLE `serv_minibar`
+  ADD PRIMARY KEY (`mbID`);
+
+--
+-- Indizes für die Tabelle `serv_movies`
+--
+ALTER TABLE `serv_movies`
+  ADD PRIMARY KEY (`movieID`);
+
+--
+-- Indizes für die Tabelle `serv_wellness`
+--
+ALTER TABLE `serv_wellness`
+  ADD PRIMARY KEY (`wellnessID`);
+
+--
 -- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
@@ -321,6 +413,24 @@ ALTER TABLE `rooms`
 --
 ALTER TABLE `services`
   MODIFY `serviceID` tinyint(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `serv_minibar`
+--
+ALTER TABLE `serv_minibar`
+  MODIFY `mbID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT für Tabelle `serv_movies`
+--
+ALTER TABLE `serv_movies`
+  MODIFY `movieID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT für Tabelle `serv_wellness`
+--
+ALTER TABLE `serv_wellness`
+  MODIFY `wellnessID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
