@@ -14,7 +14,6 @@ public class Main extends Application {
         stage1.show();
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }

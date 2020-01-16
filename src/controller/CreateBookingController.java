@@ -7,7 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-public class createBookingController {
+public class CreateBookingController {
 
     private Stage S;
 

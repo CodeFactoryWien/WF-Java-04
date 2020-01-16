@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.createBookingController">
+<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateBookingController">
     <HBox>
         <VBox fx:id="departure" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="225.0" style="-fx-background-color: lightblue;">
 

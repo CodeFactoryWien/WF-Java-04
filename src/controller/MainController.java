@@ -1,22 +1,22 @@
 package controller;
 
-public class mainController {
+public class MainController {
 
     // Create new Guest //
     public void call_createGuestController() throws Exception {
-       createGuestController C = new createGuestController();
+       CreateGuestController C = new CreateGuestController();
        C.start();
     }
 
     // Create new Room //
     public void call_createRoomController() throws Exception {
-        createRoomController C = new createRoomController();
+        CreateRoomController C = new CreateRoomController();
         C.start();
     }
 
     // Create new Booking //
     public void call_createBookingController() throws Exception {
-        createBookingController C = new createBookingController();
+        CreateBookingController C = new CreateBookingController();
         C.start();
     }
 }

@@ -7,7 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class createRoomController {
+public class CreateRoomController {
 
     private Stage S;
 
