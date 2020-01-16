@@ -45,11 +45,6 @@ public class createBookingController {
         totalPrice.setText("300");
     }
 
-    public void next() throws Exception {
-        S = (Stage) next.getScene().getWindow();
-        S.setScene(FXMLLoader.load(getClass().getResource("/view/createGuest.fxml")));
-    }
-
     public void exit() {
         S = (Stage) cancel.getScene().getWindow();
         S.close();
