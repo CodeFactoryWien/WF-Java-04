@@ -16,11 +16,11 @@
          <HBox prefHeight="768.0" prefWidth="1024.0">
       <TabPane prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Belegung">
+          <Tab text="allocation">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="24.0" layoutY="20.0" text="Belegte Zimmer">
+                        <Label layoutX="24.0" layoutY="20.0" text="occupied rooms">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -38,19 +38,24 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Reservierungen">
+          <Tab text="reservations">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                              <!-- Booking -->
-                             <Button fx:id="createBooking" layoutX="205.0" layoutY="30.0" onMouseClicked="#call_createBookingController" text="New Booking" />
-                        <TableView layoutX="24.0" layoutY="73.0" prefHeight="536.0" prefWidth="886.0">
+                             <Button fx:id="createBooking" layoutX="214.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
+                        <TableView layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
                            <columns>
                               <TableColumn prefWidth="90.0" text="Arrival" />
                               <TableColumn prefWidth="93.0" text="est. Depature" />
                               <TableColumn prefWidth="191.0" text="Guest" />
                            </columns>
                         </TableView>
+                        <Label layoutX="24.0" layoutY="17.0" text="Bookings">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
             </content>
