@@ -28,7 +28,7 @@ public class CreateRoomController {
     // Start Controller Method //
     void start() throws Exception {
         Stage S = new Stage();
-        S.setTitle("Hotel Managing Software");
+        S.setTitle("hotel Managing Software");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/createRoom.fxml")));
         S.show();
     }

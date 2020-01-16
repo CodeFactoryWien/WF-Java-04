@@ -12,11 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CreateBookingController {
 
@@ -63,19 +61,21 @@ public class CreateBookingController {
     // Start Controller Method //
     public void start() throws Exception {
         bookStage = new Stage();
-        bookStage.setTitle("Hotel Managing Software");
+        bookStage.setTitle("hotel Managing Software");
         bookStage.setScene(FXMLLoader.load(getClass().getResource("/view/createBooking.fxml")));
         bookStage.show();
     }
 
     private void fillRoomTypes() throws Exception {
-        ResultSet R = Database.getData("SELECT roomTypeName FROM roomtype");
+                PreparedStatement preparedStatement =
+                Database.c.prepareStatement("SELECT roomTypeName FROM roomtype");
+
+        ResultSet R = preparedStatement.executeQuery();
 
         ObservableList<String> O = FXCollections.observableArrayList();
 
         while (R.next()) {
             String typeName = R.getString("roomTypeName");
-            System.out.println(typeName);
             O.add(typeName);
         }
         roomType.setItems(O);
@@ -83,7 +83,10 @@ public class CreateBookingController {
 
     // Fill total count of free rooms from Database //
     private void fillTotalCount() throws Exception {
-        ResultSet R = Database.getData("SELECT COUNT(*) AS total FROM rooms");
+        PreparedStatement preparedStatement =
+                Database.c.prepareStatement("SELECT COUNT(*) AS total FROM rooms");
+
+        ResultSet R = preparedStatement.executeQuery();
 
         while(R.next()) {
             count = R.getInt("total");
@@ -93,11 +96,14 @@ public class CreateBookingController {
 
     // Fill roomPrice from selected roomType from Database //
     private void fillPrice() throws Exception {
-        ResultSet R = Database.getData("Select roomTypePrice FROM roomType WHERE roomTypeID = '1'");
+        PreparedStatement preparedStatement =
+                Database.c.prepareStatement("Select roomTypePrice FROM roomType WHERE roomTypeID = '1'");
+
+        ResultSet R = preparedStatement.executeQuery();
 
         double selected_roomPrice = 0;
 
-        while (R.next()) {
+        if (R.first()) {
             selected_roomPrice = R.getDouble("roomTypePrice");
         }
 
@@ -136,7 +142,7 @@ public class CreateBookingController {
         Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
                 Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
 
-        Room.firstFreeRoom(roomType.getSelectionModel().toString(), Date.valueOf(checkIn.getValue()),
+        Database.firstFreeRoom(roomType.getSelectionModel().toString(), Date.valueOf(checkIn.getValue()),
                 Date.valueOf(checkOut.getValue()));
     }
 }

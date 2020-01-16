@@ -14,7 +14,7 @@ public class Database {
     public static void openConnection() throws Exception {
         if (c == null) {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/wf_java_04", "root", "");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/wf_java04_hotel", "root", "");
         }
     }
 
@@ -28,7 +28,7 @@ public class Database {
         return preparedStatement.executeQuery();
     }
 
-    private static Room firstFreeRoom(String roomType, Date start, Date end){
+    public static Room firstFreeRoom(String roomType, Date start, Date end){
         try{
             PreparedStatement preparedStatement = c.prepareStatement(
                     "SELECT * FROM (SELECT * FROM rooms " +
