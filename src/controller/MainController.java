@@ -1,6 +1,16 @@
 package controller;
 
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
+
 public class MainController {
+
+    void start() throws Exception {
+        Stage S = new Stage();
+        S.setTitle("Hotel Managing Software");
+        S.setScene(FXMLLoader.load(getClass().getResource("/view/main.fxml")));
+        S.show();
+    }
 
     // Create new Guest //
     public void call_createGuestController() throws Exception {
