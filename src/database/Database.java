@@ -87,6 +87,7 @@ public class Database {
             }
         }catch(Exception e){
             System.err.println("SQL Query Error");
+            System.err.println(e.toString());
         }
         return null;
     }
