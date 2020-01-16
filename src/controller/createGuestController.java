@@ -1,6 +1,6 @@
 package controller;
 
-import hotel.Guest;
+import Hotel.Guest;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -14,6 +14,7 @@ public class createGuestController {
 
     private Stage S;
 
+    // Guest Fields //
     @FXML
     private TextField firstName;
     @FXML
@@ -35,6 +36,7 @@ public class createGuestController {
     @FXML
     private Button cancel;
 
+    // Start Controller Method //
     public void start() throws IOException {
         Stage S = new Stage();
         S.setTitle("Hotel Managing Software");
@@ -42,14 +44,15 @@ public class createGuestController {
         S.show();
     }
 
+    // New Guest (Not found in Database) create //
     public void sendGuestData() throws Exception {
-        S.setTitle("TTDSFDF");
+        Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
+                Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
     }
 
+    // Close Window(Stage) //
     public void exit() {
         S = (Stage) cancel.getScene().getWindow();
         S.close();
     }
-
-
 }
