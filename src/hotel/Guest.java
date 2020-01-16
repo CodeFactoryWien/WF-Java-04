@@ -1,4 +1,4 @@
-package hotel;
+package Hotel;
 
 import java.time.LocalDate;
 
@@ -26,5 +26,45 @@ public class Guest {
         this.phone = phone;
         this.email = email;
         this.passportNumber = passportNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassportNumber() {
+        return passportNumber;
     }
 }

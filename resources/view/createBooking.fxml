@@ -125,14 +125,14 @@
                 </VBox.margin></TextField>
             <!-- ZIP Code -->
             <Label text="ZIP Code" />
-            <TextField fx:id="country">
+            <TextField fx:id="zipCode">
                 <VBox.margin>
                     <Insets bottom="8.0" />
                 </VBox.margin></TextField>
 
             <!-- Country -->
             <Label text="Country" />
-            <TextField fx:id="zipCode">
+            <TextField fx:id="country">
                 <VBox.margin>
                     <Insets bottom="8.0" />
                 </VBox.margin></TextField>
