@@ -1,4 +1,4 @@
-package hotel;
+package Hotel;
 
 import database.Database;
 

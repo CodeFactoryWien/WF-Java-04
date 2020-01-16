@@ -7,10 +7,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class createRoomController {
+public class CreateRoomController {
 
     private Stage S;
 
+    // Room Fields //
     @FXML
     private ChoiceBox roomType;
     @FXML
@@ -24,6 +25,7 @@ public class createRoomController {
     @FXML
     private Button cancel;
 
+    // Start Controller Method //
     void start() throws Exception {
         Stage S = new Stage();
         S.setTitle("Hotel Managing Software");
@@ -31,9 +33,11 @@ public class createRoomController {
         S.show();
     }
 
+    // Create new Room //
     public void sendRoomData () throws Exception {
     }
 
+    // Close Window(Stage) //
     public void exit() {
         S = (Stage) cancel.getScene().getWindow();
         S.close();

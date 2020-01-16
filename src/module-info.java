@@ -1,4 +1,4 @@
-module Project03.Hotel {
+module Project03 {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.base;
