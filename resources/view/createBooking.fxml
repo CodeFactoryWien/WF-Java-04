@@ -7,8 +7,8 @@
 <?import javafx.scene.text.*?>
 
 <Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.createBookingController">
-        <VBox fx:id="departure" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="225.0" style="-fx-background-color: lightblue;">
-
+    <HBox>
+        <VBox fx:id="departure" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="225.0" style="-fx-background-color: lightblue;">
 
             <Label text="book a room">
          <font>
@@ -76,17 +76,119 @@
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
+            <VBox.margin>
+               <Insets right="5.0" />
+            </VBox.margin>
       </HBox>
       <HBox alignment="BOTTOM_CENTER" prefHeight="190.0" prefWidth="215.0">
          <children>
-            <Button fx:id="cancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="cancel booking" onMouseClicked="#close"/>
+            <Button fx:id="cancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="cancel booking" onMouseClicked="#exit"/>
             <Button fx:id="test" mnemonicParsing="false" prefHeight="22.0" prefWidth="88.0" text="Button" onMouseClicked="#fillDataBox"/>
       
                   <Button fx:id="next" prefHeight="23.0" prefWidth="114.0" text="next step (guest)" onMouseClicked="#next"/>
          </children>
       </HBox>
       <padding>
-         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
       </padding>
         </VBox>
+        <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
+
+            <!-- Last Name -->
+            <Label text="choose / add new guest">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="20.0" />
+                </VBox.margin></Label>
+
+
+            <!-- Last Name -->
+            <Label text="Last Name" />
+            <TextField fx:id="lastName">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+
+            <!-- First Name -->
+            <Label text="First Name" />
+            <TextField fx:id="firstName">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+
+            <!-- Birthdate -->
+            <Label text="Birthdate" />
+            <DatePicker fx:id="birthDate">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></DatePicker>
+
+            <!-- Address -->
+            <Label text="Address" />
+            <TextField fx:id="address">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+            <!-- ZIP Code -->
+            <Label text="ZIP Code" />
+            <TextField fx:id="country">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+
+            <!-- Country -->
+            <Label text="Country" />
+            <TextField fx:id="zipCode">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+
+            <!-- Phone -->
+            <Label text="Phone" />
+            <TextField fx:id="phone">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+
+            <!-- EMail -->
+            <Label text="EMail" />
+            <TextField fx:id="eMail">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+
+            <!-- Passport Number -->
+            <Label text="Passport Number" />
+            <TextField fx:id="passportNumber">
+                <VBox.margin>
+                    <Insets bottom="8.0" />
+                </VBox.margin></TextField>
+            <HBox alignment="BOTTOM_CENTER" prefHeight="190.0" prefWidth="215.0" />
+            <padding>
+                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+            </padding>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="250.0">
+            <children>
+                <Label text="found in our database:" />
+                <ListView fx:id="listViewFoundGuest" fixedCellSize="0.0" prefHeight="318.0" prefWidth="230.0">
+                    <VBox.margin>
+                        <Insets bottom="100.0" left="10.0" right="10.0" />
+                    </VBox.margin>
+                </ListView>
+                <Button fx:id="cancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="cancel">
+                    <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </VBox.margin>
+                </Button>
+                <Button fx:id="addGuest" onMouseClicked="#sendGuestData" prefHeight="23.0" prefWidth="120.0" text="reservate">
+                    <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </HBox>
 </Scene>

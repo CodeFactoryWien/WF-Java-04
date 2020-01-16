@@ -1,15 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.Scene?>
 
-<Scene fx:controller="controller.mainController"
-       xmlns:fx="http://javafx.com/fxml">
-        <HBox>
-            <!-- Update -->
-            <Button fx:id="createGuest" text="Create Guest" onMouseClicked="#call_createGuestController"/>
-            <!-- Report -->
-            <Button fx:id="createRoom" text="Create Room" onMouseClicked="#call_createRoomController"/>
-            <!-- Booking -->
-            <Button fx:id="createBooking" text="New Booking" onMouseClicked="#call_createBookingController"/>
-        </HBox>
+<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainController">
+        <VBox prefHeight="200.0" prefWidth="304.0">
+
+            <HBox>
+              <!-- Update -->
+              <Button fx:id="createGuest" onMouseClicked="#call_createGuestController" text="Create Guest" />
+         <Accordion />
+            </HBox>
+
+              <HBox>
+              <!-- Report -->
+              <Button fx:id="createRoom" onMouseClicked="#call_createRoomController" prefHeight="25.0" prefWidth="96.0" text="Create Room" />
+              <!-- Booking -->
+              <Button fx:id="createBooking" onMouseClicked="#call_createBookingController" text="New Booking" />
+              </HBox>
+
+        </VBox>
 </Scene>
