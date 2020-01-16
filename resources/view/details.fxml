@@ -41,7 +41,7 @@
          </font>
       </Label>
       <Label layoutX="559.0" layoutY="21.0" text="Amount now:" />
-      <Label fx:id="depature1" layoutX="634.0" layoutY="21.0" text="2300,--">
+      <Label fx:id="amount" layoutX="634.0" layoutY="21.0" text="2300,--">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
