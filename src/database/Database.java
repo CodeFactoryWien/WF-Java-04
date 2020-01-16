@@ -15,7 +15,7 @@ public class Database {
     public static void openConnection() throws Exception {
         if (c == null) {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/wf_java_04", "root", "");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/wf_java04_hotel", "root", "");
         }
     }
 
