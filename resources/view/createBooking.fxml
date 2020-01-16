@@ -19,7 +19,7 @@
          </VBox.margin></Label>
 
             <Label text="Room Type" />
-      <ChoiceBox fx:id="roomType" prefWidth="150.0">
+      <ChoiceBox fx:id="roomType" prefWidth="150.0" onShowing="#fillRoomTypes">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>

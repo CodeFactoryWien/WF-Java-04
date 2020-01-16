@@ -1,11 +1,13 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class loginController {
+public class LoginController {
     private Stage S;
     String presetUsername = "user";
     String presetPassword = "user";
@@ -13,12 +15,12 @@ public class loginController {
     @FXML
     private TextField username;
     @FXML
-    private TextField password;
+    private PasswordField password;
 
     //checking for username and pass
 
 
-    public void login(MouseEvent mouseEvent) throws Exception {
+    public void login() throws Exception {
         String user = username.getText();
         String pass = password.getText();
         if(presetUsername.equals(user) && presetPassword.equals(pass)){
@@ -26,11 +28,11 @@ public class loginController {
             M.start();
         }
         else {
-            System.out.println("Wrong Password.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error occurred!");
+            alert.setHeaderText("Incorrect Username or Password.");
+            alert.setContentText("The Username or Password you entered is incorrect!");
+            alert.showAndWait();
         }
-        System.out.println(user);
-        System.out.println(pass);
-        System.out.println(presetUsername);
-        System.out.println(presetPassword);
     }
 }

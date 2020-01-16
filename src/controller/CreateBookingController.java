@@ -66,7 +66,8 @@ public class CreateBookingController {
         bookStage.show();
     }
 
-    private void fillRoomTypes() throws Exception {
+    // Fill roomTypes from Database //
+    public void fillRoomTypes() throws Exception {
                 PreparedStatement preparedStatement =
                 Database.c.prepareStatement("SELECT roomTypeName FROM roomtype");
 
@@ -111,10 +112,8 @@ public class CreateBookingController {
         totalPrice.setText(String.valueOf(selected_roomPrice*7));
     }
 
-    // Fill the Data from Database and calculate //
+    // Call Fill Methods //
     public void fillDataBox() throws Exception {
-
-        fillRoomTypes();
 
         fillTotalCount();
 
