@@ -29,4 +29,10 @@ public class MainController {
         CreateBookingController C = new CreateBookingController();
         C.start();
     }
+
+    // Test Details //
+    public void call_detailsController() throws Exception {
+        DetailsController C = new DetailsController();
+        C.start();
+    }
 }
