@@ -2,13 +2,13 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class LoginController {
-    private Stage S;
+
     String presetUsername = "user";
     String presetPassword = "user";
 
@@ -16,6 +16,8 @@ public class LoginController {
     private TextField username;
     @FXML
     private PasswordField password;
+    @FXML
+    private Button loginButton;
 
     //checking for username and pass
 
@@ -26,6 +28,8 @@ public class LoginController {
         if(presetUsername.equals(user) && presetPassword.equals(pass)){
             MainController M = new MainController();
             M.start();
+            Stage S = (Stage) loginButton.getScene().getWindow();
+            S.close();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

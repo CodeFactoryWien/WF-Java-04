@@ -17,7 +17,7 @@
             <Label layoutX="233.0" layoutY="349.0" text="Password" />
             <TextField fx:id="username" layoutX="233.0" layoutY="308.0" onAction="#login" />
          <PasswordField fx:id="password" layoutX="233.0" layoutY="366.0" onAction="#login" />
-            <Button layoutX="277.0" layoutY="411.0" mnemonicParsing="false" onMouseClicked="#login" text="Login" />
+            <Button fx:id="loginButton" layoutX="277.0" layoutY="411.0" mnemonicParsing="false" onMouseClicked="#login" text="Login" />
          <Label layoutX="217.0" layoutY="252.0" text="Username: user, Password: user" />
          <Label layoutX="194.0" layoutY="34.0" text="CF Hotels">
             <font>
