@@ -19,7 +19,7 @@
          </VBox.margin></Label>
 
             <Label text="Room Type" />
-      <ChoiceBox fx:id="roomTyp" prefWidth="150.0">
+      <ChoiceBox fx:id="roomType" prefWidth="150.0">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>
@@ -170,7 +170,8 @@
                         <Insets bottom="100.0" left="10.0" right="10.0" />
                     </VBox.margin>
                 </ListView>
-                <Button fx:id="cancel" onMouseClicked="#exit" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="cancel">
+            <Button mnemonicParsing="false" text="databox" onMouseClicked="#fillDataBox"/>
+                <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="25.0" prefWidth="120.0" text="cancel">
                     <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                     </VBox.margin>
