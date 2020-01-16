@@ -34,8 +34,8 @@
                           </columns>
                         </TableView>
                         <Button layoutX="224.0" layoutY="21.0" mnemonicParsing="false" text="details" />
-                        <Button layoutX="289.0" layoutY="21.0" mnemonicParsing="false" text="book service" />
-                        <Button layoutX="387.0" layoutY="21.0" mnemonicParsing="false" text="CHECK OUT" />
+                        <Button layoutX="289.0" layoutY="21.0" mnemonicParsing="false" text="add service" />
+                        <Button layoutX="537.0" layoutY="21.0" mnemonicParsing="false" text="CHECK OUT" />
                      </children>
                   </AnchorPane>
             </content>
@@ -58,7 +58,8 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Button layoutX="318.0" layoutY="18.0" mnemonicParsing="false" text="details" />
+                        <Button layoutX="371.0" layoutY="18.0" mnemonicParsing="false" text="details" />
+                        <Button layoutX="436.0" layoutY="18.0" mnemonicParsing="false" text="STORNO" />
                      </children>
                   </AnchorPane>
             </content>
