@@ -40,7 +40,7 @@ public class CreateGuestController {
     // Start Controller Method //
     public void start() throws IOException {
         Stage S = new Stage();
-        S.setTitle("Hotel Managing Software");
+        S.setTitle("hotel Managing Software");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/createGuest.fxml")));
         S.show();
     }

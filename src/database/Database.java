@@ -29,7 +29,7 @@ public class Database {
         return preparedStatement.executeQuery();
     }
 
-    private static Room firstFreeRoom(String roomType, Date start, Date end){
+    public static Room firstFreeRoom(String roomType, Date start, Date end){
         try{
             PreparedStatement preparedStatement = c.prepareStatement(
                     "SELECT * FROM (SELECT * FROM rooms " +
