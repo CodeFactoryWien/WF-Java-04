@@ -3,17 +3,31 @@
 <?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.loginController">
-    <AnchorPane prefHeight="200" prefWidth="200">
+<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+    <AnchorPane prefHeight="450.0" prefWidth="600.0">
         <children>
-            <Label layoutX="24.0" layoutY="25.0" text="Username" />
-            <Label layoutX="26.0" layoutY="83.0" text="Password" />
-            <TextField fx:id="username" layoutX="26.0" layoutY="42.0" />
-            <TextField fx:id="password" layoutX="26.0" layoutY="100.0" />
-            <Button layoutX="70.0" layoutY="145.0" mnemonicParsing="false" onMouseClicked="#login" text="Login" />
-         <Label layoutX="10.0" layoutY="6.0" text="Username: user, Password: user" />
+            <Label layoutX="233.0" layoutY="291.0" text="Username" />
+            <Label layoutX="233.0" layoutY="349.0" text="Password" />
+            <TextField fx:id="username" layoutX="233.0" layoutY="308.0" onAction="#login" />
+         <PasswordField fx:id="password" layoutX="233.0" layoutY="366.0" onAction="#login" />
+            <Button layoutX="277.0" layoutY="411.0" mnemonicParsing="false" onMouseClicked="#login" text="Login" />
+         <Label layoutX="217.0" layoutY="252.0" text="Username: user, Password: user" />
+         <Label layoutX="194.0" layoutY="34.0" text="CF Hotels">
+            <font>
+               <Font name="Felix Titling" size="40.0" />
+            </font>
+         </Label>
+         <ImageView fitHeight="136.0" fitWidth="137.0" layoutX="232.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../img/login.png" />
+            </image>
+         </ImageView>
         </children></AnchorPane>
 </Scene>
