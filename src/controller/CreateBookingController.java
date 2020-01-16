@@ -1,7 +1,6 @@
 package controller;
 
-import Hotel.Guest;
-import Hotel.Room;
+import hotel.Guest;
 import database.Database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

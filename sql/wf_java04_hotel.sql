@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 15. Jan 2020 um 13:19
+-- Erstellungszeit: 16. Jan 2020 um 14:40
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -81,7 +81,7 @@ CREATE TABLE `guests` (
   `country` varchar(55) NOT NULL,
   `phoneNumber` varchar(55) NOT NULL,
   `email` varchar(55) NOT NULL,
-  `passportNr` int(11) NOT NULL,
+  `passportNr` varchar(55) NOT NULL,
   `fk_customerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -90,7 +90,7 @@ CREATE TABLE `guests` (
 --
 
 INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `birthDate`, `address`, `zipCode`, `country`, `phoneNumber`, `email`, `passportNr`, `fk_customerID`) VALUES
-(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', 147258369, 0);
+(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', '147258369', 0);
 
 -- --------------------------------------------------------
 
@@ -201,10 +201,10 @@ CREATE TABLE `services` (
   `fk_bookingID` tinyint(4) NOT NULL,
   `movieID` tinyint(4) NOT NULL,
   `movieDate` date NOT NULL,
-  `wellnessID` date NOT NULL,
-  `wellnessDate` int(11) NOT NULL,
-  `minibarID` int(11) NOT NULL,
-  `minibarDate` int(11) NOT NULL
+  `wellnessID` tinyint(4) NOT NULL,
+  `wellnessDate` date NOT NULL,
+  `minibarID` tinyint(4) NOT NULL,
+  `minibarDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
