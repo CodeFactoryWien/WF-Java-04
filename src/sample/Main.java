@@ -10,7 +10,7 @@ public class Main extends Application {
     public void start(Stage stage1) throws Exception{
 
         stage1.setTitle("Hotel Managing Software");
-        stage1.setScene(FXMLLoader.load(getClass().getResource("/view/main.fxml")));
+        stage1.setScene(FXMLLoader.load(getClass().getResource("/view/login.fxml")));
         stage1.show();
     }
 
