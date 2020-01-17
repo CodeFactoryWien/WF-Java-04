@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 17. Jan 2020 um 10:33
+-- Erstellungszeit: 17. Jan 2020 um 12:52
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -36,8 +36,16 @@ CREATE TABLE `bookings` (
   `openAmount` int(11) NOT NULL,
   `bookingFrom` date NOT NULL,
   `bookingUntil` date NOT NULL,
-  `bookingCanceled` date NOT NULL
+  `bookingCanceled` date NOT NULL,
+  `ceckedIn` tinyint(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `bookings`
+--
+
+INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`, `openAmount`, `bookingFrom`, `bookingUntil`, `bookingCanceled`, `ceckedIn`) VALUES
+(1, 3, 5, 0, 0, '2020-01-16', '2020-01-23', '0000-00-00', 1);
 
 -- --------------------------------------------------------
 
@@ -387,7 +395,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `customers`
