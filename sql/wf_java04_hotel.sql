@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 16. Jan 2020 um 15:22
+-- Erstellungszeit: 17. Jan 2020 um 10:33
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -81,7 +81,7 @@ CREATE TABLE `guests` (
   `country` varchar(55) NOT NULL,
   `phoneNumber` varchar(55) NOT NULL,
   `email` varchar(55) NOT NULL,
-  `passportNr` int(11) NOT NULL,
+  `passportNr` varchar(55) NOT NULL,
   `fk_customerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -90,7 +90,12 @@ CREATE TABLE `guests` (
 --
 
 INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `birthDate`, `address`, `zipCode`, `country`, `phoneNumber`, `email`, `passportNr`, `fk_customerID`) VALUES
-(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', 147258369, 0);
+(0, 'Dummy', 'Account', '1900-01-01', 'Dummystreet 5', 1234, 'Dummyhausen', '+436761234567', 'dummy@domain.com', '147258369', 0),
+(1, 'John', 'Asteriod', '1965-01-23', 'Fluidgasse 12', 12245, 'Deutschland', '+448556942541', 'j.asteriod@domain.com', '923351234', 0),
+(2, 'Haris', 'Ascobar', '1978-01-20', 'Ottakringer Straße 77', 1160, 'Austria', '+436997445898', 'harisascobar@domain.com', 'P122424562', 0),
+(3, 'Roman', 'Beltrovic', '1984-04-20', 'Faktorstraße 12', 1240, 'Austria', '+4368125477584', 'bigboibeltrovic@gmail.com', 'P54156166165', 0),
+(4, 'Milenda', 'Carolyn', '1989-08-08', '91 Shawan Falls Dr', 13017, 'USA', '+485562626262', 'mc@gmail.com', 'P4481553514', 0),
+(5, 'Markus', 'Kaspar', '1888-01-01', 'Waifustreet 69', 14201, 'Deutschland', '+436994206988', 'igoogledanimutiddies@gmail.com', 'P456255613', 0);
 
 -- --------------------------------------------------------
 
@@ -394,7 +399,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT für Tabelle `guests`
 --
 ALTER TABLE `guests`
-  MODIFY `guestID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `guestID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT für Tabelle `invoices`
