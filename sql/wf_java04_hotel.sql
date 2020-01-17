@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 17. Jan 2020 um 10:33
+-- Erstellungszeit: 17. Jan 2020 um 13:48
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -36,8 +36,16 @@ CREATE TABLE `bookings` (
   `openAmount` int(11) NOT NULL,
   `bookingFrom` date NOT NULL,
   `bookingUntil` date NOT NULL,
-  `bookingCanceled` date NOT NULL
+  `bookingCanceled` date NOT NULL,
+  `checkedIn` tinyint(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `bookings`
+--
+
+INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`, `openAmount`, `bookingFrom`, `bookingUntil`, `bookingCanceled`, `checkedIn`) VALUES
+(1, 3, 5, 0, 0, '2020-01-16', '2020-01-23', '0000-00-00', 1);
 
 -- --------------------------------------------------------
 
@@ -296,7 +304,7 @@ CREATE TABLE `users` (
   `userID` tinyint(4) NOT NULL,
   `userIsAdmin` tinyint(1) NOT NULL,
   `userName` varchar(55) NOT NULL,
-  `userPassword` varchar(55) NOT NULL,
+  `userPassword` varchar(155) NOT NULL,
   `userFirstName` varchar(55) NOT NULL,
   `userLastName` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -306,8 +314,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `userIsAdmin`, `userName`, `userPassword`, `userFirstName`, `userLastName`) VALUES
-(1, 1, 'Admin', 'admin', 'System', 'Administrator'),
-(2, 0, 'User', 'user', 'Reception', 'Desk 1');
+(1, 1, 'admin', '8xa4dfmfDjDoBobFcW8VjJj77cwU0853vuuFi4PYPwbDKPIqym+XQWyTheKQScGDqXYpcfwUItZySQLYu5XvJQ==', 'System', 'Administrator'),
+(2, 0, 'user', 'yFOJLrz6BLYIJt0ol2wbbNH1NSjjeYlHiaAprj3e0UDVaOPqDcidV349E397yYIyk4NvraiqRtMXV6T5f0n3CA==', 'Reception', 'Desk 1');
 
 --
 -- Indizes der exportierten Tabellen
@@ -387,7 +395,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `customers`
