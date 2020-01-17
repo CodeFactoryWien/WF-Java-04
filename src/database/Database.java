@@ -141,4 +141,40 @@ public class Database {
         }
         return list;
     }
+
+    public static String checkUserName(String username){
+        try{
+            PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM users WHERE userName = ?");
+            preparedStatement.setString(1, username);
+            ResultSet rs = Database.getData(preparedStatement);
+            if(rs.first()){
+                if(rs.getString("userName").equals(username)) {
+                    return rs.getString("userName");
+                }
+                else {
+                    return null;
+                }
+            }
+        }catch(Exception e){
+            System.err.println("SQL Query Error");
+            System.err.println(e.toString());
+        }
+        return null;
+    }
+
+
+    public static String getPasswordHash(String username){
+        try{
+            PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM users WHERE userName = ?");
+            preparedStatement.setString(1, username);
+            ResultSet rs = Database.getData(preparedStatement);
+            if(rs.first()){
+                return rs.getString("userPassword");
+            }
+        }catch(Exception e){
+            System.err.println("SQL Query Error");
+            System.err.println(e.toString());
+        }
+        return null;
+    }
 }

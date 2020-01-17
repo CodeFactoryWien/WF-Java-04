@@ -37,14 +37,14 @@ CREATE TABLE `bookings` (
   `bookingFrom` date NOT NULL,
   `bookingUntil` date NOT NULL,
   `bookingCanceled` date NOT NULL,
-  `ceckedIn` tinyint(11) DEFAULT NULL
+  `checkedIn` tinyint(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `bookings`
 --
 
-INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`, `openAmount`, `bookingFrom`, `bookingUntil`, `bookingCanceled`, `ceckedIn`) VALUES
+INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`, `openAmount`, `bookingFrom`, `bookingUntil`, `bookingCanceled`, `checkedIn`) VALUES
 (1, 3, 5, 0, 0, '2020-01-16', '2020-01-23', '0000-00-00', 1);
 
 -- --------------------------------------------------------
@@ -314,8 +314,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `userIsAdmin`, `userName`, `userPassword`, `userFirstName`, `userLastName`) VALUES
-(1, 1, 'Admin', 'admin', 'System', 'Administrator'),
-(2, 0, 'User', 'user', 'Reception', 'Desk 1');
+(1, 1, 'admin', '8xa4dfmfDjDoBobFcW8VjJj77cwU0853vuuFi4PYPwbDKPIqym+XQWyTheKQScGDqXYpcfwUItZySQLYu5XvJQ==', 'System', 'Administrator'),
+(2, 0, 'user', 'yFOJLrz6BLYIJt0ol2wbbNH1NSjjeYlHiaAprj3e0UDVaOPqDcidV349E397yYIyk4NvraiqRtMXV6T5f0n3CA==', 'Reception', 'Desk 1');
 
 --
 -- Indizes der exportierten Tabellen
