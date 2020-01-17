@@ -1,15 +1,27 @@
 package controller;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class MainController {
+    @FXML
+    private Button logoutButton;
 
     void start() throws Exception {
         Stage S = new Stage();
         S.setTitle("hotel Managing Software");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/main.fxml")));
         S.show();
+    }
+
+    public void logout() throws Exception {
+        LoginController L = new LoginController();
+        L.start();
+        Stage S = (Stage) logoutButton.getScene().getWindow();
+        S.close();
+
     }
 
     // Create new Guest //
