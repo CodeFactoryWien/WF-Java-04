@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -35,6 +36,9 @@ public class DetailsController{
     private ChoiceBox choiseWellness;
     @FXML
     private ChoiceBox choiseMinibar;
+
+    @FXML
+    private Button add_movie;
 
     @FXML
     private ListView listMovie;
@@ -75,21 +79,23 @@ public class DetailsController{
             movieList.add(new Movie(i,movieName, movieDescription, moviePrice, movieSeen));
 
         }
-
-        //choiceMovie.getItems().addAll(movieList);
         choiceMovie.setItems(movieList);
 
         // changelistener
-        choiceMovie.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+
+        choiceMovie.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                System.out.println(movieList.get(newValue.intValue()).getMovieID());
                 try {
-                    System.out.println("Choicebox changed"+newValue);;
+                    add_movie.setText("add Movie: "  + movieList.get(newValue.intValue()).getMovieID());
                 } catch (Exception e) {
-                    System.out.println("fehler im changeevent");
+                    System.out.println("Error");
                 }
             }
         });
+
     }
 
 
