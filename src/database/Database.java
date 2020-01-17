@@ -35,18 +35,19 @@ public class Database {
                     "SELECT * FROM (SELECT * FROM rooms " +
                             "INNER JOIN roomType ON rooms.fk_roomTypeID = roomType.roomTypeID WHERE roomTypeName = ?)" +
                             " AS room LEFT JOIN bookings ON bookings.fk_roomID = room.roomID WHERE" +
-                            " ((bookingFrom > ? OR bookingUntil < ?) OR bookingFrom IS NULL)");
+                            " (roomID NOT IN (SELECT fk_roomID FROM bookings " +
+                            "WHERE ((bookingFrom >= ? AND bookingFrom <= ?) OR (bookingUntil >= ? AND bookingUntil <= ?))) " +
+                            "OR bookingFrom IS NULL)");
             preparedStatement.setString(1, roomType);
-            preparedStatement.setDate(2, end);
-            preparedStatement.setDate(3,start);
-
+            preparedStatement.setDate(2, start);
+            preparedStatement.setDate(3, end);
+            preparedStatement.setDate(4,start);
+            preparedStatement.setDate(5, end);
             ResultSet rs = Database.getData(preparedStatement);
-            System.out.println(rs.first());
             if(rs.first()){
-                System.out.println(rs.getString("roomTypeName"));
                 return new Room(rs.getInt("roomID"),rs.getString("roomTypeName"),rs.getDouble("roomTypePrice"),
                         rs.getInt("roomTypeCapacity"),rs.getDouble("roomSize"),
-                        "",rs.getString("roomTypeFacilites"));
+                        "",rs.getString("roomTypeFacilities"));
             }
         }catch(Exception e){
             System.err.println("SQL Query Error");
