@@ -9,21 +9,22 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.w3c.dom.events.Event;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLData;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CreateBookingController {
@@ -66,11 +67,22 @@ public class CreateBookingController {
     @FXML
     private TextField country;
     @FXML
-    private TextField phone;
+    private TextField phoneNumber;
     @FXML
-    private TextField eMail;
+    private TextField email;
     @FXML
-    private TextField passportNumber;
+    private TextField passportNr;
+    @FXML
+    private ListView listViewFoundGuest;
+
+    public void initialize() throws Exception {
+        lastName.setOnKeyTyped(e -> databaseSearch(lastName));
+        firstName.setOnKeyTyped(e -> databaseSearch(firstName));
+        address.setOnKeyTyped(e -> databaseSearch(address));
+
+        fillTotalCount();
+        fillRoomTypes();
+    }
 
     // Start Controller Method //
     public void start() throws Exception {
@@ -81,8 +93,6 @@ public class CreateBookingController {
     }
 
     public void column1main() throws Exception {
-
-        fillTotalCount();
 
         try {
             fillPrice();
@@ -215,27 +225,62 @@ public class CreateBookingController {
     }
     // #####DATE METHODS ENDS HERE##### //
 
-
-    // Close Window(Stage) //
     public void exit() {
         bookStage = (Stage) cancel.getScene().getWindow();
         bookStage.close();
     }
 
+    // #####Guest Create / Search in Database Methods##### //
+    // Close Window(Stage) //
+
     // New Guest (Not found in Database) create //
     public void sendGuestDataToDatabase() {
         Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
+                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
     }
 
     // Everytime a character is typed method is called //
-    public void databaseSearch() {
-        //Database Querry insert//
+    public void databaseSearch(TextField obj) {
+        if (obj.getText() != null) {
+            String userInput = obj.getText();
+
+            ObservableList<String> O = FXCollections.observableArrayList();
+
+            ResultSet R = null;
+
+            try {
+                if (obj == lastName) {
+                    PreparedStatement preparedStatement =
+                            Database.c.prepareStatement("Select guestID, firstName, lastName, address FROM guests WHERE lastName LIKE ?");
+                    preparedStatement.setString(1, userInput + "%");
+                    R = preparedStatement.executeQuery();
+                } else if (obj == firstName) {
+                    PreparedStatement preparedStatement =
+                            Database.c.prepareStatement("Select guestID, firstName, lastName, address FROM guests WHERE firstName LIKE ?");
+                    preparedStatement.setString(1, userInput + "%");
+                    R = preparedStatement.executeQuery();
+                } else if (obj == address) {
+                    PreparedStatement preparedStatement =
+                            Database.c.prepareStatement("Select guestID, firstName, lastName, address FROM guests WHERE address LIKE ?");
+                    preparedStatement.setString(1, userInput + "%");
+                    R = preparedStatement.executeQuery();
+                }
+
+                assert R != null;
+                while (R.next()) {
+                    String S = R.getString("firstName");
+                    O.add(S);
+                }
+            } catch (Exception e) {
+                System.out.println("Error");
+            }
+            listViewFoundGuest.setItems(O);
+        }
     }
 
     public void addBooking() {
         Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
+                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
 
         Database.firstFreeRoom(roomType.getSelectionModel().toString(), Date.valueOf(checkIn.getValue()),
                 Date.valueOf(checkOut.getValue()));

@@ -19,7 +19,7 @@
          </VBox.margin></Label>
 
             <Label text="Room Type" />
-      <ChoiceBox fx:id="roomType" onShowing="#fillRoomTypes" prefWidth="150.0">
+      <ChoiceBox fx:id="roomType" prefWidth="150.0">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>
@@ -97,7 +97,7 @@
 
             <!-- Last Name -->
             <Label text="Last Name" />
-            <TextField fx:id="lastName">
+            <TextField fx:id="lastName" >
                 <VBox.margin>
                     <Insets bottom="8.0" />
                 </VBox.margin></TextField>
@@ -138,21 +138,21 @@
 
             <!-- Phone -->
             <Label text="Phone" />
-            <TextField fx:id="phone">
+            <TextField fx:id="phoneNumber">
                 <VBox.margin>
                     <Insets bottom="8.0" />
                 </VBox.margin></TextField>
 
             <!-- EMail -->
             <Label text="EMail" />
-            <TextField fx:id="eMail">
+            <TextField fx:id="email">
                 <VBox.margin>
                     <Insets bottom="8.0" />
                 </VBox.margin></TextField>
 
             <!-- Passport Number -->
             <Label text="Passport Number" />
-            <TextField fx:id="passportNumber">
+            <TextField fx:id="passportNr">
                 <VBox.margin>
                     <Insets bottom="8.0" />
                 </VBox.margin></TextField>
