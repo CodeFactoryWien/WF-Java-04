@@ -15,7 +15,8 @@ public class Wellness {
 
     @Override
     public String toString() {
-        return wellnessName + " -- " + wellnessPrice + "€";
+        double tmpPrice = Double.parseDouble(String.valueOf(wellnessPrice));
+        return /*wellnessID + " "+ */ wellnessName + " -- " + String.format("%1.2f €", tmpPrice/100) + "€";
     }
 
     public int getWellnessID() {
