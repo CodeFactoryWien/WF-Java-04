@@ -35,6 +35,9 @@ public class LoginController {
         String dbPasswordHash = Database.getPasswordHash(passInput);
         if(dbUserName.equals(userInput) && verifyPassword(userInput,dbPasswordHash,salt)){
             MainController M = new MainController();
+            if(dbUserName.equals("admin")) {
+                M.setAdminStatus();
+            }
             M.start();
             Stage S = (Stage) loginButton.getScene().getWindow();
             S.close();
