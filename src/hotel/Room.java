@@ -53,4 +53,8 @@ public class Room {
     public String toString(){
         return "ID " + id +" " + type + " " + price + "€ ";
     }
+
+    public int getId() {
+        return id;
+    }
 }

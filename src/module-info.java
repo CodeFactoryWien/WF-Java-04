@@ -13,4 +13,5 @@ module Project03 {
 
     opens sample;
     opens controller;
+    opens hotel;
 }
