@@ -17,7 +17,8 @@ public class Movie {
 
     @Override
     public String toString() {
-        return  movieName + " -- " + moviePrice + "€";
+        double tmpPrice = Double.parseDouble(String.valueOf(moviePrice));
+        return  /*movieID+" "+*/movieName + " -- " + String.format("%1.2f €", tmpPrice/100) + "€";
     }
 
     public int getMovieID() {

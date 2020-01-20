@@ -15,9 +15,11 @@ public class Minibar {
 
     @Override
     public String toString() {
-        return  mbID + " " +
-                mbItem + " " +
-                mbPrice + "€";
+        double tmpPrice = Double.parseDouble(String.valueOf(mbPrice));
+
+        return  /*mbID + " " +*/
+                mbItem + " -- " +
+                String.format("%1.2f €", tmpPrice/100) + "€";
     }
 
     public int getMbID() {

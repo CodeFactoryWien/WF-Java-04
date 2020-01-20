@@ -5,6 +5,7 @@ import hotel.Room;
 
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class Database {
         return preparedStatement.executeQuery();
     }
 
-    public static Room firstFreeRoom(String roomType, Date start, Date end){
+    public static Room firstFreeRoom(String roomType, LocalDate start, LocalDate end){
         try{
             PreparedStatement preparedStatement = c.prepareStatement(
                     "SELECT * FROM (SELECT * FROM rooms " +
@@ -39,10 +40,10 @@ public class Database {
                             "WHERE ((bookingFrom >= ? AND bookingFrom <= ?) OR (bookingUntil >= ? AND bookingUntil <= ?))) " +
                             "OR bookingFrom IS NULL)");
             preparedStatement.setString(1, roomType);
-            preparedStatement.setDate(2, start);
-            preparedStatement.setDate(3, end);
-            preparedStatement.setDate(4,start);
-            preparedStatement.setDate(5, end);
+            preparedStatement.setDate(2, Date.valueOf(start));
+            preparedStatement.setDate(3, Date.valueOf(end));
+            preparedStatement.setDate(4, Date.valueOf(start));
+            preparedStatement.setDate(5, Date.valueOf(end));
             ResultSet rs = Database.getData(preparedStatement);
             if(rs.first()){
                 return new Room(rs.getInt("roomID"),rs.getString("roomTypeName"),rs.getDouble("roomTypePrice"),

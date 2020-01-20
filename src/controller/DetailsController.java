@@ -13,10 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.sql.Date;
@@ -49,6 +46,12 @@ public class DetailsController{
     private Button btn_add_minibar;
     @FXML
     private Button btn_deleteService;
+    @FXML
+    private CheckBox cb_movie;
+    @FXML
+    private CheckBox cb_wellness;
+    @FXML
+    private CheckBox cb_minibar;
     @FXML
     private ListView serviceListView;
 
@@ -212,7 +215,7 @@ public class DetailsController{
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
-                    btn_deleteService.setText("delete "+ servicesList.get(newValue.intValue()).getServicesID()+ " "+
+                    btn_deleteService.setText("delete " + servicesList.get(newValue.intValue()).getServicesID()+ " "+
                             servicesList.get(newValue.intValue()).getServiceType() + " " +
                             servicesList.get(newValue.intValue()).getServiceName() + " from " +
                             servicesList.get(newValue.intValue()).getServiceDate());
@@ -250,6 +253,7 @@ public class DetailsController{
                 }
             }
         });
+        choiceMovie.getSelectionModel().selectFirst();
     }
 
     public void populateWellnessChoice() throws Exception {
@@ -271,13 +275,14 @@ public class DetailsController{
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
-                    btn_add_wellness.setText("add wellness: " + wellnessList.get(newValue.intValue()).getWellnessID());
+                    btn_add_wellness.setText("add wellness service: " + wellnessList.get(newValue.intValue()).getWellnessID());
                     serviceID=wellnessList.get(newValue.intValue()).getWellnessID();
                 } catch (Exception e) {
                     System.out.println("Error changelistener wellnesslist");
                 }
             }
         });
+        choiceWellness.getSelectionModel().selectFirst();
     }
     public  void populateMinibarChoice()throws Exception{
         PreparedStatement ps =
@@ -305,5 +310,6 @@ public class DetailsController{
                 }
             }
         });
+        choiceMinibar.getSelectionModel().selectFirst();
     }
 }

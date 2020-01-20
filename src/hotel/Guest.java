@@ -27,19 +27,6 @@ public class Guest {
         this.email = email;
         this.passportNumber = passportNumber;
     }
-    public Guest(String firstName, String lastName, LocalDate birthDate, String address, int zipCode,
-                 String country, String phone, String email, String passportNumber) {
-        this.id = 0;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.country = country;
-        this.phone = phone;
-        this.email = email;
-        this.passportNumber = passportNumber;
-    }
 
     public int getId() {
         return id;

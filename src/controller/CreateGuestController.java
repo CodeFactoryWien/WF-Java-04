@@ -47,7 +47,7 @@ public class CreateGuestController {
 
     // New Guest (Not found in Database) create //
     public void sendGuestData(){
-        Guest guest = new Guest( lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
+        Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
                 Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
         Database.insertNewGuest(guest);
     }

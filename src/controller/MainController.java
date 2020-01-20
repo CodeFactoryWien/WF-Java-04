@@ -9,6 +9,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 import javafx.scene.control.TableView;
 import hotel.*;
@@ -20,10 +22,18 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
+import sample.Main;
 
 public class MainController {
     @FXML
     private Button logoutButton;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private Tab adminTab;
+
+    static boolean userIsAdmin;
+
 
     @FXML
     private TableView<Booking> tableOccupiedRooms;
@@ -72,14 +82,23 @@ public class MainController {
         ));
         initializeTableOccupied();
         initializeTableBookings();
+        if(MainController.userIsAdmin){
+            System.out.println("Admin logged in.");
+        } else {
+            tabPane.getTabs().remove(adminTab);
+            System.out.println("User logged in.");
+        }
     }
 
     public void logout() throws Exception {
+        MainController.userIsAdmin = false;
         LoginController L = new LoginController();
         L.start();
         Stage S = (Stage) logoutButton.getScene().getWindow();
         S.close();
-
+    }
+    public void setAdminStatus(){
+        userIsAdmin = true;
     }
 
     // Create new Guest //
