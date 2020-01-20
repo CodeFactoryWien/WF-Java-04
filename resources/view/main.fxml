@@ -19,15 +19,15 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TableView layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
+                        <TableView fx:id="tableOccupiedRooms" layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
                           <columns>
-                            <TableColumn prefWidth="48.0" text="room#" />
-                            <TableColumn prefWidth="144.0" text="Guest" />
-                              <TableColumn prefWidth="81.0" text="Arrival" />
-                              <TableColumn prefWidth="94.0" text="est. Depature" />
+                            <TableColumn fx:id="columnRoomNr" prefWidth="48.0" text="room#" />
+                            <TableColumn fx:id="columnGuestName" prefWidth="144.0" text="Guest" />
+                              <TableColumn fx:id="columnArrival" prefWidth="81.0" text="Arrival" />
+                              <TableColumn fx:id="columnDeparture" prefWidth="94.0" text="est. Depature" />
                           </columns>
                         </TableView>
-                        <Button layoutX="224.0" layoutY="21.0" mnemonicParsing="false" text="details" />
+                        <Button layoutX="224.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="details" />
                         <Button layoutX="289.0" layoutY="21.0" mnemonicParsing="false" text="add service" />
                         <Button layoutX="537.0" layoutY="21.0" mnemonicParsing="false" text="CHECK OUT" />
                         <Button fx:id="logoutButton" layoutX="40.0" layoutY="677.0" mnemonicParsing="false" onMouseClicked="#logout" text="Log Out" />
@@ -41,7 +41,7 @@
                      <children>
                              <!-- Booking -->
                              <Button fx:id="createBooking" layoutX="214.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
-                        <TableView layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
+                        <TableView fx:id="tableBookings" layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
                            <columns>
                               <TableColumn prefWidth="90.0" text="Arrival" />
                               <TableColumn prefWidth="93.0" text="est. Depature" />
