@@ -57,7 +57,4 @@ public class Room {
         return "ID " + id +" " + type + " " + price + "€ ";
     }
 
-    public int getId() {
-        return id;
-    }
 }
