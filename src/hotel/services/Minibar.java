@@ -19,7 +19,7 @@ public class Minibar {
 
         return  /*mbID + " " +*/
                 mbItem + " -- " +
-                String.format("%1.2f €", tmpPrice/100) + "€";
+                String.format("%1.2f €", tmpPrice/100);
     }
 
     public int getMbID() {
