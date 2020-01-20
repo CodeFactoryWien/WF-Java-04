@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 17. Jan 2020 um 13:48
+-- Erstellungszeit: 20. Jan 2020 um 15:07
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -37,7 +37,7 @@ CREATE TABLE `bookings` (
   `bookingFrom` date NOT NULL,
   `bookingUntil` date NOT NULL,
   `bookingCanceled` date NOT NULL,
-  `checkedIn` tinyint(11) DEFAULT NULL
+  `checkedIn` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`, `openAmount`, `bookingFrom`, `bookingUntil`, `bookingCanceled`, `checkedIn`) VALUES
-(1, 3, 5, 0, 0, '2020-01-16', '2020-01-23', '0000-00-00', 1);
+(3, 3, 5, 0, 0, '2020-01-16', '2020-01-23', '0000-00-00', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -210,15 +210,35 @@ INSERT INTO `roomtype` (`roomTypeID`, `roomTypeName`, `roomTypeCapacity`, `roomT
 --
 
 CREATE TABLE `services` (
-  `serviceID` tinyint(4) NOT NULL,
+  `servicesID` tinyint(4) NOT NULL,
   `fk_bookingID` tinyint(4) NOT NULL,
-  `fk_movieID` tinyint(4) NOT NULL,
-  `movieDate` date NOT NULL,
-  `fk_wellnessID` tinyint(4) NOT NULL,
-  `wellnessDate` date NOT NULL,
-  `fk_minibarID` int(11) NOT NULL,
-  `minibarDate` date NOT NULL
+  `serviceType` char(14) NOT NULL,
+  `serviceDate` date NOT NULL,
+  `fk_serviceID` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `services`
+--
+
+INSERT INTO `services` (`servicesID`, `fk_bookingID`, `serviceType`, `serviceDate`, `fk_serviceID`) VALUES
+(4, 3, 'movie', '2020-01-17', 1),
+(5, 2, 'movie', '2020-01-18', 3),
+(13, 3, 'movie', '2020-01-19', 2),
+(40, 1, 'movie', '2020-01-19', 2),
+(41, 1, 'wellness', '2020-01-19', 2),
+(42, 1, 'minibar', '2020-01-19', 2),
+(43, 1, 'minibar', '2020-01-19', 2),
+(44, 1, 'minibar', '2020-01-19', 2),
+(45, 1, 'minibar', '2020-01-19', 2),
+(46, 1, 'wellness', '2020-01-19', 5),
+(65, 3, 'wellness', '2020-01-20', 3),
+(66, 3, 'minibar', '2020-01-20', 2),
+(74, 3, 'wellness', '2020-01-20', 4),
+(93, 3, 'movie', '2020-01-20', 1),
+(95, 3, 'movie', '2020-01-20', 4),
+(96, 3, 'wellness', '2020-01-20', 3),
+(97, 3, 'wellness', '2020-01-20', 1);
 
 -- --------------------------------------------------------
 
@@ -230,7 +250,7 @@ CREATE TABLE `serv_minibar` (
   `mbID` int(11) NOT NULL,
   `mbItem` varchar(128) DEFAULT NULL,
   `mbItemDescription` varchar(1024) DEFAULT NULL,
-  `mbPrice` double DEFAULT NULL
+  `mbPrice` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -238,11 +258,11 @@ CREATE TABLE `serv_minibar` (
 --
 
 INSERT INTO `serv_minibar` (`mbID`, `mbItem`, `mbItemDescription`, `mbPrice`) VALUES
-(1, 'Snickers', 'Snickers ist ein Schokoriegel mit Karamell, Erdnüssen und einer weichen, weißen Nougat-ähnlichen Masse.', 3),
-(2, 'Coke 0,2l', 'Flasche Coca Cola', 7),
-(3, 'Burgunder 0,2l', 'Flasche Burgunder', 12),
-(4, 'Valser 0,2l', 'Bottle Valser Water', 3),
-(5, 'Pringels Mini 40g', 'Mit 40 Gramm superleckeren Pringles hast du immer einen Snack parat', 4);
+(1, 'Snickers', 'Snickers ist ein Schokoriegel mit Karamell, Erdnüssen und einer weichen, weißen Nougat-ähnlichen Masse.', 350),
+(2, 'Coke 0,2l', 'Flasche Coca Cola', 700),
+(3, 'Burgunder 0,2l', 'Flasche Burgunder', 1290),
+(4, 'Valser 0,2l', 'Bottle Valser Water', 300),
+(5, 'Pringels Mini 40g', 'Mit 40 Gramm superleckeren Pringles hast du immer einen Snack parat', 420);
 
 -- --------------------------------------------------------
 
@@ -254,7 +274,7 @@ CREATE TABLE `serv_movies` (
   `movieID` int(11) NOT NULL,
   `movieName` varchar(128) DEFAULT NULL,
   `movieDescription` varchar(1024) DEFAULT NULL,
-  `moivePrice` double DEFAULT NULL,
+  `moviePrice` int(11) DEFAULT NULL,
   `movieSeen` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -262,13 +282,13 @@ CREATE TABLE `serv_movies` (
 -- Daten für Tabelle `serv_movies`
 --
 
-INSERT INTO `serv_movies` (`movieID`, `movieName`, `movieDescription`, `moivePrice`, `movieSeen`) VALUES
-(1, '1917', 'Two young British soldiers during the First World War are given an impossible mission: deliver a message deep in enemy territory that will stop 1,600 men, and one of the soldiers\' brothers, from walking straight into a deadly trap.', 2.99, 4),
-(2, 'Star Wars: Episode IX - Der Aufstieg Skywalkers', 'The surviving members of the resistance face the First Order once again, and the legendary conflict between the Jedi and the Sith reaches its peak bringing the Skywalker saga to its end.', 3.99, NULL),
-(3, 'Once Upon a Time in Hollywood', 'A faded television actor and his stunt double strive to achieve fame and success in the film industry during the final years of Hollywood\'s Golden Age in 1969 Los Angeles.', 2.99, NULL),
-(4, 'Joker', 'In Gotham City, mentally troubled comedian Arthur Fleck is disregarded and mistreated by society. He then embarks on a downward spiral of revolution and bloody crime. This path brings him face-to-face with his alter-ego: the Joker.', 2.99, NULL),
-(5, 'Cats', 'A tribe of cats called the Jellicles must decide yearly which one will ascend to the Heaviside Layer and come back to a new Jellicle life.', 3.99, NULL),
-(6, 'The Irishman', 'A mob hitman recalls his possible involvement with the slaying of Jimmy Hoffa.', 2.99, NULL);
+INSERT INTO `serv_movies` (`movieID`, `movieName`, `movieDescription`, `moviePrice`, `movieSeen`) VALUES
+(1, '1917', 'Two young British soldiers during the First World War are given an impossible mission: deliver a message deep in enemy territory that will stop 1,600 men, and one of the soldiers\' brothers, from walking straight into a deadly trap.', 299, 4),
+(2, 'Star Wars: Episode IX - Der Aufstieg Skywalkers', 'The surviving members of the resistance face the First Order once again, and the legendary conflict between the Jedi and the Sith reaches its peak bringing the Skywalker saga to its end.', 399, NULL),
+(3, 'Once Upon a Time in Hollywood', 'A faded television actor and his stunt double strive to achieve fame and success in the film industry during the final years of Hollywood\'s Golden Age in 1969 Los Angeles.', 299, NULL),
+(4, 'Joker', 'In Gotham City, mentally troubled comedian Arthur Fleck is disregarded and mistreated by society. He then embarks on a downward spiral of revolution and bloody crime. This path brings him face-to-face with his alter-ego: the Joker.', 299, NULL),
+(5, 'Cats', 'A tribe of cats called the Jellicles must decide yearly which one will ascend to the Heaviside Layer and come back to a new Jellicle life.', 399, NULL),
+(6, 'The Irishman', 'A mob hitman recalls his possible involvement with the slaying of Jimmy Hoffa.', 299, NULL);
 
 -- --------------------------------------------------------
 
@@ -280,7 +300,7 @@ CREATE TABLE `serv_wellness` (
   `wellnessID` int(11) NOT NULL,
   `wellnessName` varchar(128) DEFAULT NULL,
   `wellnessDescription` varchar(1024) DEFAULT NULL,
-  `wellnessPrice` double DEFAULT NULL
+  `wellnessPrice` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -288,11 +308,11 @@ CREATE TABLE `serv_wellness` (
 --
 
 INSERT INTO `serv_wellness` (`wellnessID`, `wellnessName`, `wellnessDescription`, `wellnessPrice`) VALUES
-(1, 'Sauna', NULL, 5),
-(2, 'Classic Massage', 'The classic massage is based on targeted massage treatments that relieve tension and have a very positive effect on the muscles', 9),
-(3, 'Thai Massage', NULL, 10),
-(4, 'Hot Stone – Massage', 'The hot stone massage gently processes and massages the acupuncture points and meridians of the body with heated, smooth lava stones and warm aromatic oil. The hot stone foot, hand and face massages are also particularly pleasant types of massage with hot stones.', 12),
-(5, 'Shiatsu Massage', 'The Shiatsu massage originally comes from Japan and is a special finger pressure massage. Touch, gentle pressure, leaning and massage of certain parts of the body are used. Basically, it is about balancing the body, relieving tension and releasing the energy flows.', 12);
+(1, 'Sauna', NULL, 500),
+(2, 'Classic Massage', 'The classic massage is based on targeted massage treatments that relieve tension and have a very positive effect on the muscles', 900),
+(3, 'Thai Massage', NULL, 1000),
+(4, 'Hot Stone – Massage', 'The hot stone massage gently processes and massages the acupuncture points and meridians of the body with heated, smooth lava stones and warm aromatic oil. The hot stone foot, hand and face massages are also particularly pleasant types of massage with hot stones.', 1200),
+(5, 'Shiatsu Massage', 'The Shiatsu massage originally comes from Japan and is a special finger pressure massage. Touch, gentle pressure, leaning and massage of certain parts of the body are used. Basically, it is about balancing the body, relieving tension and releasing the energy flows.', 1200);
 
 -- --------------------------------------------------------
 
@@ -361,7 +381,7 @@ ALTER TABLE `roomtype`
 -- Indizes für die Tabelle `services`
 --
 ALTER TABLE `services`
-  ADD PRIMARY KEY (`serviceID`);
+  ADD PRIMARY KEY (`servicesID`);
 
 --
 -- Indizes für die Tabelle `serv_minibar`
@@ -395,7 +415,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT für Tabelle `customers`
@@ -425,7 +445,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT für Tabelle `services`
 --
 ALTER TABLE `services`
-  MODIFY `serviceID` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `servicesID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT für Tabelle `serv_minibar`
