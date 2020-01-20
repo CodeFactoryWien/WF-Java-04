@@ -7,75 +7,75 @@
 
 <Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
 
-         <HBox prefHeight="768.0" prefWidth="1024.0">
-      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="allocation">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Label layoutX="24.0" layoutY="20.0" text="occupied rooms">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <TableView fx:id="tableOccupiedRooms" layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
-                          <columns>
-                            <TableColumn fx:id="columnRoomNr" prefWidth="48.0" text="room#" />
-                            <TableColumn fx:id="columnGuestName" prefWidth="144.0" text="Guest" />
-                              <TableColumn fx:id="columnArrival" prefWidth="81.0" text="Arrival" />
-                              <TableColumn fx:id="columnDeparture" prefWidth="94.0" text="est. Depature" />
-                          </columns>
-                        </TableView>
-                        <Button layoutX="224.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="details" />
-                        <Button layoutX="289.0" layoutY="21.0" mnemonicParsing="false" text="add service" />
-                        <Button layoutX="537.0" layoutY="21.0" mnemonicParsing="false" text="CHECK OUT" />
-                        <Button fx:id="logoutButton" layoutX="40.0" layoutY="677.0" mnemonicParsing="false" onMouseClicked="#logout" text="Log Out" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="reservations">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                             <!-- Booking -->
-                             <Button fx:id="createBooking" layoutX="214.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
-                        <TableView fx:id="tableBookings" layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
-                           <columns>
-                              <TableColumn fx:id="columnBookingArrival" prefWidth="90.0" text="Arrival" />
-                              <TableColumn fx:id="columnBookingDeparture" prefWidth="93.0" text="est. Depature" />
-                              <TableColumn fx:id="columnBookingGuest" prefWidth="191.0" text="Guest" />
-                           </columns>
-                        </TableView>
-                        <Label layoutX="24.0" layoutY="17.0" text="Bookings">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Button layoutX="371.0" layoutY="18.0" mnemonicParsing="false" text="details" />
-                        <Button fx:id="storno" layoutX="436.0" layoutY="18.0" mnemonicParsing="false" text="STORNO" />
-                        <DatePicker fx:id="dateFrom" layoutX="542.0" layoutY="18.0" />
-                        <DatePicker fx:id="dateUntil" layoutX="728.0" layoutY="18.0" />
-                        <Label layoutX="542.0" layoutY="5.0" text="from" />
-                        <Label layoutX="728.0" layoutY="5.0" text="until" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="adminTab" text="settings">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                             <!-- Update -->
-                             <Button fx:id="createGuest" layoutX="43.0" layoutY="42.0" onMouseClicked="#call_createGuestController" text="Create Guest" />
-                             <!-- Report -->
-                             <Button fx:id="createRoom" layoutX="43.0" layoutY="83.0" onMouseClicked="#call_createRoomController" prefHeight="25.0" prefWidth="96.0" text="Create Room" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-         </HBox>
+    <HBox prefHeight="768.0" prefWidth="1024.0">
+        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="allocation">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="24.0" layoutY="20.0" text="occupied rooms">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <TableView fx:id="tableOccupiedRooms" layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
+                                    <columns>
+                                        <TableColumn fx:id="columnRoomNr" prefWidth="48.0" text="room#" />
+                                        <TableColumn fx:id="columnGuestName" prefWidth="144.0" text="Guest" />
+                                        <TableColumn fx:id="columnArrival" prefWidth="81.0" text="Arrival" />
+                                        <TableColumn fx:id="columnDeparture" prefWidth="94.0" text="est. Depature" />
+                                    </columns>
+                                </TableView>
+                                <Button layoutX="224.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="details" />
+                                <Button layoutX="289.0" layoutY="21.0" mnemonicParsing="false" text="add service" />
+                                <Button layoutX="537.0" layoutY="21.0" mnemonicParsing="false" text="CHECK OUT" />
+                                <Button fx:id="logoutButton" layoutX="40.0" layoutY="677.0" mnemonicParsing="false" onMouseClicked="#logout" text="Log Out" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="reservations">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <!-- Booking -->
+                                <Button fx:id="createBooking" layoutX="214.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
+                                <TableView fx:id="tableBookings" layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
+                                    <columns>
+                                        <TableColumn fx:id="columnBookingArrival" prefWidth="90.0" text="Arrival" />
+                                        <TableColumn fx:id="columnBookingDeparture" prefWidth="93.0" text="est. Depature" />
+                                        <TableColumn fx:id="columnBookingGuest" prefWidth="191.0" text="Guest" />
+                                    </columns>
+                                </TableView>
+                                <Label layoutX="24.0" layoutY="17.0" text="Bookings">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button layoutX="371.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#call_detailsController" text="details" />
+                                <Button fx:id="storno" layoutX="436.0" layoutY="18.0" mnemonicParsing="false" text="STORNO" />
+                                <DatePicker fx:id="dateFrom" layoutX="542.0" layoutY="18.0" />
+                                <DatePicker fx:id="dateUntil" layoutX="728.0" layoutY="18.0" />
+                                <Label layoutX="542.0" layoutY="5.0" text="from" />
+                                <Label layoutX="728.0" layoutY="5.0" text="until" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="adminTab" text="settings">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <!-- Update -->
+                                <Button fx:id="createGuest" layoutX="43.0" layoutY="42.0" onMouseClicked="#call_createGuestController" text="Create Guest" />
+                                <!-- Report -->
+                                <Button fx:id="createRoom" layoutX="43.0" layoutY="83.0" onMouseClicked="#call_createRoomController" prefHeight="25.0" prefWidth="96.0" text="Create Room" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </HBox>
 </Scene>
