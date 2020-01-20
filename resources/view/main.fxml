@@ -8,7 +8,7 @@
 <Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
 
          <HBox prefHeight="768.0" prefWidth="1024.0">
-      <TabPane prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="allocation">
             <content>
@@ -59,7 +59,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="settings">
+            <Tab fx:id="adminTab" text="settings">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

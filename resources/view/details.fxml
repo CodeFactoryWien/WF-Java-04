@@ -1,54 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.Scene?>
-<Scene  xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetailsController">
+
+<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetailsController">
 <AnchorPane prefHeight="533.0" prefWidth="719.0">
    <children>
-      <ChoiceBox fx:id="choiceMovie" layoutX="79.0" layoutY="109.0" prefHeight="25.0" prefWidth="176.0" />
-      <ChoiceBox fx:id="choiceWellness" layoutX="273.0" layoutY="108.0" prefHeight="25.0" prefWidth="176.0" />
-      <ChoiceBox fx:id="choiCeMinibar" layoutX="470.0" layoutY="107.0" prefHeight="25.0" prefWidth="176.0" />
-      <Label layoutX="79.0" layoutY="85.0" text="Moives" />
-      <Label layoutX="470.0" layoutY="85.0" text="Minibar " />
-      <Label layoutX="273.0" layoutY="86.0" text="Wellness" />
-      <Label layoutX="20.0" layoutY="22.0" text="Room" />
-      <Label fx:id="roomNr" layoutX="61.0" layoutY="22.0" text="203">
+      <ChoiceBox fx:id="choiceMovie" layoutX="79.0" layoutY="95.0" prefHeight="25.0" prefWidth="176.0" />
+      <ChoiceBox fx:id="choiceWellness" layoutX="273.0" layoutY="94.0" prefHeight="25.0" prefWidth="176.0" />
+      <ChoiceBox fx:id="choiceMinibar" layoutX="470.0" layoutY="94.0" prefHeight="25.0" prefWidth="176.0" />
+      <Label layoutX="78.0" layoutY="72.0" text="Moives" />
+      <Label layoutX="470.0" layoutY="71.0" text="Minibar " />
+      <Label layoutX="273.0" layoutY="72.0" text="Wellness" />
+      <Label layoutX="21.0" layoutY="14.0" text="Room" />
+      <Label fx:id="lblRoomNr" layoutX="57.0" layoutY="12.0" text="203">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <ListView fx:id="listMovies" layoutX="80.0" layoutY="175.0" prefHeight="282.0" prefWidth="176.0" />
-      <ListView fx:id="listWellness" layoutX="274.0" layoutY="175.0" prefHeight="282.0" prefWidth="176.0" />
-      <ListView fx:id="listMinibar" layoutX="471.0" layoutY="175.0" prefHeight="282.0" prefWidth="176.0" />
-      <Label layoutX="136.0" layoutY="22.0" text="Guest: " />
-      <Label fx:id="guestName" layoutX="196.0" layoutY="22.0" text="Name Surname">
+      <ListView fx:id="serviceListView" layoutX="80.0" layoutY="183.0" prefHeight="305.0" prefWidth="568.0" />
+      <Label layoutX="136.0" layoutY="15.0" text="Guest: " />
+      <Label fx:id="lblGuestName" layoutX="173.0" layoutY="13.0" text="Name Surname">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="deleteMovie" layoutX="78.0" layoutY="470.0" mnemonicParsing="false" text="delete" />
-      <Button fx:id="deleteWellness" layoutX="272.0" layoutY="470.0" mnemonicParsing="false" text="delete" />
-      <Button fx:id="deleteMinibar" layoutX="469.0" layoutY="470.0" mnemonicParsing="false" text="delete" />
-      <Label layoutX="362.0" layoutY="21.0" text="stays until:" />
-      <Label fx:id="depature" layoutX="430.0" layoutY="21.0" text="22.2.2020">
+      <Button fx:id="btn_deleteService" layoutX="80.0" layoutY="494.0" mnemonicParsing="false" text="delete" />
+      <Label layoutX="113.0" layoutY="34.0" text="stays until:" />
+      <Label fx:id="lblDepature" layoutX="173.0" layoutY="32.0" text="22.2.2020">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="559.0" layoutY="21.0" text="Amount now:" />
-      <Label fx:id="amount" layoutX="634.0" layoutY="21.0" text="2300,--">
+      <Label layoutX="499.0" layoutY="23.0" text="Amount of Services now:" />
+      <Label fx:id="lblAmount" layoutX="634.0" layoutY="21.0" text="2300,--">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="add_movie" layoutX="182.0" layoutY="140.0" mnemonicParsing="false" text="add Movie" />
-      <Button fx:id="add_wellness" layoutX="362.0" layoutY="140.0" mnemonicParsing="false" text="add Wellness" />
-      <Button fx:id="add_minibar" layoutX="538.0" layoutY="140.0" mnemonicParsing="false" text="add Minibar Item" />
+      <Button fx:id="btn_add_movie" layoutX="80.0" layoutY="126.0" mnemonicParsing="false" text="add Movie" />
+      <Button fx:id="btn_add_wellness" layoutX="273.0" layoutY="126.0" mnemonicParsing="false" text="add Wellness service" />
+      <Button fx:id="btn_add_minibar" layoutX="470.0" layoutY="126.0" mnemonicParsing="false" text="add Minibar Item" />
+      <CheckBox fx:id="cb_movie" layoutX="80.0" layoutY="158.0" mnemonicParsing="false" selected="true" text="show" />
+      <CheckBox fx:id="cb_wellness" layoutX="273.0" layoutY="158.0" mnemonicParsing="false" selected="true" text="show" />
+      <CheckBox fx:id="cb_minibar" layoutX="471.0" layoutY="158.0" mnemonicParsing="false" selected="true" text="show" />
    </children>
 </AnchorPane>
+
 </Scene>

@@ -4,10 +4,10 @@ public class Movie {
     private int movieID;
     private String movieName;
     private String movieDescription;
-    private double moviePrice;
+    private int moviePrice;
     private int movieSeen;
 
-    public Movie(int movieID, String movieName, String movieDescription, double moviePrice, int movieSeen) {
+    public Movie(int movieID, String movieName, String movieDescription, int moviePrice, int movieSeen) {
         this.movieID = movieID;
         this.movieName = movieName;
         this.movieDescription = movieDescription;
@@ -48,7 +48,7 @@ public class Movie {
         return moviePrice;
     }
 
-    public void setMoviePrice(double moviePrice) {
+    public void setMoviePrice(int moviePrice) {
         this.moviePrice = moviePrice;
     }
 

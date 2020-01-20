@@ -3,11 +3,20 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
 public class MainController {
     @FXML
     private Button logoutButton;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private Tab adminTab;
+
+    static boolean userIsAdmin;
+
 
     void start() throws Exception {
         Stage S = new Stage();
@@ -16,12 +25,24 @@ public class MainController {
         S.show();
     }
 
+    @FXML
+    private void initialize(){
+        if(MainController.userIsAdmin){
+            System.out.println("Admin logged in.");
+        } else {
+            tabPane.getTabs().remove(adminTab);
+            System.out.println("User logged in.");
+        }
+    }
+
     public void logout() throws Exception {
         LoginController L = new LoginController();
         L.start();
         Stage S = (Stage) logoutButton.getScene().getWindow();
         S.close();
-
+    }
+    public void setAdminStatus(){
+        userIsAdmin = true;
     }
 
     // Create new Guest //
