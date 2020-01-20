@@ -15,7 +15,7 @@ public class Wellness {
 
     @Override
     public String toString() {
-        return wellnessName + " -- " + wellnessPrice;
+        return wellnessName + " -- " + wellnessPrice + "€";
     }
 
     public int getWellnessID() {
