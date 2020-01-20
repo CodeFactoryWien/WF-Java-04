@@ -43,9 +43,9 @@
                              <Button fx:id="createBooking" layoutX="214.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
                         <TableView fx:id="tableBookings" layoutX="24.0" layoutY="55.0" prefHeight="536.0" prefWidth="886.0">
                            <columns>
-                              <TableColumn prefWidth="90.0" text="Arrival" />
-                              <TableColumn prefWidth="93.0" text="est. Depature" />
-                              <TableColumn prefWidth="191.0" text="Guest" />
+                              <TableColumn fx:id="columnBookingArrival" prefWidth="90.0" text="Arrival" />
+                              <TableColumn fx:id="columnBookingDeparture" prefWidth="93.0" text="est. Depature" />
+                              <TableColumn fx:id="columnBookingGuest" prefWidth="191.0" text="Guest" />
                            </columns>
                         </TableView>
                         <Label layoutX="24.0" layoutY="17.0" text="Bookings">
@@ -55,6 +55,10 @@
                         </Label>
                         <Button layoutX="371.0" layoutY="18.0" mnemonicParsing="false" text="details" />
                         <Button fx:id="storno" layoutX="436.0" layoutY="18.0" mnemonicParsing="false" text="STORNO" />
+                        <DatePicker fx:id="dateFrom" layoutX="542.0" layoutY="18.0" />
+                        <DatePicker fx:id="dateUntil" layoutX="728.0" layoutY="18.0" />
+                        <Label layoutX="542.0" layoutY="5.0" text="from" />
+                        <Label layoutX="728.0" layoutY="5.0" text="until" />
                      </children>
                   </AnchorPane>
             </content>
