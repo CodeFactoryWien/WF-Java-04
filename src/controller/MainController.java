@@ -1,12 +1,13 @@
 package controller;
 
+import javafx.fxml.FXML;
 import database.Database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.TableView;
 import hotel.*;
@@ -14,12 +15,12 @@ import hotel.*;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class MainController {
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private TableView<Booking> tableOccupiedRooms;
@@ -44,6 +45,14 @@ public class MainController {
     @FXML
     public void initialize(){
         initializeTable();
+    }
+
+    public void logout() throws Exception {
+        LoginController L = new LoginController();
+        L.start();
+        Stage S = (Stage) logoutButton.getScene().getWindow();
+        S.close();
+
     }
 
     // Create new Guest //

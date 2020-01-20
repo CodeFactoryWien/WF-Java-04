@@ -2,6 +2,7 @@ package controller;
 
 import database.Database;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -81,5 +82,12 @@ public class LoginController {
         Optional<String> optEncrypted = hashPassword(password, salt);
         if (!optEncrypted.isPresent()) return false;
         return optEncrypted.get().equals(key);
+    }
+
+    void start() throws Exception {
+        Stage S = new Stage();
+        S.setTitle("hotel Managing Software");
+        S.setScene(FXMLLoader.load(getClass().getResource("/view/login.fxml")));
+        S.show();
     }
 }
