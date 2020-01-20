@@ -4,9 +4,9 @@ public class Minibar {
     private int mbID;
     private String mbItem;
     private String mbDescription;
-    private double mbPrice;
+    private int mbPrice;
 
-    public Minibar(int mbID, String mbItem, String mbDescription, double mbPrice) {
+    public Minibar(int mbID, String mbItem, String mbDescription, int mbPrice) {
         this.mbID = mbID;
         this.mbItem = mbItem;
         this.mbDescription = mbDescription;

@@ -4,9 +4,9 @@ public class Wellness {
     int wellnessID;
     String wellnessName;
     String wellnessDescription;
-    Double wellnessPrice;
+    int wellnessPrice;
 
-    public Wellness(int wellnessID, String wellnessName, String wellnessDescription, Double wellnessPrice) {
+    public Wellness(int wellnessID, String wellnessName, String wellnessDescription, int wellnessPrice) {
         this.wellnessID = wellnessID;
         this.wellnessName = wellnessName;
         this.wellnessDescription = wellnessDescription;
