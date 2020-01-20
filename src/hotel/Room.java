@@ -25,6 +25,9 @@ public class Room {
         this.facilities = facilities;
     }
 
+    public int getId() {
+        return id;
+    }
 
     public String getType() {
         return type;
