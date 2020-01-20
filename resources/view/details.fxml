@@ -17,27 +17,27 @@
       <Label layoutX="78.0" layoutY="86.0" text="Moives" />
       <Label layoutX="470.0" layoutY="85.0" text="Minibar " />
       <Label layoutX="273.0" layoutY="86.0" text="Wellness" />
-      <Label layoutX="20.0" layoutY="22.0" text="Room" />
-      <Label fx:id="lblRoomNr" layoutX="61.0" layoutY="22.0" text="203">
+      <Label layoutX="21.0" layoutY="14.0" text="Room" />
+      <Label fx:id="lblRoomNr" layoutX="57.0" layoutY="12.0" text="203">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
       <ListView fx:id="serviceListView" layoutX="80.0" layoutY="175.0" prefHeight="282.0" prefWidth="568.0" />
-      <Label layoutX="136.0" layoutY="22.0" text="Guest: " />
-      <Label fx:id="lblGuestName" layoutX="196.0" layoutY="22.0" text="Name Surname">
+      <Label layoutX="136.0" layoutY="15.0" text="Guest: " />
+      <Label fx:id="lblGuestName" layoutX="173.0" layoutY="13.0" text="Name Surname">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
       <Button fx:id="btn_deleteService" layoutX="78.0" layoutY="470.0" mnemonicParsing="false" text="delete" />
-      <Label layoutX="362.0" layoutY="21.0" text="stays until:" />
-      <Label fx:id="lblDepature" layoutX="430.0" layoutY="21.0" text="22.2.2020">
+      <Label layoutX="113.0" layoutY="34.0" text="stays until:" />
+      <Label fx:id="lblDepature" layoutX="173.0" layoutY="32.0" text="22.2.2020">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="499.0" layoutY="21.0" text="Amount of Services now:" />
+      <Label layoutX="499.0" layoutY="23.0" text="Amount of Services now:" />
       <Label fx:id="lblAmount" layoutX="634.0" layoutY="21.0" text="2300,--">
          <font>
             <Font name="System Bold" size="14.0" />
