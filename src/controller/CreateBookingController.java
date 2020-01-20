@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.*;
@@ -26,12 +27,13 @@ public class CreateBookingController {
 
     private Stage bookStage;
 
-    // Room, Price Fields //
+    // Room, price fields //
     private int count;
-    private java.time.LocalDate checkInDate;
-    private java.time.LocalDate checkOutDate;
     private double selectedRoomPrice;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private int days;
+    private ObservableList<String> roomtypeslist;
 
     @FXML
     private ChoiceBox<String> roomType;
@@ -46,7 +48,11 @@ public class CreateBookingController {
     @FXML
     private Label totalPrice;
 
-    // Guest Fields//
+    // Vbox of guest fields //
+    @FXML
+    private VBox column2;
+
+    // Guest fields//
     @FXML
     private TextField lastName;
     @FXML
@@ -68,14 +74,15 @@ public class CreateBookingController {
     @FXML
     private ListView listViewFoundGuest;
 
-    // cancel and booking button //
-
+    // Cancel and booking button //
     @FXML
     private Button cancel;
     @FXML
     private Button booking;
 
+    // Init method //
     public void initialize() throws Exception {
+        // Database search //
         lastName.setOnKeyTyped(e -> databaseSearch(lastName));
         firstName.setOnKeyTyped(e -> databaseSearch(firstName));
         address.setOnKeyTyped(e -> databaseSearch(address));
@@ -85,23 +92,33 @@ public class CreateBookingController {
         email.setOnKeyTyped(e -> databaseSearch(email));
         passportNr.setOnKeyTyped(e -> databaseSearch(passportNr));
 
+        // Booking call //
         booking.setOnMouseClicked(e -> addBooking());
 
+        // Fill choicebox on init with roomtypes from database //
         fillRoomTypes();
 
-        roomType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                try {
-                    column1main();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        // Listener for choicebox -> call //
+        roomType.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+            try {
+                bookaroom();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
+
+        // Datepicker call -> bookaroom //
+        checkIn.setOnAction(e -> bookaroom());
+        checkOut.setOnAction(e -> bookaroom());
+        // Datepicker editable set false //
+        checkIn.setEditable(false);
+        checkOut.setEditable(false);
+
+        // close method on button click //
+        cancel.setOnMouseClicked(e -> close());
     }
 
-    // Start Controller Method //
+    // Start controller method //
     public void start() throws Exception {
         bookStage = new Stage();
         bookStage.setTitle("hotel Managing Software");
@@ -109,93 +126,113 @@ public class CreateBookingController {
         bookStage.show();
     }
 
-    public void column1main() throws Exception {
+    // Method called when choicebox, checkIn or checkOut is fired //
+    public void bookaroom() {
 
+        if (roomType.getValue() != null && checkIn.getValue() != null && checkOut.getValue() != null) {
+            if (checkIn.getValue().isBefore(checkOut.getValue())) {
+                column2.setDisable(false);
+            } else {
+                column2.setDisable(true);
+            }
+        }
         try {
-            totalCountOfSelectedRoom();
-            fillPrice();
-            checkInDate = checkIn.getValue();
-            checkOutDate = checkOut.getValue();
-
-            try {
-                days = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
-            } catch (Exception e) {
-                System.out.println("cannot calculate days");
+            totalselectedroomcount();
+            fillpriceperday();
+            if (checkIn.getValue() != null) {
+                checkInDate = checkIn.getValue();
+            }
+            if (checkOut.getValue() != null) {
+                checkOutDate = checkOut.getValue();
             }
 
-            totalPrice.setText(String.valueOf(selectedRoomPrice * days));
+            days = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
 
-        } catch (RoomTypeMissing_Exception | CheckInDateMissing_Exception | CheckOutDateMissing_Exception e) {
-            System.out.println(e.getMessage());
+            if (column2.isDisable()) {
+                totalPrice.setText("///");
+            } else {
+                totalPrice.setText(String.valueOf(selectedRoomPrice * days));
+            }
+            } catch (Exception ignored) {
         }
     }
 
     // #####FILL METHODS START HERE##### //
 
-    // Fill roomTypes from Database called from when choiceBox shown //
-    public void fillRoomTypes() throws Exception {
-        PreparedStatement preparedStatement =
-                Database.c.prepareStatement("SELECT roomTypeName FROM roomtype");
+    // Fill roomtypes from database called from when choicebox shown //
+    public void fillRoomTypes() {
+        try {
+            PreparedStatement preparedStatement =
+                    Database.c.prepareStatement("SELECT roomTypeName FROM roomtype");
 
-        ResultSet R = preparedStatement.executeQuery();
+            ResultSet R = preparedStatement.executeQuery();
 
-        ObservableList<String> O = FXCollections.observableArrayList();
+            roomtypeslist = FXCollections.observableArrayList();
 
-        while (R.next()) {
-            String typeName = R.getString("roomTypeName");
-            O.add(typeName);
+            while (R.next()) {
+                String typeName = R.getString("roomTypeName");
+                roomtypeslist.add(typeName);
+            }
+        } catch (Exception e) {
+            System.out.println("Error fillroomtypes not working");
         }
-        roomType.setItems(O);
+        roomType.setItems(roomtypeslist);
     }
 
-    // Fill total count of free rooms from Database //
-    public void totalCountOfSelectedRoom() throws Exception {
+    // Fill total count of free rooms from database based on selected roomtype//
+    public void totalselectedroomcount() {
 
-        PreparedStatement preparedStatement =
-                Database.c.prepareStatement("SELECT COUNT(*) AS roomCount FROM rooms " +
-                        "JOIN roomtype ON fk_roomTypeID = roomTypeID " +
-                        "where roomTypeName = ?");
-        preparedStatement.setString(1, roomType.getValue());
+        try {
+            PreparedStatement preparedStatement =
+                    Database.c.prepareStatement("SELECT COUNT(*) AS roomCount FROM rooms " +
+                            "JOIN roomtype ON fk_roomTypeID = roomTypeID " +
+                            "where roomTypeName = ?");
+            preparedStatement.setString(1, roomType.getValue());
 
-        ResultSet R = preparedStatement.executeQuery();
+            ResultSet R = preparedStatement.executeQuery();
 
-        while (R.next()) {
-            count = R.getInt("roomCount");
+            while (R.next()) {
+                count = R.getInt("roomCount");
+            }
+        } catch (Exception e) {
+            System.out.println("Error room count call not possible");
         }
         freeRooms.setText(String.valueOf(count));
     }
 
-    // Fill roomPrice from selected roomType from Database //
-    public void fillPrice() throws Exception {
+    // Fill roomPrice from selected roomType from database //
+    public void fillpriceperday() {
 
-        if (roomType.getSelectionModel().getSelectedItem() == null) {
-            throw new RoomTypeMissing_Exception("RoomType is missing pls select one");
-        }
         String selectedRoomType = roomType.getSelectionModel().getSelectedItem();
 
-        PreparedStatement preparedStatement =
-                Database.c.prepareStatement("Select roomTypePrice FROM roomType WHERE roomTypeName = ?");
-        preparedStatement.setString(1, selectedRoomType);
+        try {
+            PreparedStatement preparedStatement =
+                    Database.c.prepareStatement("Select roomTypePrice FROM roomType WHERE roomTypeName = ?");
+            preparedStatement.setString(1, selectedRoomType);
 
-        ResultSet R = preparedStatement.executeQuery();
+            ResultSet R = preparedStatement.executeQuery();
 
-        if (R.first()) {
-            selectedRoomPrice = R.getDouble("roomTypePrice");
+            if (R.first()) {
+                selectedRoomPrice = R.getDouble("roomTypePrice");
+            }
+        } catch (Exception e) {
+            System.out.println("Error fillpriceperday not working");
         }
+
         pricePerDay.setText(String.valueOf(selectedRoomPrice));
     }
 
     // #####FILL METHODS ENDS HERE##### //
 
-    public void exit() {
+    // Close Window(Stage) //
+    public void close() {
         bookStage = (Stage) cancel.getScene().getWindow();
         bookStage.close();
     }
 
-    // #####Guest Create / Search in Database Methods##### //
-    // Close Window(Stage) //
+    // #####Guest create / search in database and create booking methods ##### //
 
-    // New Guest (Not found in Database) create //
+    // New guest (not found in database) create //
     public void sendGuestDataToDatabase() {
         Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
                 Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
@@ -224,13 +261,14 @@ public class CreateBookingController {
                     O.add(S1.concat(" " + S2 + " ").concat(S3));
                 }
             } catch (Exception e) {
-                System.out.println("Error");
+                System.out.println("Error database search not possible");
             }
 
             listViewFoundGuest.setItems(O);
         }
     }
 
+    // Add booking function //
     public void addBooking() {
 
         Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
@@ -247,7 +285,7 @@ public class CreateBookingController {
             preparedStatement.setInt(1, R.getId());
             preparedStatement.setInt(2, G.getId());
             preparedStatement.setInt(3, 5);
-            preparedStatement.setInt(4, (int) (selectedRoomPrice * days));
+            preparedStatement.setInt(4, (int) (selectedRoomPrice));
             preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
             preparedStatement.setDate(6, Date.valueOf(checkOut.getValue()));
             preparedStatement.setDate(7, Date.valueOf(ld3));
@@ -255,7 +293,7 @@ public class CreateBookingController {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error");
+            System.out.println("Error booking cannot be created");
         }
     }
 }
