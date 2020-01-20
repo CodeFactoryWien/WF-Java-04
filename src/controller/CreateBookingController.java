@@ -79,6 +79,11 @@ public class CreateBookingController {
         lastName.setOnKeyTyped(e -> databaseSearch(lastName));
         firstName.setOnKeyTyped(e -> databaseSearch(firstName));
         address.setOnKeyTyped(e -> databaseSearch(address));
+        zipCode.setOnKeyTyped(e -> databaseSearch(zipCode));
+        country.setOnKeyTyped(e -> databaseSearch(country));
+        phoneNumber.setOnKeyTyped(e -> databaseSearch(phoneNumber));
+        email.setOnKeyTyped(e -> databaseSearch(email));
+        passportNr.setOnKeyTyped(e -> databaseSearch(passportNr));
 
         fillTotalCount();
         fillRoomTypes();
@@ -240,40 +245,31 @@ public class CreateBookingController {
     }
 
     // Everytime a character is typed method is called //
-    public void databaseSearch(TextField obj) {
+    public void databaseSearch(TextField obj)  {
         if (obj.getText() != null) {
             String userInput = obj.getText();
 
+            String test = obj.getId();
+
             ObservableList<String> O = FXCollections.observableArrayList();
 
-            ResultSet R = null;
-
+            ResultSet R;
             try {
-                if (obj == lastName) {
-                    PreparedStatement preparedStatement =
-                            Database.c.prepareStatement("Select guestID, firstName, lastName, address FROM guests WHERE lastName LIKE ?");
-                    preparedStatement.setString(1, userInput + "%");
-                    R = preparedStatement.executeQuery();
-                } else if (obj == firstName) {
-                    PreparedStatement preparedStatement =
-                            Database.c.prepareStatement("Select guestID, firstName, lastName, address FROM guests WHERE firstName LIKE ?");
-                    preparedStatement.setString(1, userInput + "%");
-                    R = preparedStatement.executeQuery();
-                } else if (obj == address) {
-                    PreparedStatement preparedStatement =
-                            Database.c.prepareStatement("Select guestID, firstName, lastName, address FROM guests WHERE address LIKE ?");
-                    preparedStatement.setString(1, userInput + "%");
-                    R = preparedStatement.executeQuery();
-                }
+                PreparedStatement P1 = Database.c.prepareStatement("SELECT lastName, firstName, address FROM guests WHERE "+test+" LIKE ?");
+                P1.setString(1, userInput+"%");
+                R = P1.executeQuery();
 
-                assert R != null;
                 while (R.next()) {
-                    String S = R.getString("firstName");
-                    O.add(S);
+                    String S1 = R.getString("lastName");
+                    String S2 = R.getString("firstName");
+                    String S3 = R.getString("address");
+
+                    O.add(S1.concat(" "+S2+" ").concat(S3));
                 }
             } catch (Exception e) {
                 System.out.println("Error");
             }
+
             listViewFoundGuest.setItems(O);
         }
     }
