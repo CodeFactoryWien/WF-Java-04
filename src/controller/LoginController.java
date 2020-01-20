@@ -33,14 +33,21 @@ public class LoginController {
         String passInput = password.getText();
         String dbUserName = Database.checkUserName(userInput);
         String dbPasswordHash = Database.getPasswordHash(passInput);
+        assert dbUserName != null;
         if(dbUserName.equals(userInput) && verifyPassword(userInput,dbPasswordHash,salt)){
             MainController M = new MainController();
             if(dbUserName.equals("admin")) {
                 M.setAdminStatus();
+                System.out.println(M.userIsAdmin);
+                M.start();
+                Stage S = (Stage) loginButton.getScene().getWindow();
+                S.close();
             }
-            M.start();
-            Stage S = (Stage) loginButton.getScene().getWindow();
-            S.close();
+            else {
+                M.start();
+                Stage S = (Stage) loginButton.getScene().getWindow();
+                S.close();
+            }
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

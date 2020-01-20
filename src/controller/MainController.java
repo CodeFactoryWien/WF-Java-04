@@ -15,7 +15,8 @@ public class MainController {
     @FXML
     private Tab adminTab;
 
-    boolean userIsAdmin;
+    static boolean userIsAdmin;
+
 
     void start() throws Exception {
         Stage S = new Stage();
@@ -26,8 +27,11 @@ public class MainController {
 
     @FXML
     private void initialize(){
-        if(!userIsAdmin){
+        if(MainController.userIsAdmin){
+            System.out.println("Admin logged in.");
+        } else {
             tabPane.getTabs().remove(adminTab);
+            System.out.println("User logged in.");
         }
     }
 
@@ -37,7 +41,6 @@ public class MainController {
         Stage S = (Stage) logoutButton.getScene().getWindow();
         S.close();
     }
-
     public void setAdminStatus(){
         userIsAdmin = true;
     }
