@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
+import sample.Main;
 
 public class MainController {
     @FXML
@@ -36,6 +37,7 @@ public class MainController {
     }
 
     public void logout() throws Exception {
+        MainController.userIsAdmin = false;
         LoginController L = new LoginController();
         L.start();
         Stage S = (Stage) logoutButton.getScene().getWindow();
