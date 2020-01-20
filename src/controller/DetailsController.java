@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
 
 
 public class DetailsController{
@@ -74,7 +73,7 @@ public class DetailsController{
 
             populateListService();
             setServiceAmount();
-            setGuestName();
+            setGuestDetails();
 
             btn_add_movie.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -164,13 +163,13 @@ public class DetailsController{
         ResultSet rsPrice = preparedStatement.executeQuery();
         int index=1;
         while (rsPrice.next()){
-            double servicePrice = rsPrice.getDouble(index);
+            double servicePrice = rsPrice.getInt(index);
             System.out.println(servicePrice);
-            lblAmount.setText(String.format("%1.2f €", servicePrice));
+            lblAmount.setText(String.format("%1.2f €", servicePrice/100));
         }
     }
 
-    public void setGuestName()throws Exception{
+    public void setGuestDetails()throws Exception{
         PreparedStatement preparedStatement =
                 Database.c.prepareStatement("SELECT fk_roomID, firstName, lastName, bookingUntil\n" +
                         "FROM bookings\n" +
@@ -235,7 +234,7 @@ public class DetailsController{
             int i = rsMovies.getInt("movieID");
             String movieName = rsMovies.getString("movieName");
             String movieDescription = rsMovies.getString("movieDescription");
-            Double moviePrice = rsMovies.getDouble("moviePrice");
+            int moviePrice = rsMovies.getInt("moviePrice");
             int movieSeen = rsMovies.getInt("movieSeen");
             movieList.add(new Movie(i,movieName, movieDescription, moviePrice, movieSeen));
         }
@@ -263,7 +262,7 @@ public class DetailsController{
             int wellnessID = rsWellness.getInt("wellnessID");
             String wellnessName = rsWellness.getString("wellnessName");
             String wellnessDescription = rsWellness.getString("wellnessDescription");
-            Double wellnessPrice = rsWellness.getDouble("wellnessPrice");
+            int wellnessPrice = rsWellness.getInt("wellnessPrice");
             wellnessList.add(new Wellness(wellnessID, wellnessName, wellnessDescription, wellnessPrice));
         }
         choiceWellness.setItems(wellnessList);
@@ -290,7 +289,7 @@ public class DetailsController{
             int mbID = rsMinibar.getInt("mbID");
             String mbItem = rsMinibar.getString("mbItem");
             String mbItemDesc = rsMinibar.getString("mbItemDescription");
-            double mbPrice = rsMinibar.getDouble("mbPrice");
+            int mbPrice = rsMinibar.getInt("mbPrice");
             minibarList.add(new Minibar(mbID,mbItem,mbItemDesc,mbPrice));
         }
         choiceMinibar.setItems(minibarList);
