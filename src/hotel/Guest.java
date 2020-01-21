@@ -1,5 +1,6 @@
 package hotel;
 
+import java.sql.ResultSet;
 import java.time.LocalDate;
 
 public class Guest {
@@ -26,6 +27,23 @@ public class Guest {
         this.phone = phone;
         this.email = email;
         this.passportNumber = passportNumber;
+    }
+
+    public Guest(ResultSet resultSet){
+        try {
+            id = resultSet.getInt("guestID");
+            firstName = resultSet.getString("firstname");
+            lastName = resultSet.getString("lastName");
+            birthDate = resultSet.getDate("birthDate").toLocalDate();
+            address = resultSet.getString("address");
+            zipCode = resultSet.getInt("zipCode");
+            country = resultSet.getString("country");
+            phone = resultSet.getString("phoneNumber");
+            email = resultSet.getString("email");
+            passportNumber = resultSet.getString("passportNr");
+        } catch (Exception e){
+            System.out.println("Can't create Guest from this ResultSet");
+        }
     }
 
     public int getId() {
