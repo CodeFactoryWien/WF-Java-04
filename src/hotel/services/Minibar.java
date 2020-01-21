@@ -29,4 +29,6 @@ public class Minibar {
     public String getMbItem() {
         return mbItem;
     }
+
+    public int getMbPrice() {return mbPrice;}
 }

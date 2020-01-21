@@ -19,6 +19,8 @@ public class Wellness {
         return /*wellnessID + " "+ */ wellnessName + " -- " + String.format("%1.2f €", tmpPrice/100);
     }
 
+    public int getWellnessPrice() {return wellnessPrice;}
+
     public int getWellnessID() {
         return wellnessID;
     }

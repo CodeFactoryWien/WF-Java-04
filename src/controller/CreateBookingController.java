@@ -17,7 +17,9 @@ import javafx.stage.Stage;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class CreateBookingController {
 
@@ -90,6 +92,9 @@ public class CreateBookingController {
         phoneNumber.setOnKeyTyped(e -> databaseSearch(phoneNumber));
         email.setOnKeyTyped(e -> databaseSearch(email));
         passportNr.setOnKeyTyped(e -> databaseSearch(passportNr));
+
+        // Listview select call //
+        listViewFoundGuest.setOnMouseClicked(e -> getselectedobj());
 
         // Booking call //
         booking.setOnMouseClicked(e -> addBooking());
@@ -263,29 +268,55 @@ public class CreateBookingController {
     public void databaseSearch(TextField obj) {
         if (obj.getText() != null) {
             String userInput = obj.getText();
-
             String objID = obj.getId();
 
-            ObservableList<String> O = FXCollections.observableArrayList();
+            ObservableList<Guest> O = FXCollections.observableArrayList();
 
             ResultSet R;
             try {
-                PreparedStatement P = Database.c.prepareStatement("SELECT lastName, firstName, address FROM guests WHERE " + objID + " LIKE ?");
+                PreparedStatement P = Database.c.prepareStatement("SELECT * FROM guests WHERE " + objID + " LIKE ?");
                 P.setString(1, userInput + "%");
                 R = P.executeQuery();
 
                 while (R.next()) {
-                    String S1 = R.getString("lastName");
-                    String S2 = R.getString("firstName");
-                    String S3 = R.getString("address");
-
-                    O.add(S1.concat(" " + S2 + " ").concat(S3));
                 }
             } catch (Exception e) {
                 System.out.println("Error database search not possible");
             }
 
             listViewFoundGuest.setItems(O);
+        }
+    }
+
+    // Get data from selected entry //
+    public  void  getselectedobj() {
+        String selected_item = (String) listViewFoundGuest.getSelectionModel().getSelectedItem();
+
+        String[] A = selected_item.split(" ");
+
+        System.out.println("hallo davor");
+        try {
+            PreparedStatement P = Database.c.prepareStatement("SELECT * FROM guests WHERE guests.firstName = ?" +
+                    "AND guests.lastName = ? AND guests.address = ?");
+            P.setString(1, A[1]);
+            P.setString(2, A[0]);
+            P.setString(3, A[2].concat(" "+A[3]));
+
+            ResultSet R = P.executeQuery();
+
+            if (R.first()) {
+                firstName.setText(R.getString("firstName"));
+                lastName.setText(R.getString("lastName"));
+//                birthDate.setValue(R.getDate("birthDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                address.setText(R.getString("address"));
+                zipCode.setText(String.valueOf(R.getInt("zipCode")));
+                country.setText(R.getString("country"));
+                phoneNumber.setText(R.getString("phoneNumber"));
+                email.setText(R.getString("email"));
+                passportNr.setText(R.getString("passportNr"));
+            }
+        } catch (Exception e) {
+            System.out.println("selected entry cannot be obtained");
         }
     }
 
@@ -317,7 +348,8 @@ public class CreateBookingController {
 
         Room R = Database.firstFreeRoom(roomType.getValue(), checkIn.getValue(), checkOut.getValue());
 
-        LocalDate ld3 = LocalDate.parse("2017-05-22");
+        LocalDate ld1 = LocalDate.parse("2017-05-22");
+        LocalDate ld2 = LocalDate.parse("2020-09-12");
 
         try {
             PreparedStatement preparedStatement =
@@ -329,8 +361,8 @@ public class CreateBookingController {
             preparedStatement.setInt(4, (int) (selectedRoomPrice));
             preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
             preparedStatement.setDate(6, Date.valueOf(checkOut.getValue()));
-            preparedStatement.setDate(7, Date.valueOf(ld3));
-            preparedStatement.setDate(8, Date.valueOf(ld3));
+            preparedStatement.setDate(7, Date.valueOf(ld1));
+            preparedStatement.setDate(8, Date.valueOf(ld2));
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
