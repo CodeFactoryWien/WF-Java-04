@@ -353,17 +353,14 @@ public class CreateBookingController {
 
         try {
             PreparedStatement preparedStatement =
-                    Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, openAmount, bookingFrom, bookingUntil, bookingCanceled, checkedIn) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+                    Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, openAmount, bookingFrom, bookingUntil) " +
+                            "VALUES (?, ?, ?, ?, ?, ?);");
             preparedStatement.setInt(1, R.getId());
             preparedStatement.setInt(2, Integer.parseInt(guestID));
             preparedStatement.setInt(3, 5);
             preparedStatement.setInt(4, (int) (selectedRoomPrice));
             preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
             preparedStatement.setDate(6, Date.valueOf(checkOut.getValue()));
-            preparedStatement.setDate(7, Date.valueOf(ld1));
-            preparedStatement.setDate(8, Date.valueOf(ld2));
-
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error booking cannot be created");
