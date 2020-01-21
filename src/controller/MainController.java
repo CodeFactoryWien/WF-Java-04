@@ -267,16 +267,17 @@ public class MainController {
     public void checkOut() throws Exception {
         System.out.println("Check Out");
         call_invoiceController();
+
         int bookingId = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         System.out.println(bookingId);
-        try {
+        try {/*
             Date today = new Date(new java.util.Date().getTime());
             PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingUntil = ?, " +
                     "bookingCanceled = ? WHERE bookingID = ?");
             preparedStatement.setDate(1, today);
             preparedStatement.setDate(2,today);
             preparedStatement.setInt(3, bookingId);
-            preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate(); */
         }catch (Exception e){
             System.err.println("Problem updating SQL table");
         }
