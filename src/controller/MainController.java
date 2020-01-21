@@ -5,14 +5,9 @@ import database.Database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
-import javafx.scene.control.TableView;
 import hotel.*;
 
 import java.sql.Date;
@@ -63,6 +58,38 @@ public class MainController {
     public ObservableList<Booking> occupiedRooms;
     public ObservableList<Booking> bookings;
     public static int bookingID;
+
+    @FXML
+    private ChoiceBox roomType;
+    @FXML
+    private ChoiceBox roomCapacity;
+    @FXML
+    private TextField roomPrice;
+    @FXML
+    private TextField roomSize;
+    @FXML
+    private TextField roomFacilitys;
+
+    @FXML
+    private TextField compName;
+    @FXML
+    private TextField firstName;
+    @FXML
+    private TextField lastName;
+    @FXML
+    private DatePicker birthDate;
+    @FXML
+    private TextField address;
+    @FXML
+    private TextField zipCode;
+    @FXML
+    private TextField country;
+    @FXML
+    private TextField phone;
+    @FXML
+    private TextField eMail;
+    @FXML
+    private TextField passportNumber;
 
     public void start() throws Exception {
         Stage S = new Stage();
@@ -260,6 +287,16 @@ public class MainController {
         }catch (Exception e){
             System.out.println("Kann nicht einchecken.");
         }
-
     }
+    public void sendRoomData () throws Exception {
+        System.out.println("No room creation possible yet.");
+    }
+
+    public void sendGuestData(){
+        Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
+                Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
+        Database.insertNewGuest(guest);
+    }
+
+
 }
