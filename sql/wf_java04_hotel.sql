@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 21. Jan 2020 um 10:33
+-- Erstellungszeit: 21. Jan 2020 um 15:47
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `bookings` (
-  `bookingID` tinyint(4) NOT NULL,
+  `bookingID` int(4) NOT NULL,
   `fk_roomID` tinyint(4) NOT NULL,
   `fk_guestID` tinyint(4) NOT NULL,
   `fk_customerID` tinyint(4) NOT NULL,
@@ -45,8 +45,9 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`, `openAmount`, `bookingFrom`, `bookingUntil`, `bookingCanceled`, `checkedIn`) VALUES
-(3, 3, 5, 0, 0, '2020-01-16', '2020-01-23', '0000-00-00', '0000-00-00'),
-(4, 11, 1, 5, 899, '2020-01-24', '2020-02-02', '2017-05-22', '2020-01-24');
+(3, 3, 5, 0, 0, '2020-01-16', '2020-01-24', NULL, '2020-01-16'),
+(4, 11, 1, 5, 899, '2020-01-24', '2020-02-02', '2017-05-22', '2020-01-24'),
+(5, 12, 7, 5, 99, '2020-01-21', '2020-01-21', '2020-01-21', NULL);
 
 -- --------------------------------------------------------
 
@@ -55,7 +56,7 @@ INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`,
 --
 
 CREATE TABLE `customers` (
-  `customerID` tinyint(4) NOT NULL,
+  `customerID` int(4) NOT NULL,
   `firstName` varchar(55) NOT NULL,
   `lastName` varchar(55) NOT NULL,
   `companyName` varchar(155) NOT NULL,
@@ -81,7 +82,7 @@ INSERT INTO `customers` (`customerID`, `firstName`, `lastName`, `companyName`, `
 --
 
 CREATE TABLE `guests` (
-  `guestID` smallint(6) NOT NULL,
+  `guestID` int(6) NOT NULL,
   `firstName` varchar(55) NOT NULL,
   `lastName` varchar(55) NOT NULL,
   `birthDate` date NOT NULL,
@@ -104,7 +105,9 @@ INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `birthDate`, `address`
 (2, 'Haris', 'Ascobar', '1978-01-20', 'Ottakringer Straße 77', 1160, 'Austria', '+436997445898', 'harisascobar@domain.com', 'P122424562', 0),
 (3, 'Roman', 'Beltrovic', '1984-04-20', 'Faktorstraße 12', 1240, 'Austria', '+4368125477584', 'bigboibeltrovic@gmail.com', 'P54156166165', 0),
 (4, 'Milenda', 'Carolyn', '1989-08-08', '91 Shawan Falls Dr', 13017, 'USA', '+485562626262', 'mc@gmail.com', 'P4481553514', 0),
-(5, 'Markus', 'Kaspar', '1888-01-01', 'Waifustreet 69', 14201, 'Deutschland', '+436994206988', 'igoogledanimutiddies@gmail.com', 'P456255613', 0);
+(5, 'Markus', 'Kaspar', '1888-01-01', 'Waifustreet 69', 14201, 'Deutschland', '+436994206988', 'igoogledanimutiddies@gmail.com', 'P456255613', 0),
+(6, 'Moritz', 'Egger', '2020-01-02', 'Kettenbrückengasse 23', 1050, 'Austria', '456789', 'm@welt.all', '7er8re8f87f87fd87', 7),
+(7, 'Moritz', 'Egger', '2002-01-17', 'Kettenbrückengasse 23', 1050, 'Austria', '3456789', 'm@welt.all', 'h78fd87fd87d', 7);
 
 -- --------------------------------------------------------
 
@@ -113,9 +116,15 @@ INSERT INTO `guests` (`guestID`, `firstName`, `lastName`, `birthDate`, `address`
 --
 
 CREATE TABLE `invoices` (
-  `invoiceID` tinyint(4) NOT NULL,
-  `fk_bookingID` tinyint(4) NOT NULL,
-  `fk_serviceID` int(11) NOT NULL
+  `invoiceID` int(4) NOT NULL,
+  `fk_bookingID` int(4) NOT NULL,
+  `fk_guestID` int(11) NOT NULL,
+  `fk_customerID` int(11) DEFAULT NULL,
+  `nights` int(11) NOT NULL,
+  `priceNight` int(11) NOT NULL,
+  `arrival` date NOT NULL,
+  `depature` date NOT NULL,
+  `services` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -126,8 +135,8 @@ CREATE TABLE `invoices` (
 
 CREATE TABLE `rooms` (
   `roomID` int(11) NOT NULL,
-  `fk_roomTypeID` tinyint(4) NOT NULL,
-  `roomSize` tinyint(4) NOT NULL
+  `fk_roomTypeID` int(4) NOT NULL,
+  `roomSize` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -183,9 +192,9 @@ INSERT INTO `rooms` (`roomID`, `fk_roomTypeID`, `roomSize`) VALUES
 --
 
 CREATE TABLE `roomtype` (
-  `roomTypeID` tinyint(4) NOT NULL,
+  `roomTypeID` int(4) NOT NULL,
   `roomTypeName` varchar(155) NOT NULL,
-  `roomTypeCapacity` tinyint(4) NOT NULL,
+  `roomTypeCapacity` int(4) NOT NULL,
   `roomTypeFacilities` varchar(555) NOT NULL,
   `roomTypePrice` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -211,13 +220,20 @@ INSERT INTO `roomtype` (`roomTypeID`, `roomTypeName`, `roomTypeCapacity`, `roomT
 --
 
 CREATE TABLE `services` (
-  `servicesID` tinyint(4) NOT NULL,
+  `servicesID` int(4) NOT NULL,
   `fk_bookingID` tinyint(4) NOT NULL,
   `serviceType` char(14) NOT NULL,
   `serviceDate` date NOT NULL,
   `fk_serviceID` tinyint(4) NOT NULL,
   `fixPrice` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `services`
+--
+
+INSERT INTO `services` (`servicesID`, `fk_bookingID`, `serviceType`, `serviceDate`, `fk_serviceID`, `fixPrice`) VALUES
+(128, 3, 'wellness', '2020-01-21', 4, 1200);
 
 -- --------------------------------------------------------
 
@@ -300,7 +316,7 @@ INSERT INTO `serv_wellness` (`wellnessID`, `wellnessName`, `wellnessDescription`
 --
 
 CREATE TABLE `users` (
-  `userID` tinyint(4) NOT NULL,
+  `userID` int(4) NOT NULL,
   `userIsAdmin` tinyint(1) NOT NULL,
   `userName` varchar(55) NOT NULL,
   `userPassword` varchar(155) NOT NULL,
@@ -394,25 +410,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `bookingID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT für Tabelle `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customerID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `customerID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT für Tabelle `guests`
 --
 ALTER TABLE `guests`
-  MODIFY `guestID` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `guestID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT für Tabelle `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `invoiceID` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `invoiceID` int(4) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `rooms`
@@ -424,7 +440,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT für Tabelle `services`
 --
 ALTER TABLE `services`
-  MODIFY `servicesID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `servicesID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 
 --
 -- AUTO_INCREMENT für Tabelle `serv_minibar`
@@ -448,7 +464,7 @@ ALTER TABLE `serv_wellness`
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `userID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
