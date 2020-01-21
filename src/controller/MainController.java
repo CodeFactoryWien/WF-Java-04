@@ -154,12 +154,14 @@ public class MainController {
                 new Date(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()),
                 new Date(Date.from(dateUntil.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime())
         ));
+        tableBookings.setItems(bookings);
         tableBookings.refresh();
     }
 
     public void updateTableOccupied(){
         Date today = new Date(new java.util.Date().getTime());
         occupiedRooms = FXCollections.observableArrayList(getOpenBookingsFromTo(today,today));
+        tableOccupiedRooms.setItems(occupiedRooms);
         tableOccupiedRooms.refresh();
     }
 
@@ -168,10 +170,12 @@ public class MainController {
         try {
             PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
                     "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
-                    "ON fk_roomID = roomID WHERE (checkedIn IS NULL) AND (bookingFrom >= ? AND bookingFrom <= ?)");
+                    "ON fk_roomID = roomID WHERE (checkedIn IS NULL OR checkedIn = '0000-00-00')" +
+                    " AND (bookingFrom >= ? AND bookingFrom <= ?)");
             preparedStatement.setDate(1, start);
             preparedStatement.setDate(2, end);
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println(preparedStatement.toString());
             while(resultSet.next()){
                 bookings.add(new Booking(resultSet));
             }
@@ -186,7 +190,7 @@ public class MainController {
         try {
             PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
                     "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
-                    "ON fk_roomID = roomID WHERE (bookingCanceled IS NULL) AND(bookingFrom <= ? AND bookingUntil >= ?) AND " +
+                    "ON fk_roomID = roomID WHERE (bookingCanceled IS NULL OR bookingCanceled = '0000-00-00') AND(bookingFrom <= ? AND bookingUntil >= ?) AND " +
                     " checkedIn <= ?");
             preparedStatement.setDate(1, today);
             preparedStatement.setDate(2, today);
@@ -234,6 +238,6 @@ public class MainController {
         }catch (Exception e){
             System.out.println("Kann nicht einchecken.");
         }
-
+        updateTableBookings();
     }
 }
