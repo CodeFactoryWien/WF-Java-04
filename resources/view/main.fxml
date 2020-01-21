@@ -60,7 +60,7 @@
                                         <Font name="System Bold" size="18.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="btnCheckIn" layoutX="399.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#chekIn" text="CHECK IN" />
+                                <Button fx:id="btnCheckIn" layoutX="399.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#checkIn" text="CHECK IN" />
                                 <Button fx:id="storno" layoutX="507.0" layoutY="18.0" mnemonicParsing="false" text="STORNO" />
                                 <DatePicker fx:id="dateFrom" layoutX="602.0" layoutY="18.0" />
                                 <DatePicker fx:id="dateUntil" layoutX="815.0" layoutY="18.0" />
