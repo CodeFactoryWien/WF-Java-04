@@ -25,6 +25,13 @@ import java.util.ArrayList;
 public class DetailsController{
     private Stage S;
     private int bookingID  ;
+    private int fixPrice;
+    private int serviceID = 0;
+    private int servicesID = 0;
+    private boolean showMovie = true;
+    private boolean showWellness = true;
+    private boolean showMinibar = true;
+    private ArrayList<Boolean> showArr = new ArrayList<>();
 
     @FXML
     private Label lblRoomNr;
@@ -57,16 +64,7 @@ public class DetailsController{
     @FXML
     private ListView serviceListView;
 
-
     public DetailsController(){}
-
-
-    private int serviceID = 0;
-    private int servicesID = 0;
-    private boolean showMovie = true;
-    private boolean showWellness = true;
-    private boolean showMinibar = true;
-    private ArrayList<Boolean> showArr = new ArrayList<>();
 
     void start() throws Exception {
         Stage S = new Stage();
@@ -80,6 +78,7 @@ public class DetailsController{
     public void initialize(){
         try {
             bookingID = MainController.getBookingID();
+            System.out.println("bookingID in initialize " + bookingID);
             populateListService();
 
             populateMoviesChoice();
@@ -166,14 +165,17 @@ public class DetailsController{
     }
 
     public void addService(String serviceType)throws Exception{
-        if (serviceID!=0) {
+        System.out.println("bookingID in addServie: " + bookingID);
+
+        if (serviceID!=0 && fixPrice!=0) {
             java.util.Date date=new java.util.Date();
             java.sql.Date sqlDate=new java.sql.Date(date.getTime());
             PreparedStatement preparedStatement =
-                    Database.c.prepareStatement("INSERT INTO services(fk_bookingID, serviceType, serviceDate, fk_serviceID) \n" +
-                            "VALUES ('" + bookingID + "', '"+serviceType+"', '" + sqlDate +"', '" + serviceID + "' )");
+                    Database.c.prepareStatement("INSERT INTO services(fk_bookingID, serviceType, serviceDate, fk_serviceID, fixPrice) \n" +
+                            "VALUES ('" + bookingID + "', '"+serviceType+"', '" + sqlDate +"', '" + serviceID + "','"+fixPrice+"' )");
             preparedStatement.executeUpdate();
             servicesID=0;
+            fixPrice=0;
             btn_add_minibar.setText("select item to add");
             btn_add_wellness.setText("select item to add");
             btn_add_movie.setText("select item to add");
@@ -190,23 +192,23 @@ public class DetailsController{
     }
 
     public void setServiceAmount()throws Exception{
+        System.out.println("bookingID in setServiceAmount" + bookingID);
+
         PreparedStatement preparedStatement =
-                Database.c.prepareStatement("SELECT SUM(coalesce(serv_movies.moviePrice, serv_wellness.wellnessPrice, serv_minibar.mbPrice,0)) as servicePrice \n" +
+                Database.c.prepareStatement("SELECT SUM(fixPrice) \n" +
                         " FROM services \n" +
-                        " LEFT OUTER JOIN serv_movies ON services.fk_serviceID = serv_movies.movieID AND services.serviceType='movie' \n" +
-                        " LEFT OUTER JOIN serv_wellness ON services.fk_serviceID = serv_wellness.wellnessID AND services.serviceType = 'wellness' \n" +
-                        " LEFT OUTER JOIN serv_minibar ON services.fk_serviceID = serv_minibar.mbID AND services.serviceType = 'minibar'  \n" +
                         " WHERE fk_bookingID="+bookingID);
         ResultSet rsPrice = preparedStatement.executeQuery();
         int index=1;
         while (rsPrice.next()){
-            double servicePrice = rsPrice.getInt(index);
+            int servicePrice = rsPrice.getInt(index);
             System.out.println(servicePrice);
-            lblAmount.setText(String.format("%1.2f €", servicePrice/100));
+            lblAmount.setText(String.valueOf(servicePrice));
         }
     }
 
     public void setGuestDetails()throws Exception{
+        System.out.println("bookingID in setGuestDetails" + bookingID);
         PreparedStatement preparedStatement =
                 Database.c.prepareStatement("SELECT fk_roomID, firstName, lastName, bookingUntil\n" +
                         "FROM bookings\n" +
@@ -288,6 +290,7 @@ public class DetailsController{
                 try {
                     btn_add_movie.setText("add movie "  + movieList.get(newValue.intValue()).getMovieID());
                     serviceID = movieList.get(newValue.intValue()).getMovieID();
+                    fixPrice = movieList.get(newValue.intValue()).getMoviePrice();
                 } catch (Exception e) {
                     System.out.println("Error");
                 }
@@ -317,6 +320,7 @@ public class DetailsController{
                 try {
                     btn_add_wellness.setText("add wellness service: " + wellnessList.get(newValue.intValue()).getWellnessID());
                     serviceID=wellnessList.get(newValue.intValue()).getWellnessID();
+                    fixPrice=wellnessList.get(newValue.intValue()).getWellnessPrice();
                 } catch (Exception e) {
                     System.out.println("Error changelistener wellnesslist");
                 }
@@ -324,6 +328,7 @@ public class DetailsController{
         });
         choiceWellness.getSelectionModel().selectFirst();
     }
+
     public  void populateMinibarChoice()throws Exception{
         PreparedStatement ps =
                 Database.c.prepareStatement("SELECT * FROM serv_minibar");
@@ -344,6 +349,7 @@ public class DetailsController{
                 try {
                     btn_add_minibar.setText("add minibar Item " + minibarList.get(newValue.intValue()).getMbID());
                     serviceID=minibarList.get(newValue.intValue()).getMbID();
+                    fixPrice=minibarList.get(newValue.intValue()).getMbPrice();
 
                 }catch (Exception e){
                     System.out.println("Error changelistener minibarlist");
