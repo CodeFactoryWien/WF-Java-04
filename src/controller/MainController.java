@@ -62,10 +62,11 @@ public class MainController {
 
     public ObservableList<Booking> occupiedRooms;
     public ObservableList<Booking> bookings;
+    public static int bookingID;
 
     public void start() throws Exception {
         Stage S = new Stage();
-        S.setTitle("hotel Managing Software");
+        S.setTitle("Hotel Managing Software");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/main.fxml")));
         S.show();
     }
@@ -121,10 +122,14 @@ public class MainController {
 
     // Test Details //
     public void call_detailsController() throws Exception {
-        int tmpBookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
+        bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
-        C.start(tmpBookingID);
+        C.start();
     }
+    public static int getBookingID(){
+        return bookingID;
+    }
+
 
 
     private void initializeTableOccupied(){
@@ -197,7 +202,7 @@ public class MainController {
         try {
             PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
                     "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
-                    "ON fk_roomID = roomID WHERE (bookingCanceled IS NULL) AND(bookingFrom <= ? AND bookingUntil >= ?)");
+                    "ON fk_roomID = roomID WHERE bookingCanceled IS NULL AND(bookingFrom <= ? AND bookingUntil >= ?)");
             preparedStatement.setDate(1, today);
             preparedStatement.setDate(2, today);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -220,5 +225,23 @@ public class MainController {
             System.err.println("problem requesting data from DB");
         }
         return bookings;
+    }
+
+    public void checkOut(){
+        System.out.println("Check Out");
+        int bookingId = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
+        System.out.println(bookingId);
+        try {
+            Date today = new Date(new java.util.Date().getTime());
+            PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingUntil = ?, " +
+                    "bookingCanceled = ? WHERE bookingID = ?");
+            preparedStatement.setDate(1, today);
+            preparedStatement.setDate(2,today);
+            preparedStatement.setInt(3, bookingId);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.err.println("Problem updating SQL table");
+        }
+        updateTableOccupied();
     }
 }

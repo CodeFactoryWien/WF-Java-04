@@ -1,13 +1,9 @@
 package controller;
 
-import exceptions.CheckInDateMissing_Exception;
-import exceptions.CheckOutDateMissing_Exception;
-import exceptions.RoomTypeMissing_Exception;
 import hotel.Guest;
 import database.Database;
 import hotel.Room;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
