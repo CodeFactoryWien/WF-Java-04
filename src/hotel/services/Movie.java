@@ -29,9 +29,7 @@ public class Movie {
         this.movieID = movieID;
     }
 
-    public String getMovieName() {
-        return movieName;
-    }
+    public String getMovieName() {return movieName;}
 
     public void setMovieName(String movieName) {
         this.movieName = movieName;
@@ -41,23 +39,8 @@ public class Movie {
         return movieDescription;
     }
 
-    public void setMovieDescription(String movieDescription) {
-        this.movieDescription = movieDescription;
-    }
-
-    public double getMoviePrice() {
+    public int getMoviePrice() {
         return moviePrice;
     }
 
-    public void setMoviePrice(int moviePrice) {
-        this.moviePrice = moviePrice;
-    }
-
-    public int getMovieSeen() {
-        return movieSeen;
-    }
-
-    public void setMovieSeen(int movieSeen) {
-        this.movieSeen = movieSeen;
-    }
 }
