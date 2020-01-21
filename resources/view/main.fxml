@@ -29,7 +29,7 @@
                                 </TableView>
                                 <Button layoutX="224.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="details" />
                                 <Button layoutX="289.0" layoutY="21.0" mnemonicParsing="false" text="add service" />
-                                <Button layoutX="537.0" layoutY="21.0" mnemonicParsing="false" text="CHECK OUT" />
+                                <Button fx:id="buttonCheckOut" layoutX="537.0" layoutY="21.0" mnemonicParsing="false" onAction="#checkOut" text="CHECK OUT" />
                                 <Button fx:id="logoutButton" layoutX="40.0" layoutY="677.0" mnemonicParsing="false" onMouseClicked="#logout" text="Log Out" />
                             </children>
                         </AnchorPane>
