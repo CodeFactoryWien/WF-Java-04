@@ -313,24 +313,32 @@ public class CreateBookingController {
 
     // Add booking function //
     public void addBooking() {
-
-        // TODO new user can be created //
+        // If user picked ID is found in database //
         int guestID1 = 0;
-        try {
-            PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests WHERE " +
-                    "guestID = "+selected_item.getId());
-                    ResultSet R = P.executeQuery();
+        if (selected_item != null) {
+            try {
+                PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests WHERE " +
+                        "guestID = " + selected_item.getId());
+                ResultSet R = P.executeQuery();
 
-                    if (R.first()) {
-                       guestID1 = R.getInt("guestID");
-                    }
-        } catch (Exception ignored) {
+                if (R.first()) {
+                    guestID1 = R.getInt("guestID");
+                }
+
+                if (guestID1 != selected_item.getId()) {
+                    sendGuestDataToDatabase();
+                }
+
+            } catch (Exception ignored) {
+            }
         }
-        
-        // If user is in database method called //
-        if (guestID1 != selected_item.getId()) {
+
+
+        // If user is not picked method called //
+        if (selected_item == null) {
             sendGuestDataToDatabase();
         }
+
 
         // To get the correct ID from the created guest or the selected guest so it can be added to booking //
         String guestID2 = null;
