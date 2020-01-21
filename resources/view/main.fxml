@@ -14,7 +14,7 @@
 
 <Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
 
-    <HBox prefHeight="758.0" prefWidth="1024.0">
+    <HBox prefHeight="768.0" prefWidth="1024.0">
         <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab text="Allocation">
@@ -36,7 +36,7 @@
                                 </TableView>
                                 <Button layoutX="651.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="View Details" />
                                 <Button layoutX="781.0" layoutY="21.0" mnemonicParsing="false" text="Add a Service" />
-                                <Button layoutX="907.0" layoutY="21.0" mnemonicParsing="false" text="CHECK OUT" />
+                                <Button fx:id="buttonCheckOut"layoutX="907.0" layoutY="21.0" mnemonicParsing="false" onAction="#checkOut" text="CHECK OUT" />
                                 <Button fx:id="logoutButton" layoutX="930.0" layoutY="670.0" mnemonicParsing="false" onMouseClicked="#logout" text="Log Out" />
                             </children>
                         </AnchorPane>
