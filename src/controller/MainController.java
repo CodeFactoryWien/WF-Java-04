@@ -121,9 +121,11 @@ public class MainController {
 
     // Test Details //
     public void call_detailsController() throws Exception {
+        int tmpBookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
-        C.start();
+        C.start(tmpBookingID);
     }
+
 
     private void initializeTableOccupied(){
         columnRoomNr.setCellValueFactory(new PropertyValueFactory<>("roomId"));

@@ -28,28 +28,50 @@ public class LoginController {
 
     //checking for username and pass
 
-    public void login() throws Exception {
+    public void login() {
         String userInput = username.getText().toLowerCase();
         String passInput = password.getText();
+
+        //check if username is in database, if yes get the hash
+
         String dbUserName = Database.checkUserName(userInput);
         String dbPasswordHash = Database.getPasswordHash(passInput);
-        assert dbUserName != null;
-        if(dbUserName.equals(userInput) && verifyPassword(userInput,dbPasswordHash,salt)){
-            MainController M = new MainController();
-            if(dbUserName.equals("admin")) {
-                M.setAdminStatus();
-                System.out.println(M.userIsAdmin);
-                M.start();
-                Stage S = (Stage) loginButton.getScene().getWindow();
-                S.close();
+        try {
+            switch (dbUserName) {
+                case "admin":
+                    //hashing user input and comparing with hash on db, else throw invalid data alert
+                    if (verifyPassword(passInput, dbPasswordHash, salt)) {
+                        MainController M = new MainController();
+                        M.setAdminStatus();
+                        M.start();
+                        Stage S = (Stage) loginButton.getScene().getWindow();
+                        S.close();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error occurred!");
+                        alert.setHeaderText("Incorrect Username or Password.");
+                        alert.setContentText("The Username or Password you entered is incorrect!");
+                        alert.showAndWait();
+                    }
+                    break;
+                case "user":
+                    if (verifyPassword(passInput, dbPasswordHash, salt)) {
+                        MainController M1 = new MainController();
+                        M1.start();
+                        Stage S1 = (Stage) loginButton.getScene().getWindow();
+                        S1.close();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error occurred!");
+                        alert.setHeaderText("Incorrect Username or Password.");
+                        alert.setContentText("The Username or Password you entered is incorrect!");
+                        alert.showAndWait();
+                    }
+                    break;
+                default:
+                    System.out.println("I like you. You got to somewhere, where you shouldn't have gone.");
             }
-            else {
-                M.start();
-                Stage S = (Stage) loginButton.getScene().getWindow();
-                S.close();
-            }
-        }
-        else {
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error occurred!");
             alert.setHeaderText("Incorrect Username or Password.");
@@ -57,8 +79,7 @@ public class LoginController {
             alert.showAndWait();
         }
     }
-
-    // hash / verify data
+    // hash / verify data (credits to steven's brain and #stackoverflow)
 
     private static final int ITERATIONS = 65536;
     private static final int KEY_LENGTH = 512;

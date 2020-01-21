@@ -19,10 +19,12 @@ import javafx.stage.Stage;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 
 public class DetailsController{
     private Stage S;
+    private int bookingID  ;
 
     @FXML
     private Label lblRoomNr;
@@ -55,28 +57,42 @@ public class DetailsController{
     @FXML
     private ListView serviceListView;
 
-    //during development:
-    private int bookingID = 3;
+
+    public DetailsController(){}
+
+    //private int bookingID = 3;
+
     private int serviceID = 0;
     private int servicesID = 0;
+    private boolean showMovie = true;
+    private boolean showWellness = true;
+    private boolean showMinibar = true;
+    private ArrayList<Boolean> showArr = new ArrayList<>();
 
-    void start() throws Exception {
+    void start(int tmpBookingID) throws Exception {
+        bookingID = tmpBookingID;
         Stage S = new Stage();
         S.setTitle("Showing Details for Selection");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/details.fxml")));
+        S.setResizable(false);
         S.show();
     }
 
     @FXML
     public void initialize(){
         try {
+            populateListService();
+
             populateMoviesChoice();
             populateWellnessChoice();
             populateMinibarChoice();
 
-            populateListService();
             setServiceAmount();
             setGuestDetails();
+
+            showArr.add(showMovie);
+            showArr.add(showWellness);
+            showArr.add(showMinibar);
 
             btn_add_movie.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -126,6 +142,25 @@ public class DetailsController{
                     }
                 }
             });
+            cb_movie.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    showMovie = !newValue;
+                }
+            });
+            cb_wellness.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    showWellness = !newValue;
+                }
+            });
+            cb_minibar.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    showMinibar = !newValue;
+                }
+            });
+
         }catch (Exception e){
             System.err.println("Exception in initialize ");
         }
@@ -192,6 +227,12 @@ public class DetailsController{
     }
 
     public void populateListService() throws  Exception {
+
+        String tableS;
+        String tableMovie="serv_movies.movieName";
+        String tableWellness="serv_wellness.wellnessName";
+        String tableMinibar="serv_minibar.mbItem";
+        tableS = tableMovie + tableWellness + tableMinibar;
         PreparedStatement preparedStatement =
                 Database.c.prepareStatement("SELECT servicesID, serviceType, serviceDate, coalesce(serv_movies.movieName, serv_wellness.wellnessName, serv_minibar.mbItem) as serviceName, fk_serviceID \n" +
                         " FROM services  \n" +
