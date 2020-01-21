@@ -157,13 +157,14 @@ public class MainController {
         DetailsController C = new DetailsController();
         C.start();
     }
-    public static int getBookingID(){
-        return bookingID;
-    }
     // Create Invoice //
     public void call_invoiceController()throws Exception{
+        bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         CreateInvoiceController C = new CreateInvoiceController();
         C.start();
+    }
+    public static int getBookingID() {
+        return bookingID;
     }
 
 
