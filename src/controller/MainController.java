@@ -5,14 +5,9 @@ import database.Database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
-import javafx.scene.control.TableView;
 import hotel.*;
 
 import java.sql.Date;
@@ -64,6 +59,42 @@ public class MainController {
     public ObservableList<Booking> bookings;
     public static int bookingID;
 
+    @FXML
+    private ChoiceBox roomType;
+    @FXML
+    private ChoiceBox roomCapacity;
+    @FXML
+    private TextField roomPrice;
+    @FXML
+    private TextField roomSize;
+    @FXML
+    private TextField roomFacilitys;
+
+    @FXML
+    private TextField compName;
+    @FXML
+    private TextField firstName;
+    @FXML
+    private TextField lastName;
+    @FXML
+    private DatePicker birthDate;
+    @FXML
+    private TextField address;
+    @FXML
+    private TextField zipCode;
+    @FXML
+    private TextField country;
+    @FXML
+    private TextField phone;
+    @FXML
+    private TextField eMail;
+    @FXML
+    private TextField passportNumber;
+    @FXML
+    private Button addGuest;
+    @FXML
+    private Button editGuest;
+
     public void start() throws Exception {
         Stage S = new Stage();
         S.setTitle("Hotel Managing Software");
@@ -77,7 +108,7 @@ public class MainController {
         occupiedRooms = FXCollections.observableArrayList(getBookingsFromTo(today));
         dateFrom.setValue(LocalDate.now());
         dateUntil.setValue(LocalDate.now().plusDays(7));
-        bookings = FXCollections.observableArrayList(getBookingsFromTo(
+        bookings = FXCollections.observableArrayList(getOpenBookingsFromTo(
                 new Date(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()),
                 new Date(Date.from(dateUntil.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime())
         ));
@@ -120,15 +151,22 @@ public class MainController {
         C.start();
     }
 
-    // Test Details //
+    // Details //
     public void call_detailsController() throws Exception {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
         C.start();
     }
-    public static int getBookingID(){
+    // Create Invoice //
+    public void call_invoiceController()throws Exception{
+        bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
+        CreateInvoiceController C = new CreateInvoiceController();
+        C.start();
+    }
+    public static int getBookingID() {
         return bookingID;
     }
+
 
 
 
@@ -150,76 +188,53 @@ public class MainController {
     }
 
     public void updateTableBookings(){
-        bookings = FXCollections.observableArrayList(getBookingsFromTo(
+        bookings = FXCollections.observableArrayList(getOpenBookingsFromTo(
                 new Date(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()),
                 new Date(Date.from(dateUntil.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime())
         ));
+        tableBookings.setItems(bookings);
         tableBookings.refresh();
     }
 
     public void updateTableOccupied(){
         Date today = new Date(new java.util.Date().getTime());
-        occupiedRooms = FXCollections.observableArrayList(getBookingsFromTo(today,today));
+        occupiedRooms = FXCollections.observableArrayList(getBookingsFromTo(today));
+        tableOccupiedRooms.setItems(occupiedRooms);
         tableOccupiedRooms.refresh();
     }
 
-    private ArrayList<Booking> getBookingsFromTo(Date start, Date end){
+    private ArrayList<Booking> getOpenBookingsFromTo(Date start, Date end){
         ArrayList<Booking> bookings = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
                     "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
-                    "ON fk_roomID = roomID WHERE (bookingCanceled IS NULL) AND((? >= bookingFrom AND ? <= bookingUntil)OR " +
-                    "(? >= bookingFrom AND ? <= bookingUntil) OR (? <= bookingFrom AND ? >= bookingUntil))");
+                    "ON fk_roomID = roomID WHERE (checkedIn IS NULL OR checkedIn = '0000-00-00')" +
+                    " AND (bookingFrom >= ? AND bookingFrom <= ?)");
             preparedStatement.setDate(1, start);
-            preparedStatement.setDate(2, start);
-            preparedStatement.setDate(3, end);
-            preparedStatement.setDate(4, end);
-            preparedStatement.setDate(5, start);
-            preparedStatement.setDate(6, end);
+            preparedStatement.setDate(2, end);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Guest tempGuest = new Guest(resultSet.getInt("guestID"), resultSet.getString("firstname"),
-                        resultSet.getString("lastName"), resultSet.getDate("birthDate").toLocalDate(),
-                        resultSet.getString("address"),resultSet.getInt("zipCode"),
-                        resultSet.getString("country"), resultSet.getString("phoneNumber"),
-                        resultSet.getString("email"), resultSet.getString("passportNr"));
-                Room tempRoom = new Room(resultSet.getInt("roomID"),resultSet.getString("roomTypeName"),
-                        resultSet.getDouble("roomTypePrice"), resultSet.getInt("roomTypeCapacity"),
-                        resultSet.getDouble("roomSize"),"",
-                        resultSet.getString("roomTypeFacilities"));
-                Booking tempBooking =new Booking(resultSet.getInt("bookingID"), tempGuest, tempRoom,
-                        resultSet.getDate("bookingFrom"), resultSet.getDate("bookingUntil"));
-
-                bookings.add(tempBooking);
+                bookings.add(new Booking(resultSet));
             }
         }catch(Exception e){
             System.err.println("problem requesting data from DB");
         }
         return bookings;
     }
+
     private ArrayList<Booking> getBookingsFromTo(Date today){
         ArrayList<Booking> bookings = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
                     "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
-                    "ON fk_roomID = roomID WHERE bookingCanceled IS NULL AND(bookingFrom <= ? AND bookingUntil >= ?)");
+                    "ON fk_roomID = roomID WHERE (bookingCanceled IS NULL OR bookingCanceled = '0000-00-00') AND(bookingFrom <= ? AND bookingUntil >= ?) AND " +
+                    " checkedIn <= ?");
             preparedStatement.setDate(1, today);
             preparedStatement.setDate(2, today);
+            preparedStatement.setDate(3, today);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Guest tempGuest = new Guest(resultSet.getInt("guestID"), resultSet.getString("firstname"),
-                        resultSet.getString("lastName"), resultSet.getDate("birthDate").toLocalDate(),
-                        resultSet.getString("address"),resultSet.getInt("zipCode"),
-                        resultSet.getString("country"), resultSet.getString("phoneNumber"),
-                        resultSet.getString("email"), resultSet.getString("passportNr"));
-                Room tempRoom = new Room(resultSet.getInt("roomID"),resultSet.getString("roomTypeName"),
-                        resultSet.getDouble("roomTypePrice"), resultSet.getInt("roomTypeCapacity"),
-                        resultSet.getDouble("roomSize"),"",
-                        resultSet.getString("roomTypeFacilities"));
-                Booking tempBooking =new Booking(resultSet.getInt("bookingID"), tempGuest, tempRoom,
-                        resultSet.getDate("bookingFrom"), resultSet.getDate("bookingUntil"));
-
-                bookings.add(tempBooking);
+                bookings.add(new Booking(resultSet));
             }
         }catch(Exception e){
             System.err.println("problem requesting data from DB");
@@ -227,18 +242,20 @@ public class MainController {
         return bookings;
     }
 
-    public void checkOut(){
+    public void checkOut() throws Exception {
         System.out.println("Check Out");
+        call_invoiceController();
+
         int bookingId = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         System.out.println(bookingId);
-        try {
+        try {/*
             Date today = new Date(new java.util.Date().getTime());
             PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingUntil = ?, " +
                     "bookingCanceled = ? WHERE bookingID = ?");
             preparedStatement.setDate(1, today);
             preparedStatement.setDate(2,today);
             preparedStatement.setInt(3, bookingId);
-            preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate(); */
         }catch (Exception e){
             System.err.println("Problem updating SQL table");
         }
@@ -260,6 +277,15 @@ public class MainController {
         }catch (Exception e){
             System.out.println("Kann nicht einchecken.");
         }
+        updateTableBookings();
+    }
+    public void sendRoomData () throws Exception {
+        System.out.println("No room creation possible yet.");
+    }
 
+    public void sendGuestData(){
+        Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
+                Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
+        Database.insertNewGuest(guest);
     }
 }

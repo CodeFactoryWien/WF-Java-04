@@ -19,7 +19,9 @@ import javafx.stage.Stage;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class DetailsController{
@@ -165,11 +167,10 @@ public class DetailsController{
     }
 
     public void addService(String serviceType)throws Exception{
-        System.out.println("bookingID in addServie: " + bookingID);
-
         if (serviceID!=0 && fixPrice!=0) {
             java.util.Date date=new java.util.Date();
             java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+            System.out.println(bookingID+" "+ serviceID+" "+fixPrice);
             PreparedStatement preparedStatement =
                     Database.c.prepareStatement("INSERT INTO services(fk_bookingID, serviceType, serviceDate, fk_serviceID, fixPrice) \n" +
                             "VALUES ('" + bookingID + "', '"+serviceType+"', '" + sqlDate +"', '" + serviceID + "','"+fixPrice+"' )");
@@ -203,6 +204,8 @@ public class DetailsController{
         while (rsPrice.next()){
             int servicePrice = rsPrice.getInt(index);
             System.out.println(servicePrice);
+            //NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+            //lblAmount.setText(nf.format(((float)servicePrice/100)));
             lblAmount.setText(String.valueOf(servicePrice));
         }
     }

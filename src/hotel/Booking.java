@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.sql.Date;
+import java.sql.ResultSet;
 
 public class Booking {
     private int bookingId;
@@ -25,6 +26,22 @@ public class Booking {
         this.room = room;
         this.arrival = arrival;
         this.departure = departure;
+        roomId = new SimpleIntegerProperty(room.getId());
+        name = new SimpleStringProperty(guest.getLastName() + ", " +guest.getFirstName());
+        arrivalProperty = new SimpleStringProperty(arrival.toString());
+        departureProperty = new SimpleStringProperty(departure.toString());
+    }
+
+    public Booking(ResultSet resultSet){
+        try {
+            bookingId = resultSet.getInt("bookingID");
+            guest = new Guest(resultSet);
+            room = new Room(resultSet);
+            arrival = resultSet.getDate("bookingFrom");
+            departure = resultSet.getDate("bookingUntil");
+        }catch(Exception e){
+            System.out.println("Problem creating booking from this ResultSet");
+        }
         roomId = new SimpleIntegerProperty(room.getId());
         name = new SimpleStringProperty(guest.getLastName() + ", " +guest.getFirstName());
         arrivalProperty = new SimpleStringProperty(arrival.toString());
