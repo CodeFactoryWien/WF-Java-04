@@ -86,7 +86,6 @@ public class LoginController {
         TextArea textArea = new TextArea();
         textArea.setText(stackTrace);
         dialogPaneContent.getChildren().addAll(label, textArea);
-        // Set content for Dialog Pane
         alert.getDialogPane().setContent(dialogPaneContent);
         alert.showAndWait();
     }

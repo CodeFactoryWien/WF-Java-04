@@ -178,7 +178,7 @@
                                     <Insets bottom="20.0" top="20.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button fx:id="addGuest1" onMouseClicked="#sendGuestData" prefHeight="23.0" prefWidth="120.0" text="Edit Guest" />
+                              <Button fx:id="editGuest" onMouseClicked="#sendGuestData" prefHeight="23.0" prefWidth="120.0" text="Edit Guest" />
                            </children>
                         </VBox>
                             </children>

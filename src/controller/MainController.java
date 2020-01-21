@@ -90,6 +90,10 @@ public class MainController {
     private TextField eMail;
     @FXML
     private TextField passportNumber;
+    @FXML
+    private Button addGuest;
+    @FXML
+    private Button editGuest;
 
     public void start() throws Exception {
         Stage S = new Stage();
