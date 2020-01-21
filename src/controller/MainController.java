@@ -151,7 +151,7 @@ public class MainController {
         C.start();
     }
 
-    // Test Details //
+    // Details //
     public void call_detailsController() throws Exception {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
@@ -160,6 +160,12 @@ public class MainController {
     public static int getBookingID(){
         return bookingID;
     }
+    // Create Invoice //
+    public void call_invoiceController()throws Exception{
+        CreateInvoiceController C = new CreateInvoiceController();
+        C.start();
+    }
+
 
 
 
@@ -258,8 +264,9 @@ public class MainController {
         return bookings;
     }
 
-    public void checkOut(){
+    public void checkOut() throws Exception {
         System.out.println("Check Out");
+        call_invoiceController();
         int bookingId = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         System.out.println(bookingId);
         try {
