@@ -31,6 +31,9 @@ public class CreateBookingController {
     private int days;
     private ObservableList<String> roomtypeslist;
 
+    // Guest Object //
+    private Guest guest;
+
     @FXML
     private ChoiceBox<String> roomType;
     @FXML
@@ -230,8 +233,30 @@ public class CreateBookingController {
 
     // New guest (not found in database) create //
     public void sendGuestDataToDatabase() {
-        Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
+        guest = new Guest(1, firstName.getText(), lastName.getText(), birthDate.getValue(), address.getText(),
+                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(),
+                email.getText(), passportNr.getText());
+
+        try {
+            PreparedStatement P = Database.c.prepareStatement("INSERT INTO guests (firstName, lastName, birthDate, " +
+                    "address, zipCode, country, phoneNumber, email, passportNr, fk_customerID)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?," +
+                    "?, 7)");
+            P.setString(1, guest.getFirstName());
+            P.setString(2, guest.getLastName());
+            P.setDate(3, Date.valueOf(guest.getBirthDate()));
+            P.setString(4, guest.getAddress());
+            P.setInt(5, guest.getZipCode());
+            P.setString(6, guest.getCountry());
+            P.setString(7, guest.getPhone());
+            P.setString(8, guest.getEmail());
+            P.setString(9, guest.getPassportNumber());
+
+
+            P.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("New guest create function error");
+        }
     }
 
     // Everytime a character is typed method is called //
@@ -245,9 +270,9 @@ public class CreateBookingController {
 
             ResultSet R;
             try {
-                PreparedStatement P1 = Database.c.prepareStatement("SELECT lastName, firstName, address FROM guests WHERE " + objID + " LIKE ?");
-                P1.setString(1, userInput + "%");
-                R = P1.executeQuery();
+                PreparedStatement P = Database.c.prepareStatement("SELECT lastName, firstName, address FROM guests WHERE " + objID + " LIKE ?");
+                P.setString(1, userInput + "%");
+                R = P.executeQuery();
 
                 while (R.next()) {
                     String S1 = R.getString("lastName");
@@ -267,8 +292,28 @@ public class CreateBookingController {
     // Add booking function //
     public void addBooking() {
 
-        Guest G = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
+        sendGuestDataToDatabase();
+
+        String guestID = null;
+
+        try {
+            PreparedStatement P = Database.c.prepareStatement("SELECT guests.guestID FROM guests " +
+                    "WHERE guests.firstName = ? AND guests.lastName = ? AND guests.birthDate = ? " +
+                            "AND guests.address = ?");
+            P.setString(1, guest.getFirstName());
+            P.setString(2, guest.getLastName());
+            P.setDate(3, Date.valueOf(guest.getBirthDate()));
+            P.setString(4, guest.getAddress());
+
+            ResultSet R = P.executeQuery();
+
+            while (R.next()) {
+                guestID = R.getString("guestID");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Get guest not working");
+        }
 
         Room R = Database.firstFreeRoom(roomType.getValue(), checkIn.getValue(), checkOut.getValue());
 
@@ -279,7 +324,7 @@ public class CreateBookingController {
                     Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, openAmount, bookingFrom, bookingUntil, bookingCanceled, checkedIn) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
             preparedStatement.setInt(1, R.getId());
-            preparedStatement.setInt(2, G.getId());
+            preparedStatement.setInt(2, Integer.parseInt(guestID));
             preparedStatement.setInt(3, 5);
             preparedStatement.setInt(4, (int) (selectedRoomPrice));
             preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
