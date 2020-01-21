@@ -330,7 +330,7 @@ public class CreateBookingController {
             preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
             preparedStatement.setDate(6, Date.valueOf(checkOut.getValue()));
             preparedStatement.setDate(7, Date.valueOf(ld3));
-            preparedStatement.setInt(8, 8);
+            preparedStatement.setDate(8, Date.valueOf(ld3));
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

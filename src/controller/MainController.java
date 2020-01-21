@@ -244,4 +244,22 @@ public class MainController {
         }
         updateTableOccupied();
     }
+    public void checkIn(){
+        int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
+        try {
+            Date today = new Date(new java.util.Date().getTime());
+            PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET checkedIn = ?, bookingFrom = ? "+
+                    " WHERE bookingID = ?");
+            preparedStatement.setDate(1,today);
+            preparedStatement.setDate(2,today);
+            preparedStatement.setInt(3,bookingId);
+            preparedStatement.executeUpdate();
+
+            updateTableOccupied();
+
+        }catch (Exception e){
+            System.out.println("Kann nicht einchecken.");
+        }
+
+    }
 }
