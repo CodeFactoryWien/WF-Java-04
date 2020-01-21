@@ -60,7 +60,6 @@ public class DetailsController{
 
     public DetailsController(){}
 
-    //private int bookingID = 3;
 
     private int serviceID = 0;
     private int servicesID = 0;
@@ -69,8 +68,7 @@ public class DetailsController{
     private boolean showMinibar = true;
     private ArrayList<Boolean> showArr = new ArrayList<>();
 
-    void start(int tmpBookingID) throws Exception {
-        bookingID = tmpBookingID;
+    void start() throws Exception {
         Stage S = new Stage();
         S.setTitle("Showing Details for Selection");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/details.fxml")));
@@ -81,6 +79,7 @@ public class DetailsController{
     @FXML
     public void initialize(){
         try {
+            bookingID = MainController.getBookingID();
             populateListService();
 
             populateMoviesChoice();
@@ -227,7 +226,7 @@ public class DetailsController{
     }
 
     public void populateListService() throws  Exception {
-
+        System.out.println("bookingID in populate List: "+bookingID);
         String tableS;
         String tableMovie="serv_movies.movieName";
         String tableWellness="serv_wellness.wellnessName";

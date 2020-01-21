@@ -62,6 +62,7 @@ public class MainController {
 
     public ObservableList<Booking> occupiedRooms;
     public ObservableList<Booking> bookings;
+    public static int bookingID;
 
     public void start() throws Exception {
         Stage S = new Stage();
@@ -121,10 +122,14 @@ public class MainController {
 
     // Test Details //
     public void call_detailsController() throws Exception {
-        int tmpBookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
+        bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
-        C.start(tmpBookingID);
+        C.start();
     }
+    public static int getBookingID(){
+        return bookingID;
+    }
+
 
 
     private void initializeTableOccupied(){
