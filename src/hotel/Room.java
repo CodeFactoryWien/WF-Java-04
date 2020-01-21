@@ -25,6 +25,19 @@ public class Room {
         this.facilities = facilities;
     }
 
+    public Room(ResultSet resultSet){
+        try {
+            id = resultSet.getInt("roomID");
+            type = resultSet.getString("roomTypeName");
+            price = resultSet.getDouble("roomTypePrice");
+            capacity = resultSet.getInt("roomTypeCapacity");
+            size = resultSet.getDouble("roomSize");
+            facilities = resultSet.getString("roomTypeFacilities");
+        }catch (Exception e){
+            System.out.println("Problem creating Room from this ResultSet");
+        }
+    }
+
     public int getId() {
         return id;
     }
