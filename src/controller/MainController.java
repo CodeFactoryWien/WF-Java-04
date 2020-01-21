@@ -66,7 +66,7 @@ public class MainController {
 
     public void start() throws Exception {
         Stage S = new Stage();
-        S.setTitle("hotel Managing Software");
+        S.setTitle("Hotel Managing Software");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/main.fxml")));
         S.show();
     }
