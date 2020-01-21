@@ -17,6 +17,8 @@ public class CreateGuestController {
 
     // Guest Fields //
     @FXML
+    private TextField compName;
+    @FXML
     private TextField firstName;
     @FXML
     private TextField lastName;
