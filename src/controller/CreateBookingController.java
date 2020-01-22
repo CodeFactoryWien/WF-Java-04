@@ -25,7 +25,7 @@ public class CreateBookingController {
 
     private Stage bookStage;
 
-    // Room, price fields //
+    // Important fields //
     private int totalcount;
     private int bookedroomscount;
     private int freeroomcount;
@@ -33,9 +33,9 @@ public class CreateBookingController {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private ObservableList<String> roomtypeslist;
-
     private Guest selected_item;
 
+    // Room and date fields //
     @FXML
     private ChoiceBox<String> roomType;
     @FXML
@@ -103,12 +103,8 @@ public class CreateBookingController {
         fillRoomTypes();
 
         // Listener for choicebox -> call //
-        roomType.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
-            try {
+        roomType.getSelectionModel().selectedItemProperty().addListener((observableValue, d, t1) -> {
                 bookaroom();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         });
 
         // Datepicker call -> bookaroom //
@@ -117,6 +113,7 @@ public class CreateBookingController {
         // Datepicker editable set false //
         checkIn.setEditable(false);
         checkOut.setEditable(false);
+        birthDate.setEditable(false);
 
         // close method on button click //
         cancel.setOnMouseClicked(e -> close());
@@ -130,9 +127,10 @@ public class CreateBookingController {
         bookStage.show();
     }
 
-    // Method called when choicebox, checkIn or checkOut is fired //
+    // Method is everytime called when choicebox, checkIn or checkOut is fired //
     public void bookaroom() {
 
+        // All fields in column1 must be filled and checkIn must be before checkOut //
         if (roomType.getValue() != null && checkIn.getValue() != null && checkOut.getValue() != null) {
             if (checkIn.getValue().isBefore(checkOut.getValue())) {
                 column2.setDisable(false);
@@ -160,8 +158,6 @@ public class CreateBookingController {
             } catch (Exception ignored) {
         }
     }
-
-    // #####FILL METHODS START HERE##### //
 
     // Fill roomtypes from database called from when choicebox shown //
     public void fillRoomTypes() {
@@ -243,8 +239,6 @@ public class CreateBookingController {
         pricePerDay.setText(String.valueOf(selectedRoomPrice));
     }
 
-    // #####FILL METHODS ENDS HERE##### //
-
     // Close Window(Stage) //
     public void close() {
         bookStage = (Stage) cancel.getScene().getWindow();
@@ -277,7 +271,7 @@ public class CreateBookingController {
         }
     }
 
-    // Everytime a character is typed method is called //
+    // Everytime a character is typed in a field in column2 the method is called //
     public void databaseSearch(TextField obj) {
         if (selected_item != null) {
             selected_item = null;
@@ -307,7 +301,7 @@ public class CreateBookingController {
         }
     }
 
-    // Get data from selected entry //
+    // Get data from the selected entry //
     public  void  getSelectedObj() {
         selected_item = (Guest) listViewFoundGuest.getSelectionModel().getSelectedItem();
 
