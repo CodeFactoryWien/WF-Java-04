@@ -25,7 +25,7 @@ public class CreateInvoiceController {
     @FXML
     private Label lblRoomNr, lblGuestName, lblQuantNights, lblQuantServices, lblTotal, lblTax;
     @FXML
-    private Button btnEditGuest, btnCreateInvoice, btnCancel;
+    private Button btnEditServices, btnCreateInvoice, btnCancel;
     @FXML
     private TableView<InvoiceTable> tableInvoice;
     @FXML
@@ -58,23 +58,25 @@ public class CreateInvoiceController {
             today = new Date(new java.util.Date().getTime());
             getAndProvideData();
             initInvoiceTable();
-            btnCreateInvoice.setOnAction(new EventHandler<ActionEvent>(){
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        generateInvoice();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            btnCreateInvoice.setOnAction(event -> {
+                try {
+                    generateInvoice();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
-            btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    clsoe();
+
+            btnCancel.setOnAction(event -> clsoe());
+
+            btnEditServices.setOnAction(event -> {
+                try {
+                    call_detailsController();
+                    Stage stage = (Stage) btnEditServices.getScene().getWindow();
+                    stage.close();      
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
-            
 
         }catch (Exception e){
             System.err.println(" Exception in initialize ");
@@ -183,5 +185,13 @@ public class CreateInvoiceController {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
+    public void call_detailsController() throws Exception {
+        try {
 
+            DetailsController C = new DetailsController();
+            C.start();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }
