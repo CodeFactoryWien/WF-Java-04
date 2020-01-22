@@ -381,5 +381,10 @@ public class CreateBookingController {
         } catch (SQLException e) {
             System.out.println("Error booking cannot be created");
         }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information!");
+        alert.setHeaderText("Booking created!");
+        alert.showAndWait();
+        close();
     }
 }
