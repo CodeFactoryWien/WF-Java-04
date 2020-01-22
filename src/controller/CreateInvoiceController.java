@@ -74,6 +74,7 @@ public class CreateInvoiceController {
                     clsoe();
                 }
             });
+            
 
         }catch (Exception e){
             System.err.println(" Exception in initialize ");
@@ -163,7 +164,16 @@ public class CreateInvoiceController {
 
     public void generateInvoice()throws Exception{
         try {
-            btnCreateInvoice.setText(" ---- ");
+            btnCreateInvoice.setText("Invoice generated");
+            btnCreateInvoice.setDisable(true);
+            Date today = new Date(new java.util.Date().getTime());
+            PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingCanceled = ?, " +
+                    "bookingCanceled = ? WHERE bookingID = ?");
+            preparedStatement.setDate(1, today);
+            preparedStatement.setDate(2,today);
+            preparedStatement.setInt(3, bookingID);
+            preparedStatement.executeUpdate();
+            MainController.updateTables();
         }catch (Exception e){
             System.out.println(" ..... ");
         }
