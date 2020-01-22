@@ -13,18 +13,21 @@
 <Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <AnchorPane prefHeight="450.0" prefWidth="600.0">
         <children>
-            <Label layoutX="233.0" layoutY="291.0" text="Username" />
-            <Label layoutX="233.0" layoutY="349.0" text="Password" />
-            <TextField fx:id="username" layoutX="233.0" layoutY="308.0" onAction="#login" />
-         <PasswordField fx:id="password" layoutX="233.0" layoutY="366.0" onAction="#login" />
+            <Label layoutX="226.0" layoutY="291.0" text="Username" />
+            <Label layoutX="226.0" layoutY="349.0" text="Password" />
+            <TextField fx:id="username" layoutX="226.0" layoutY="308.0" onAction="#login" />
+         <PasswordField fx:id="password" layoutX="226.0" layoutY="366.0" onAction="#login" />
             <Button fx:id="loginButton" layoutX="277.0" layoutY="411.0" mnemonicParsing="false" onMouseClicked="#login" text="Login" />
-         <Label layoutX="217.0" layoutY="252.0" text="Username: user, Password: user" />
-         <Label layoutX="194.0" layoutY="34.0" text="CF Hotels">
+         <Label layoutX="198.0" layoutY="73.0" text="Hotel Management System">
+            <font>
+               <Font name="Baskerville Old Face" size="20.0" />
+            </font></Label>
+         <Label layoutX="195.0" layoutY="14.0" text="CF Hotels">
             <font>
                <Font name="Felix Titling" size="40.0" />
             </font>
          </Label>
-         <ImageView fitHeight="136.0" fitWidth="137.0" layoutX="232.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+         <ImageView fitHeight="136.0" fitWidth="137.0" layoutX="232.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../img/login.png" />
             </image>
