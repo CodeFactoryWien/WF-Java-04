@@ -63,7 +63,7 @@
                                 <DatePicker fx:id="dateUntil" layoutX="815.0" layoutY="18.0" onAction="#updateTableBookings" />
                                 <Label layoutX="602.0" layoutY="4.0" text="from" />
                                 <Label layoutX="815.0" layoutY="4.0" text="until" />
-                        <CheckBox fx:id="checkBoxShowAll" layoutX="522.0" layoutY="22.0" mnemonicParsing="false" onAction="#updateTableBookings" text="Show All" />
+                        <CheckBox fx:id="checkBoxShowAll" layoutX="522.0" layoutY="22.0" mnemonicParsing="false" onAction="#toggleShowAll" text="Show All" />
                             </children>
                         </AnchorPane>
                     </content>

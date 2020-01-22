@@ -301,7 +301,7 @@ public class MainController {
         try {
             Date today = new Date(new java.util.Date().getTime());
             PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingUntil = ?, " +
-                    "bookingCanceled = ? WHERE bookingID = ?");
+                    "bookingCanceled = ?, fk_roomID = 0 WHERE bookingID = ?");
             preparedStatement.setDate(1, today);
             preparedStatement.setDate(2,today);
             preparedStatement.setInt(3, bookingId);
