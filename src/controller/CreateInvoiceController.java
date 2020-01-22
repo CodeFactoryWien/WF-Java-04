@@ -72,7 +72,7 @@ public class CreateInvoiceController {
                 try {
                     call_detailsController();
                     Stage stage = (Stage) btnEditServices.getScene().getWindow();
-                    stage.close();      
+                    stage.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -187,7 +187,6 @@ public class CreateInvoiceController {
     }
     public void call_detailsController() throws Exception {
         try {
-
             DetailsController C = new DetailsController();
             C.start();
         } catch (Exception e) {
