@@ -49,7 +49,14 @@ public class MainController {
     private TableColumn<Booking, String> columnBookingArrival;
     @FXML
     private TableColumn<Booking, String> columnBookingDeparture;
+    @FXML
+    private TableColumn<Booking, String> columnBookingStatus;
 
+    @FXML
+    private Button buttonStorno;
+
+    @FXML
+    private CheckBox checkBoxShowAll;
     @FXML
     private DatePicker dateFrom;
     @FXML
@@ -104,14 +111,10 @@ public class MainController {
 
     @FXML
     public void initialize(){
-        Date today = new Date(new java.util.Date().getTime());
-        occupiedRooms = FXCollections.observableArrayList(getBookingsFromTo(today));
         dateFrom.setValue(LocalDate.now());
         dateUntil.setValue(LocalDate.now().plusDays(7));
-        bookings = FXCollections.observableArrayList(getOpenBookingsFromTo(
-                new Date(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()),
-                new Date(Date.from(dateUntil.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime())
-        ));
+        updateTableOccupied();
+        updateTableBookings();
         initializeTableOccupied();
         initializeTableBookings();
         if(MainController.userIsAdmin){
@@ -175,23 +178,27 @@ public class MainController {
         columnGuestName.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnArrival.setCellValueFactory(new PropertyValueFactory<>("arrivalProperty"));
         columnDeparture.setCellValueFactory(new PropertyValueFactory<>("departureProperty"));
-
-        tableOccupiedRooms.setItems(occupiedRooms);
     }
 
     private void initializeTableBookings(){
         columnBookingGuest.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnBookingArrival.setCellValueFactory(new PropertyValueFactory<>("arrivalProperty"));
         columnBookingDeparture.setCellValueFactory(new PropertyValueFactory<>("departureProperty"));
-
-        tableBookings.setItems(bookings);
+        columnBookingStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
 
     public void updateTableBookings(){
-        bookings = FXCollections.observableArrayList(getOpenBookingsFromTo(
-                new Date(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()),
-                new Date(Date.from(dateUntil.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime())
-        ));
+        if(checkBoxShowAll.isSelected()){
+            bookings = FXCollections.observableArrayList(getAllBookingsFromTo(
+                    new Date(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()),
+                    new Date(Date.from(dateUntil.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime())
+            ));
+        } else {
+            bookings = FXCollections.observableArrayList(getOpenBookingsFromTo(
+                    new Date(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()),
+                    new Date(Date.from(dateUntil.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime())
+            ));
+        }
         tableBookings.setItems(bookings);
         tableBookings.refresh();
     }
@@ -203,13 +210,40 @@ public class MainController {
         tableOccupiedRooms.refresh();
     }
 
+    public void toggleShowAll(){
+        if(checkBoxShowAll.isSelected()){
+            buttonStorno.setDisable(true);
+        }else{
+            buttonStorno.setDisable(false);
+        }
+        updateTableBookings();
+    }
+
     private ArrayList<Booking> getOpenBookingsFromTo(Date start, Date end){
         ArrayList<Booking> bookings = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
                     "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
-                    "ON fk_roomID = roomID WHERE (checkedIn IS NULL OR checkedIn = '0000-00-00')" +
+                    "ON fk_roomID = roomID WHERE ((checkedIn IS NULL OR checkedIn = '0000-00-00') AND (bookingCanceled IS NULL OR bookingCanceled = '0000-00-00'))" +
                     " AND (bookingFrom >= ? AND bookingFrom <= ?)");
+            preparedStatement.setDate(1, start);
+            preparedStatement.setDate(2, end);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                bookings.add(new Booking(resultSet));
+            }
+        }catch(Exception e){
+            System.err.println("problem requesting data from DB");
+        }
+        return bookings;
+    }
+
+    private ArrayList<Booking> getAllBookingsFromTo(Date start, Date end){
+        ArrayList<Booking> bookings = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
+                    "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
+                    "ON fk_roomID = roomID WHERE bookingFrom >= ? AND bookingFrom <= ?");
             preparedStatement.setDate(1, start);
             preparedStatement.setDate(2, end);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -243,24 +277,41 @@ public class MainController {
     }
 
     public void checkOut() throws Exception {
-        System.out.println("Check Out");
         call_invoiceController();
 
         int bookingId = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
-        System.out.println(bookingId);
-        try {/*
+            try {
+                /*
             Date today = new Date(new java.util.Date().getTime());
             PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingUntil = ?, " +
                     "bookingCanceled = ? WHERE bookingID = ?");
             preparedStatement.setDate(1, today);
             preparedStatement.setDate(2,today);
             preparedStatement.setInt(3, bookingId);
-            preparedStatement.executeUpdate(); */
+            preparedStatement.executeUpdate();
+                 */
         }catch (Exception e){
             System.err.println("Problem updating SQL table");
         }
         updateTableOccupied();
     }
+
+    public void cancelBooking(){
+        int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
+        try {
+            Date today = new Date(new java.util.Date().getTime());
+            PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingUntil = ?, " +
+                    "bookingCanceled = ? WHERE bookingID = ?");
+            preparedStatement.setDate(1, today);
+            preparedStatement.setDate(2,today);
+            preparedStatement.setInt(3, bookingId);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.err.println("Problem updating SQL table");
+        }
+        updateTableBookings();
+    }
+
     public void checkIn(){
         int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
         try {

@@ -19,6 +19,7 @@ public class Booking {
     private final SimpleStringProperty name;
     private final SimpleStringProperty arrivalProperty;
     private final SimpleStringProperty departureProperty;
+    private final SimpleStringProperty status;
 
     public Booking(int bookingId, Guest guest, Room room, Date arrival, Date departure) {
         this.bookingId = bookingId;
@@ -30,22 +31,44 @@ public class Booking {
         name = new SimpleStringProperty(guest.getLastName() + ", " +guest.getFirstName());
         arrivalProperty = new SimpleStringProperty(arrival.toString());
         departureProperty = new SimpleStringProperty(departure.toString());
+        status = null;
     }
 
     public Booking(ResultSet resultSet){
+        String tempStatus = "open";
+        Date canceled= null;
+        Date checkedIn =null;
         try {
             bookingId = resultSet.getInt("bookingID");
             guest = new Guest(resultSet);
             room = new Room(resultSet);
             arrival = resultSet.getDate("bookingFrom");
             departure = resultSet.getDate("bookingUntil");
+            try{
+                canceled = resultSet.getDate("bookingCanceled");
+            }catch (Exception e){
+
+            }
+            try{
+                checkedIn = resultSet.getDate("checkedIn");
+            }catch (Exception e){
+
+            }
         }catch(Exception e){
             System.out.println("Problem creating booking from this ResultSet");
+        }
+        if(checkedIn !=null && canceled != null){
+            tempStatus = "Checked Out";
+        }else if(canceled !=null ){
+            tempStatus = "Canceled";
+        } else if(checkedIn !=null){
+            tempStatus = "Checked In";
         }
         roomId = new SimpleIntegerProperty(room.getId());
         name = new SimpleStringProperty(guest.getLastName() + ", " +guest.getFirstName());
         arrivalProperty = new SimpleStringProperty(arrival.toString());
         departureProperty = new SimpleStringProperty(departure.toString());
+        status = new SimpleStringProperty(tempStatus);
     }
 
     public void setRoom(Room room) {
@@ -99,5 +122,9 @@ public class Booking {
    public String getDepartureProperty(){
         return departureProperty.get();
    }
+
+   public String getStatus(){
+        return status.get();
+    }
 
 }
