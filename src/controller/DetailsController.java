@@ -206,7 +206,7 @@ public class DetailsController{
             System.out.println(servicePrice);
             //NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
             //lblAmount.setText(nf.format(((float)servicePrice/100)));
-            lblAmount.setText(String.valueOf(servicePrice));
+            lblAmount.setText(String.valueOf((double)servicePrice/100) + " €");
         }
     }
 

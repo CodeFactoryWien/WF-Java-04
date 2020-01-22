@@ -102,6 +102,8 @@ public class MainController {
     private TextField passportNumber;
     boolean billCheck;
 
+    private static MainController controller;
+
     public void start() throws Exception {
         Stage S = new Stage();
         S.setTitle("Hotel Managing Software");
@@ -137,6 +139,7 @@ public class MainController {
                 showError(e);
             }
         });
+        controller = this;
     }
 
 
@@ -208,6 +211,9 @@ public class MainController {
         return bookingID;
     }
 
+
+
+
     private void initializeTableOccupied(){
         columnRoomNr.setCellValueFactory(new PropertyValueFactory<>("roomId"));
         columnGuestName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -243,6 +249,11 @@ public class MainController {
         occupiedRooms = FXCollections.observableArrayList(getBookingsFromTo(today));
         tableOccupiedRooms.setItems(occupiedRooms);
         tableOccupiedRooms.refresh();
+    }
+
+    public static void updateTables(){
+        controller.updateTableBookings();
+        controller.updateTableOccupied();
     }
 
     public void toggleShowAll(){
@@ -348,8 +359,8 @@ public class MainController {
     }
 
     public void checkIn(){
+        int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
         try {
-            int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
             Date today = new Date(new java.util.Date().getTime());
             PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET checkedIn = ?, bookingFrom = ? "+
                     " WHERE bookingID = ?");
@@ -361,7 +372,7 @@ public class MainController {
             updateTableOccupied();
 
         }catch (Exception e){
-            showError(e);
+            System.out.println("Kann nicht einchecken.");
         }
         updateTableBookings();
     }
