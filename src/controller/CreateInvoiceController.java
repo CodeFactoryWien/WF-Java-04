@@ -4,6 +4,8 @@ import database.Database;
 import hotel.InvoiceTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -56,6 +58,16 @@ public class CreateInvoiceController {
             today = new Date(new java.util.Date().getTime());
             getAndProvideData();
             initInvoiceTable();
+            btnCreateInvoice.setOnAction(new EventHandler<ActionEvent>(){
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        generateInvoice();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
         }catch (Exception e){
             System.err.println(" Exception in initialize ");
@@ -140,6 +152,14 @@ public class CreateInvoiceController {
         }catch (Exception e){
             System.out.println("Befüllen der Rechnungstabelle nicht möglich");
             e.printStackTrace();
+        }
+    }
+
+    public void generateInvoice()throws Exception{
+        try {
+            btnCreateInvoice.setText(" ---- ");
+        }catch (Exception e){
+
         }
     }
 
