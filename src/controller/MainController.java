@@ -8,9 +8,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import hotel.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -124,17 +127,18 @@ public class MainController {
             try {
                 loadRoomTypePrice();
             } catch (Exception e) {
-                e.printStackTrace();
+                showError(e);
             }
         });
         billingCheck.selectedProperty().addListener((observableValue, s, t1) -> {
             try {
                 billingCheck();
             } catch (Exception e) {
-                e.printStackTrace();
+                showError(e);
             }
         });
     }
+
 
     public void logout() throws Exception {
         MainController.userIsAdmin = false;
@@ -143,39 +147,62 @@ public class MainController {
         Stage S = (Stage) logoutButton.getScene().getWindow();
         S.close();
     }
+
+    void showError(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error alert");
+        alert.setHeaderText(e.getMessage());
+        VBox dialogPaneContent = new VBox();
+        Label label = new Label("Stack Trace:");
+        String stackTrace = this.getStackTrace(e);
+        TextArea textArea = new TextArea();
+        textArea.setText(stackTrace);
+        dialogPaneContent.getChildren().addAll(label, textArea);
+        alert.getDialogPane().setContent(dialogPaneContent);
+        alert.showAndWait();
+    }
+
+    private String getStackTrace(Exception e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        String s = sw.toString();
+        return s;
+    }
+
     public void setAdminStatus(){
         userIsAdmin = true;
     }
 
-    // Create new Guest //
-    public void call_createGuestController() throws Exception {
-       CreateGuestController C = new CreateGuestController();
-       C.start();
-    }
-
-    // Create new Room //
-    public void call_createRoomController() throws Exception {
-        CreateRoomController C = new CreateRoomController();
-        C.start();
-    }
-
     // Create new Booking //
     public void call_createBookingController() throws Exception {
-        CreateBookingController C = new CreateBookingController();
-        C.start();
+        try {
+            CreateBookingController C = new CreateBookingController();
+            C.start();
+        } catch (Exception e) {
+            showError(e);
+        }
     }
 
     // Details //
     public void call_detailsController() throws Exception {
+        try {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
         C.start();
+        } catch (Exception e) {
+            showError(e);
+        }
     }
     // Create Invoice //
     public void call_invoiceController()throws Exception{
+        try {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         CreateInvoiceController C = new CreateInvoiceController();
         C.start();
+        } catch (Exception e) {
+            showError(e);
+        }
     }
     public static int getBookingID() {
         return bookingID;
@@ -321,8 +348,8 @@ public class MainController {
     }
 
     public void checkIn(){
-        int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
         try {
+            int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
             Date today = new Date(new java.util.Date().getTime());
             PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET checkedIn = ?, bookingFrom = ? "+
                     " WHERE bookingID = ?");
@@ -334,7 +361,7 @@ public class MainController {
             updateTableOccupied();
 
         }catch (Exception e){
-            System.out.println("Kann nicht einchecken.");
+            showError(e);
         }
         updateTableBookings();
     }

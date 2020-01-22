@@ -83,7 +83,7 @@ public class LoginController {
         }
     }
 
-    private void showError(Exception e) {
+    void showError(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error alert");
         alert.setHeaderText(e.getMessage());
