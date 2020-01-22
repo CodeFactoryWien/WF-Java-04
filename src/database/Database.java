@@ -153,15 +153,12 @@ public class Database {
                 if(rs.getString("userName").equals(username)) {
                     return rs.getString("userName");
                 }
-                else {
-                    return null;
-                }
             }
         }catch(Exception e){
             System.err.println("SQL Query Error");
             System.err.println(e.toString());
         }
-        return null;
+        return "0";
     }
 
 
@@ -177,6 +174,77 @@ public class Database {
             System.err.println("SQL Query Error");
             System.err.println(e.toString());
         }
+        return "0";
+    }
+
+    public static Double getRoomTypePrice(String roomTypeName) {
+        try{
+            PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM roomtype WHERE roomTypeName = ?");
+            preparedStatement.setString(1, roomTypeName);
+            ResultSet rs = Database.getData(preparedStatement);
+            if(rs.first()){
+                return rs.getDouble("roomTypePrice");
+            }
+        }catch(Exception e){
+            System.err.println("SQL Query Error");
+            System.err.println(e.toString());
+        }
         return null;
+    }
+
+    public static void setNewRoomTypePrice(String roomTypeName, String roomTypePrice){
+        try{
+            PreparedStatement preparedStatement = c.prepareStatement("UPDATE `roomtype` SET `roomTypePrice` = ? WHERE `roomtype`.`roomTypeName` = ?");
+            preparedStatement.setDouble(1, Double.parseDouble(roomTypePrice));
+            preparedStatement.setString(2, roomTypeName);
+            setData(preparedStatement);
+            System.out.println("Room price from " + roomTypeName + " has been changed successfully.");
+        } catch(Exception e){
+            System.err.println("SQL Query Error");
+            System.err.println(e.toString());
+        }
+    }
+
+    public static void createNewRoom(String roomTypeName, String roomTypeSize){
+        try {
+            PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO rooms (roomID, fk_roomTypeID, roomSize) " +
+                    "VALUES (NULL,?,?)");
+            switch (roomTypeName) {
+                case "Single Room":
+                    preparedStatement.setString(1, "1");
+                    break;
+                case "Single Room with Balcony":
+                    preparedStatement.setString(1, "2");
+                    break;
+                case "Double Room":
+                    preparedStatement.setString(1, "3");
+                    break;
+                case "Double Room with Balcony":
+                    preparedStatement.setString(1, "4");
+                    break;
+                case "Suite":
+                    preparedStatement.setString(1, "5");
+                    break;
+                case "Suite with Balcony":
+                    preparedStatement.setString(1, "6");
+                    break;
+                case "Superior Double Room":
+                    preparedStatement.setString(1, "7");
+                    break;
+                case "Superior Double Room with Balcony":
+                    preparedStatement.setString(1, "8");
+                    break;
+                    default:
+                        System.out.println("No.");
+                    break;
+            }
+            preparedStatement.setString(2, roomTypeSize);
+            setData(preparedStatement);
+            System.out.println("New room has been created.");
+        }
+        catch (Exception e){
+            System.err.println("SQL Query Error");
+            System.err.println(e.toString());
+        }
     }
 }

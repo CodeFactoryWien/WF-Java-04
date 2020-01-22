@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import hotel.*;
 
@@ -69,13 +70,11 @@ public class MainController {
     @FXML
     private ChoiceBox roomType;
     @FXML
-    private ChoiceBox roomCapacity;
+    private ChoiceBox roomType1;
     @FXML
-    private TextField roomPrice;
+    private TextField roomTypePrice;
     @FXML
-    private TextField roomSize;
-    @FXML
-    private TextField roomFacilitys;
+    private TextField roomTypeSize;
 
     @FXML
     private TextField compName;
@@ -123,6 +122,13 @@ public class MainController {
             tabPane.getTabs().remove(adminTab);
             System.out.println("User logged in.");
         }
+        roomType1.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+            try {
+                loadRoomTypePrice();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void logout() throws Exception {
@@ -330,13 +336,26 @@ public class MainController {
         }
         updateTableBookings();
     }
-    public void sendRoomData () throws Exception {
-        System.out.println("No room creation possible yet.");
-    }
 
     public void sendGuestData(){
         Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
                 Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
         Database.insertNewGuest(guest);
+    }
+
+    public void loadRoomTypePrice(){
+       roomTypePrice.setText(Double.toString(Database.getRoomTypePrice(roomType1.getValue().toString())));
+    }
+
+    public void sendNewRoomTypePrice(){
+        System.out.println(roomType1.getValue().toString());
+        System.out.println(roomTypePrice.getText());
+        Database.setNewRoomTypePrice(roomType1.getValue().toString(), roomTypePrice.getText());
+    }
+
+    public void sendNewRoomCreation(){
+        System.out.println(roomType.getValue().toString());
+        System.out.println(roomTypeSize.getText());
+        Database.createNewRoom(roomType1.getValue().toString(), roomTypeSize.getText());
     }
 }
