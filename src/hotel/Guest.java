@@ -46,6 +46,11 @@ public class Guest {
         }
     }
 
+    @Override
+    public String toString(){
+        return lastName + " " + firstName + " " + address;
+    }
+
     public int getId() {
         return id;
     }

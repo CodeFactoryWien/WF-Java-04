@@ -30,11 +30,9 @@ public class CreateBookingController {
     private double selectedRoomPrice;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private int days;
     private ObservableList<String> roomtypeslist;
 
-    // Guest Object //
-    private Guest guest;
+    private Guest selected_item;
 
     @FXML
     private ChoiceBox<String> roomType;
@@ -94,7 +92,7 @@ public class CreateBookingController {
         passportNr.setOnKeyTyped(e -> databaseSearch(passportNr));
 
         // Listview select call //
-        listViewFoundGuest.setOnMouseClicked(e -> getselectedobj());
+        listViewFoundGuest.setOnMouseClicked(e -> getSelectedObj());
 
         // Booking call //
         booking.setOnMouseClicked(e -> addBooking());
@@ -141,8 +139,8 @@ public class CreateBookingController {
             }
         }
         try {
-            totalselectedroomcount();
-            fillpriceperday();
+            totalSelectedRoomCount();
+            fillPricePerDay();
             if (checkIn.getValue() != null) {
                 checkInDate = checkIn.getValue();
             }
@@ -150,7 +148,7 @@ public class CreateBookingController {
                 checkOutDate = checkOut.getValue();
             }
 
-            days = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+            int days = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
 
             if (column2.isDisable()) {
                 totalPrice.setText("///");
@@ -184,7 +182,7 @@ public class CreateBookingController {
     }
 
     // Fill total count of free rooms from database based on selected roomtype//
-    public void totalselectedroomcount() {
+    public void totalSelectedRoomCount() {
 
         try {
             PreparedStatement preparedStatement =
@@ -205,7 +203,7 @@ public class CreateBookingController {
     }
 
     // Fill roomPrice from selected roomType from database //
-    public void fillpriceperday() {
+    public void fillPricePerDay() {
 
         String selectedRoomType = roomType.getSelectionModel().getSelectedItem();
 
@@ -238,24 +236,20 @@ public class CreateBookingController {
 
     // New guest (not found in database) create //
     public void sendGuestDataToDatabase() {
-        guest = new Guest(1, firstName.getText(), lastName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(),
-                email.getText(), passportNr.getText());
-
         try {
             PreparedStatement P = Database.c.prepareStatement("INSERT INTO guests (firstName, lastName, birthDate, " +
                     "address, zipCode, country, phoneNumber, email, passportNr, fk_customerID)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?," +
                     "?, 7)");
-            P.setString(1, guest.getFirstName());
-            P.setString(2, guest.getLastName());
-            P.setDate(3, Date.valueOf(guest.getBirthDate()));
-            P.setString(4, guest.getAddress());
-            P.setInt(5, guest.getZipCode());
-            P.setString(6, guest.getCountry());
-            P.setString(7, guest.getPhone());
-            P.setString(8, guest.getEmail());
-            P.setString(9, guest.getPassportNumber());
+            P.setString(1, firstName.getText());
+            P.setString(2, lastName.getText());
+            P.setDate(3, Date.valueOf(birthDate.getValue()));
+            P.setString(4, address.getText());
+            P.setInt(5, Integer.parseInt(zipCode.getText()));
+            P.setString(6, country.getText());
+            P.setString(7, phoneNumber.getText());
+            P.setString(8, email.getText());
+            P.setString(9, passportNr.getText());
 
 
             P.executeUpdate();
@@ -279,7 +273,10 @@ public class CreateBookingController {
                 R = P.executeQuery();
 
                 while (R.next()) {
+                    Guest G = new Guest(R);
+                    O.add(G);
                 }
+
             } catch (Exception e) {
                 System.out.println("Error database search not possible");
             }
@@ -289,25 +286,19 @@ public class CreateBookingController {
     }
 
     // Get data from selected entry //
-    public  void  getselectedobj() {
-        String selected_item = (String) listViewFoundGuest.getSelectionModel().getSelectedItem();
+    public  void  getSelectedObj() {
+        selected_item = (Guest) listViewFoundGuest.getSelectionModel().getSelectedItem();
 
-        String[] A = selected_item.split(" ");
-
-        System.out.println("hallo davor");
         try {
-            PreparedStatement P = Database.c.prepareStatement("SELECT * FROM guests WHERE guests.firstName = ?" +
-                    "AND guests.lastName = ? AND guests.address = ?");
-            P.setString(1, A[1]);
-            P.setString(2, A[0]);
-            P.setString(3, A[2].concat(" "+A[3]));
+            PreparedStatement P = Database.c.prepareStatement("SELECT * FROM guests WHERE guests.guestID = ?");
+           P.setInt(1, selected_item.getId());
 
             ResultSet R = P.executeQuery();
 
             if (R.first()) {
                 firstName.setText(R.getString("firstName"));
                 lastName.setText(R.getString("lastName"));
-//                birthDate.setValue(R.getDate("birthDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                birthDate.setValue(R.getDate("birthDate").toLocalDate());
                 address.setText(R.getString("address"));
                 zipCode.setText(String.valueOf(R.getInt("zipCode")));
                 country.setText(R.getString("country"));
@@ -322,48 +313,78 @@ public class CreateBookingController {
 
     // Add booking function //
     public void addBooking() {
+        // If user picked ID is found in database //
+        int guestID1 = 0;
+        if (selected_item != null) {
+            try {
+                PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests WHERE " +
+                        "guestID = " + selected_item.getId());
+                ResultSet R = P.executeQuery();
 
-        sendGuestDataToDatabase();
+                if (R.first()) {
+                    guestID1 = R.getInt("guestID");
+                }
 
-        String guestID = null;
+                if (guestID1 != selected_item.getId()) {
+                    sendGuestDataToDatabase();
+                }
 
+            } catch (Exception ignored) {
+            }
+        }
+
+
+        // If user is not picked method called //
+        if (selected_item == null) {
+            sendGuestDataToDatabase();
+        }
+
+
+        // To get the correct ID from the created guest or the selected guest so it can be added to booking //
+        String guestID2 = null;
         try {
-            PreparedStatement P = Database.c.prepareStatement("SELECT guests.guestID FROM guests " +
+            PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests " +
                     "WHERE guests.firstName = ? AND guests.lastName = ? AND guests.birthDate = ? " +
                             "AND guests.address = ?");
-            P.setString(1, guest.getFirstName());
-            P.setString(2, guest.getLastName());
-            P.setDate(3, Date.valueOf(guest.getBirthDate()));
-            P.setString(4, guest.getAddress());
+            P.setString(1, firstName.getText());
+            P.setString(2, lastName.getText());
+            P.setDate(3, Date.valueOf(birthDate.getValue()));
+            P.setString(4, address.getText());
 
             ResultSet R = P.executeQuery();
 
-            while (R.next()) {
-                guestID = R.getString("guestID");
+            if (R.first()) {
+                guestID2 = R.getString("guestID");
             }
-
         } catch (Exception e) {
-            System.out.println("Get guest not working");
+            System.out.println("guest add not working");
         }
 
         Room R = Database.firstFreeRoom(roomType.getValue(), checkIn.getValue(), checkOut.getValue());
 
-        LocalDate ld1 = LocalDate.parse("2017-05-22");
-        LocalDate ld2 = LocalDate.parse("2020-09-12");
-
+        // Create booking //
         try {
             PreparedStatement preparedStatement =
-                    Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, openAmount, bookingFrom, bookingUntil) " +
-                            "VALUES (?, ?, ?, ?, ?, ?);");
+                    Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, " +
+                            "openAmount, bookingFrom, bookingUntil, bookingCanceled, checkedIn) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
             preparedStatement.setInt(1, R.getId());
-            preparedStatement.setInt(2, Integer.parseInt(guestID));
+            preparedStatement.setInt(2, Integer.parseInt(guestID2));
             preparedStatement.setInt(3, 5);
             preparedStatement.setInt(4, (int) (selectedRoomPrice));
             preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
             preparedStatement.setDate(6, Date.valueOf(checkOut.getValue()));
+            preparedStatement.setDate(7, null);
+            preparedStatement.setDate(8, null);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error booking cannot be created");
         }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information!");
+        alert.setHeaderText("Booking created!");
+        alert.showAndWait();
+        close();
     }
 }
