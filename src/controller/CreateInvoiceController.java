@@ -2,6 +2,8 @@ package controller;
 
 import database.Database;
 import hotel.InvoiceTable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -18,33 +20,23 @@ import java.util.concurrent.TimeUnit;
 
 public class CreateInvoiceController {
     @FXML
-    private Label lblRoomNr;
+    private Label lblRoomNr, lblGuestName, lblQuantNights, lblQuantServices;
     @FXML
-    private Label lblGuestName;
-    @FXML
-    private Label lblQuantNights;
-    @FXML
-    private Label lblQuantServices;
-    @FXML
-    private Button btnEditGuest;
-    @FXML
-    private Button btnCreateInvoice;
-    @FXML
-    private Button btnCancel;
+    private Button btnEditGuest, btnCreateInvoice, btnCancel;
     @FXML
     private TableView<InvoiceTable> tableInvoice;
     @FXML
-    private TableColumn<InvoiceTable,Integer>columnQuantInvocie;
+    private TableColumn<InvoiceTable,Integer>columnID, columnQuant, columnPPS,columnPrice;
     @FXML
-    private TableColumn<InvoiceTable,String>columnServiceInvoice;
+    private TableColumn<InvoiceTable,Date>columnDate;
     @FXML
-    private TableColumn<InvoiceTable,Integer>columnPricePerSInvoice;
-    @FXML
-    private TableColumn<InvoiceTable,Integer> columnPriceInvoice;
+    private TableColumn<InvoiceTable,String>columnType, columnName;
+
 
     private int bookingID;
     private Date today;
     private long nights;
+    private ObservableList servicesInvoiceList;
 
 
     void start() throws Exception {
@@ -81,7 +73,6 @@ public class CreateInvoiceController {
             while (rsHead.next()) {
                 int roomID = rsHead.getInt("fk_roomID");
                 lblRoomNr.setText(String.valueOf(roomID));
-                System.out.println("roomid angezeigt");
                 String firstName = rsHead.getString("firstName");
                 String lastName = rsHead.getString("lastName");
                 Date arrival = rsHead.getDate("checkedIn");
@@ -93,18 +84,27 @@ public class CreateInvoiceController {
                 lblQuantNights.setText(String.valueOf(nights));
             }
             PreparedStatement preparedStatementServices =
-                    Database.c.prepareStatement("SELECT servicesID, serviceType, serviceDate, coalesce(serv_movies.movieName, serv_wellness.wellnessName, serv_minibar.mbItem) as serviceName, fk_serviceID \n" +
-                            " FROM services  \n" +
-                            " LEFT OUTER JOIN serv_movies ON (services.fk_serviceID = serv_movies.movieID AND services.serviceType = 'movie') \n" +
-                            " LEFT OUTER JOIN serv_wellness ON (services.fk_serviceID = serv_wellness.wellnessID AND services.serviceType = 'wellness') \n" +
-                            " LEFT OUTER JOIN serv_minibar ON (services.fk_serviceID = serv_minibar.mbID AND services.serviceType = 'minibar') \n" +
-                            " WHERE fk_bookingID=" + bookingID);
+                    Database.c.prepareStatement("SELECT servicesID, serviceType, serviceDate, \n" +
+                            " coalesce(serv_movies.moviePrice, serv_wellness.wellnessPrice, serv_minibar.mbPrice) as pps, \n" +
+                            " COUNT(coalesce(serv_movies.movieName, serv_wellness.wellnessName, serv_minibar.mbItem)) as quant,\n" +
+                            " coalesce(serv_movies.movieName, serv_wellness.wellnessName, serv_minibar.mbItem) AS serviceName \n" +
+                            " FROM services \n" +
+                            " LEFT OUTER JOIN serv_movies ON (services.fk_serviceID = serv_movies.movieID AND services.serviceType = 'movie')\n" +
+                            " LEFT OUTER JOIN serv_wellness ON (services.fk_serviceID = serv_wellness.wellnessID AND services.serviceType = 'wellness')\n" +
+                            " LEFT OUTER JOIN serv_minibar ON (services.fk_serviceID = serv_minibar.mbID AND services.serviceType = 'minibar')\n" +
+                            " WHERE fk_bookingID="+bookingID+"\n" +
+                            " GROUP BY serv_minibar.mbItem, serv_movies.movieName, serv_wellness.wellnessName\n" +
+                            " HAVING COUNT(*) > 0");
             ResultSet rsInvoiceServices = preparedStatementServices.executeQuery();
+            servicesInvoiceList = FXCollections.observableArrayList();
             while (rsInvoiceServices.next()){
                 int i = rsInvoiceServices.getInt("servicesID");
                 String serviceType = rsInvoiceServices.getString("serviceType");
-                Date serviceDate = rsInvoiceServices.getDate("serviceDate");
+                String serviceDate = rsInvoiceServices.getDate("serviceDate").toString();
+                int servicePPS = rsInvoiceServices.getInt("pps");
+                int serviceQuant = rsInvoiceServices.getInt("quant");
                 String serviceName = rsInvoiceServices.getString("serviceName");
+                servicesInvoiceList.add(new InvoiceTable(i,serviceDate,serviceQuant,serviceType,serviceName,servicePPS,servicePPS*serviceQuant));
             }
 
         }catch (Exception e){
@@ -115,12 +115,15 @@ public class CreateInvoiceController {
 
     public void initInvoiceTable()throws Exception{
         try {
-                columnQuantInvocie.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
-                columnServiceInvoice.setCellValueFactory(new PropertyValueFactory<>("Services"));
-                columnPricePerSInvoice.setCellValueFactory(new PropertyValueFactory<>("PPS"));
-                columnPriceInvoice.setCellValueFactory(new PropertyValueFactory<>("Price"));
+                columnID.setCellValueFactory(new PropertyValueFactory<>("servicesID"));
+                columnDate.setCellValueFactory(new PropertyValueFactory<>("serviceDate"));
+                columnQuant.setCellValueFactory(new PropertyValueFactory<>("quant"));
+                columnType.setCellValueFactory(new PropertyValueFactory<>("serviceType"));
+                columnName.setCellValueFactory(new PropertyValueFactory<>("serviceName"));
+                columnPPS.setCellValueFactory(new PropertyValueFactory<>("pps"));
+                columnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-                //tableInvoice.getItems(objekt der rechnugnszeilen)
+            tableInvoice.setItems(servicesInvoiceList);
 
         }catch (Exception e){
             System.out.println("Befüllen der Rechnungstabelle nicht möglich");

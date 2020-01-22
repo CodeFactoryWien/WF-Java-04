@@ -66,10 +66,13 @@
          </Label>
          <TableView layoutX="33.0" layoutY="149.0" prefHeight="401.0" prefWidth="566.0">
            <columns>
-             <TableColumn fx:id="columnQuantInvocie" prefWidth="62.0" text="quantity" />
-             <TableColumn fx:id="columnServiceInvoice" prefWidth="339.0" text="service" />
-               <TableColumn fx:id="columnPricePerSInvoice" prefWidth="81.0" text="Price/service" />
-               <TableColumn fx:id="columnPriceInvoice" prefWidth="82.0" text="Price" />
+              <TableColumn fx:id="columnID" prefWidth="28.0" text="ID" />
+              <TableColumn fx:id="columnDate" prefWidth="85.0" text="Date" />
+              <TableColumn fx:id="columnQuant" prefWidth="41.0" text="quantity" />
+              <TableColumn fx:id="columnType" prefWidth="81.0" text="group" />
+             <TableColumn fx:id="columnName" prefWidth="188.0" text="service" />
+              <TableColumn fx:id="columnPPS" prefWidth="69.0" text="Price/service" />
+              <TableColumn fx:id="columnPrice" prefWidth="73.0" text="Price" />
            </columns>
          </TableView>
          <Label layoutX="102.0" layoutY="64.0" text="Extras Services:" />
