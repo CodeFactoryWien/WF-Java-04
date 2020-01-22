@@ -75,7 +75,8 @@ public class MainController {
     private TextField roomTypePrice;
     @FXML
     private TextField roomTypeSize;
-
+    @FXML
+    private CheckBox billingCheck;
     @FXML
     private TextField compName;
     @FXML
@@ -96,10 +97,7 @@ public class MainController {
     private TextField eMail;
     @FXML
     private TextField passportNumber;
-    @FXML
-    private Button addGuest;
-    @FXML
-    private Button editGuest;
+    boolean billCheck;
 
     public void start() throws Exception {
         Stage S = new Stage();
@@ -125,6 +123,13 @@ public class MainController {
         roomType1.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
             try {
                 loadRoomTypePrice();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        billingCheck.selectedProperty().addListener((observableValue, s, t1) -> {
+            try {
+                billingCheck();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -175,9 +180,6 @@ public class MainController {
     public static int getBookingID() {
         return bookingID;
     }
-
-
-
 
     private void initializeTableOccupied(){
         columnRoomNr.setCellValueFactory(new PropertyValueFactory<>("roomId"));
@@ -357,5 +359,15 @@ public class MainController {
         System.out.println(roomType.getValue().toString());
         System.out.println(roomTypeSize.getText());
         Database.createNewRoom(roomType1.getValue().toString(), roomTypeSize.getText());
+    }
+
+    public void billingCheck(){
+        if(compName.isDisabled()){
+            compName.setDisable(false);
+            billCheck = false;
+        } else {
+            compName.setDisable(true);
+            billCheck = true;
+        }
     }
 }
