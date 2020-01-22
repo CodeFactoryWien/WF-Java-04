@@ -36,33 +36,13 @@ public class DetailsController{
     private ArrayList<Boolean> showArr = new ArrayList<>();
 
     @FXML
-    private Label lblRoomNr;
+    private Label lblRoomNr, lblGuestName, lblDepature, lblAmount;
     @FXML
-    private Label lblGuestName;
+    private ChoiceBox choiceMovie,choiceWellness,choiceMinibar;
     @FXML
-    private Label lblDepature;
+    private Button btn_add_movie, btn_add_wellness, btn_add_minibar, btn_deleteService ,btn_checkout;
     @FXML
-    private Label lblAmount;
-    @FXML
-    private ChoiceBox choiceMovie;
-    @FXML
-    private ChoiceBox choiceWellness;
-    @FXML
-    private ChoiceBox choiceMinibar;
-    @FXML
-    private Button btn_add_movie;
-    @FXML
-    private Button btn_add_wellness;
-    @FXML
-    private Button btn_add_minibar;
-    @FXML
-    private Button btn_deleteService;
-    @FXML
-    private CheckBox cb_movie;
-    @FXML
-    private CheckBox cb_wellness;
-    @FXML
-    private CheckBox cb_minibar;
+    private CheckBox cb_movie, cb_wellness, cb_minibar;
     @FXML
     private ListView serviceListView;
 
@@ -94,72 +74,55 @@ public class DetailsController{
             showArr.add(showWellness);
             showArr.add(showMinibar);
 
-            btn_add_movie.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        addService("movie");
-                        populateListService();
-                        setServiceAmount();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            btn_add_movie.setOnAction(event -> {
+                try {
+                    addService("movie");
+                    populateListService();
+                    setServiceAmount();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
-            btn_add_wellness.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        addService("wellness");
-                        populateListService();
-                        setServiceAmount();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            btn_add_wellness.setOnAction(event -> {
+                try {
+                    addService("wellness");
+                    populateListService();
+                    setServiceAmount();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
-            btn_add_minibar.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        addService("minibar");
-                        populateListService();
-                        setServiceAmount();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            btn_add_minibar.setOnAction(event -> {
+                try {
+                    addService("minibar");
+                    populateListService();
+                    setServiceAmount();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
-            btn_deleteService.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        deleteService();
-                        populateListService();
-                        setServiceAmount();
-                    }catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            btn_deleteService.setOnAction(event -> {
+                try {
+                    deleteService();
+                    populateListService();
+                    setServiceAmount();
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
-            cb_movie.selectedProperty().addListener(new ChangeListener<Boolean>() {
-                @Override
-                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    showMovie = !newValue;
+            btn_checkout.setOnAction(event -> {
+                try {
+                    System.out.println("checkout");
+                    call_invoiceController();
+                    Stage stage = (Stage) btn_checkout.getScene().getWindow();
+                    stage.close();
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             });
-            cb_wellness.selectedProperty().addListener(new ChangeListener<Boolean>() {
-                @Override
-                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    showWellness = !newValue;
-                }
-            });
-            cb_minibar.selectedProperty().addListener(new ChangeListener<Boolean>() {
-                @Override
-                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    showMinibar = !newValue;
-                }
-            });
+            cb_movie.selectedProperty().addListener((observable, oldValue, newValue) -> showMovie = !newValue);
+            cb_wellness.selectedProperty().addListener((observable, oldValue, newValue) -> showWellness = !newValue);
+            cb_minibar.selectedProperty().addListener((observable, oldValue, newValue) -> showMinibar = !newValue);
 
         }catch (Exception e){
             System.err.println("Exception in initialize ");
@@ -206,7 +169,7 @@ public class DetailsController{
             System.out.println(servicePrice);
             //NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
             //lblAmount.setText(nf.format(((float)servicePrice/100)));
-            lblAmount.setText(String.valueOf(servicePrice));
+            lblAmount.setText(String.valueOf((double)servicePrice/100) + " €");
         }
     }
 
@@ -360,5 +323,14 @@ public class DetailsController{
             }
         });
         choiceMinibar.getSelectionModel().selectFirst();
+    }
+
+    private void call_invoiceController()  throws Exception {
+        try {
+            CreateInvoiceController C = new CreateInvoiceController();
+            C.start();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

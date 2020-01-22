@@ -43,7 +43,7 @@
                <Font size="15.0" />
             </font>
          </Button>
-         <Button fx:id="btnEditGuest" layoutX="524.0" layoutY="15.0" mnemonicParsing="false" text="edit Guest" />
+         <Button fx:id="btnEditServices" layoutX="490.0" layoutY="114.0" mnemonicParsing="false" text="edit invoice lines" />
          <Label fx:id="lblTotal" layoutX="535.0" layoutY="583.0" text="2300,--">
             <font>
                <Font name="System Bold" size="14.0" />
@@ -64,7 +64,7 @@
                <Font name="System Bold" size="12.0" />
             </font>
          </Label>
-         <TableView layoutX="33.0" layoutY="149.0" prefHeight="401.0" prefWidth="566.0">
+         <TableView fx:id="tableInvoice" layoutX="33.0" layoutY="149.0" prefHeight="401.0" prefWidth="566.0">
            <columns>
               <TableColumn fx:id="columnID" prefWidth="28.0" text="ID" />
               <TableColumn fx:id="columnDate" prefWidth="85.0" text="Date" />

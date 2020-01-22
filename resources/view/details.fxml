@@ -50,6 +50,11 @@
       <CheckBox fx:id="cb_movie" layoutX="33.0" layoutY="223.0" mnemonicParsing="false" selected="true" text="show" />
       <CheckBox fx:id="cb_wellness" layoutX="226.0" layoutY="223.0" mnemonicParsing="false" selected="true" text="show" />
       <CheckBox fx:id="cb_minibar" layoutX="424.0" layoutY="223.0" mnemonicParsing="false" selected="true" text="show" />
+         <Button fx:id="btn_checkout" layoutX="472.0" layoutY="68.0" mnemonicParsing="false" text="CHECK OUT">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
    </children>
 </AnchorPane>
 

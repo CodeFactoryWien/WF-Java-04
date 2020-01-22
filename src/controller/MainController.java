@@ -7,9 +7,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import hotel.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,14 +73,13 @@ public class MainController {
     @FXML
     private ChoiceBox roomType;
     @FXML
-    private ChoiceBox roomCapacity;
+    private ChoiceBox roomType1;
     @FXML
-    private TextField roomPrice;
+    private TextField roomTypePrice;
     @FXML
-    private TextField roomSize;
+    private TextField roomTypeSize;
     @FXML
-    private TextField roomFacilitys;
-
+    private CheckBox billingCheck;
     @FXML
     private TextField compName;
     @FXML
@@ -97,10 +100,9 @@ public class MainController {
     private TextField eMail;
     @FXML
     private TextField passportNumber;
-    @FXML
-    private Button addGuest;
-    @FXML
-    private Button editGuest;
+    boolean billCheck;
+
+    private static MainController controller;
 
     public void start() throws Exception {
         Stage S = new Stage();
@@ -123,7 +125,23 @@ public class MainController {
             tabPane.getTabs().remove(adminTab);
             System.out.println("User logged in.");
         }
+        roomType1.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+            try {
+                loadRoomTypePrice();
+            } catch (Exception e) {
+                showError(e);
+            }
+        });
+        billingCheck.selectedProperty().addListener((observableValue, s, t1) -> {
+            try {
+                billingCheck();
+            } catch (Exception e) {
+                showError(e);
+            }
+        });
+        controller = this;
     }
+
 
     public void logout() throws Exception {
         MainController.userIsAdmin = false;
@@ -132,39 +150,62 @@ public class MainController {
         Stage S = (Stage) logoutButton.getScene().getWindow();
         S.close();
     }
+
+    void showError(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error alert");
+        alert.setHeaderText(e.getMessage());
+        VBox dialogPaneContent = new VBox();
+        Label label = new Label("Stack Trace:");
+        String stackTrace = this.getStackTrace(e);
+        TextArea textArea = new TextArea();
+        textArea.setText(stackTrace);
+        dialogPaneContent.getChildren().addAll(label, textArea);
+        alert.getDialogPane().setContent(dialogPaneContent);
+        alert.showAndWait();
+    }
+
+    private String getStackTrace(Exception e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        String s = sw.toString();
+        return s;
+    }
+
     public void setAdminStatus(){
         userIsAdmin = true;
     }
 
-    // Create new Guest //
-    public void call_createGuestController() throws Exception {
-       CreateGuestController C = new CreateGuestController();
-       C.start();
-    }
-
-    // Create new Room //
-    public void call_createRoomController() throws Exception {
-        CreateRoomController C = new CreateRoomController();
-        C.start();
-    }
-
     // Create new Booking //
     public void call_createBookingController() throws Exception {
-        CreateBookingController C = new CreateBookingController();
-        C.start();
+        try {
+            CreateBookingController C = new CreateBookingController();
+            C.start();
+        } catch (Exception e) {
+            showError(e);
+        }
     }
 
     // Details //
     public void call_detailsController() throws Exception {
+        try {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
         C.start();
+        } catch (Exception e) {
+            showError(e);
+        }
     }
     // Create Invoice //
     public void call_invoiceController()throws Exception{
+        try {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         CreateInvoiceController C = new CreateInvoiceController();
         C.start();
+        } catch (Exception e) {
+            showError(e);
+        }
     }
     public static int getBookingID() {
         return bookingID;
@@ -208,6 +249,11 @@ public class MainController {
         occupiedRooms = FXCollections.observableArrayList(getBookingsFromTo(today));
         tableOccupiedRooms.setItems(occupiedRooms);
         tableOccupiedRooms.refresh();
+    }
+
+    public static void updateTables(){
+        controller.updateTableBookings();
+        controller.updateTableOccupied();
     }
 
     public void toggleShowAll(){
@@ -330,13 +376,36 @@ public class MainController {
         }
         updateTableBookings();
     }
-    public void sendRoomData () throws Exception {
-        System.out.println("No room creation possible yet.");
-    }
 
     public void sendGuestData(){
         Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
                 Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
         Database.insertNewGuest(guest);
+    }
+
+    public void loadRoomTypePrice(){
+       roomTypePrice.setText(Double.toString(Database.getRoomTypePrice(roomType1.getValue().toString())));
+    }
+
+    public void sendNewRoomTypePrice(){
+        System.out.println(roomType1.getValue().toString());
+        System.out.println(roomTypePrice.getText());
+        Database.setNewRoomTypePrice(roomType1.getValue().toString(), roomTypePrice.getText());
+    }
+
+    public void sendNewRoomCreation(){
+        System.out.println(roomType.getValue().toString());
+        System.out.println(roomTypeSize.getText());
+        Database.createNewRoom(roomType1.getValue().toString(), roomTypeSize.getText());
+    }
+
+    public void billingCheck(){
+        if(compName.isDisabled()){
+            compName.setDisable(false);
+            billCheck = false;
+        } else {
+            compName.setDisable(true);
+            billCheck = true;
+        }
     }
 }

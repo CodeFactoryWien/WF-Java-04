@@ -68,6 +68,13 @@ public class LoginController {
                         alert.showAndWait();
                     }
                     break;
+                case "0":
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error occurred!");
+                    alert.setHeaderText("Incorrect Username or Password.");
+                    alert.setContentText("The Username or Password you entered is incorrect!");
+                    alert.showAndWait();
+                    break;
                 default:
                     System.out.println("I like you. You got to somewhere, where you shouldn't have gone.");
             }
@@ -76,7 +83,7 @@ public class LoginController {
         }
     }
 
-    private void showError(Exception e) {
+    void showError(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error alert");
         alert.setHeaderText(e.getMessage());
