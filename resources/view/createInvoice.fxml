@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Scene?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateInvoiceController">
+<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateInvoiceController">
 <AnchorPane prefHeight="628.0" prefWidth="633.0">
    <children>
       <Label layoutX="39.0" layoutY="19.0" text="Room" />
@@ -64,7 +61,7 @@
                <Font name="System Bold" size="12.0" />
             </font>
          </Label>
-         <TableView layoutX="33.0" layoutY="149.0" prefHeight="401.0" prefWidth="566.0">
+         <TableView fx:id="tableInvoice" layoutX="33.0" layoutY="149.0" prefHeight="401.0" prefWidth="566.0">
            <columns>
               <TableColumn fx:id="columnID" prefWidth="28.0" text="ID" />
               <TableColumn fx:id="columnDate" prefWidth="85.0" text="Date" />
