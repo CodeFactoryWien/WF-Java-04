@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,6 +35,7 @@ public class CreateBookingController {
     private LocalDate checkOutDate;
     private ObservableList<String> roomtypeslist;
     private Guest selected_item;
+    private boolean nonullfound;
 
     // Room and date fields //
     @FXML
@@ -328,87 +330,116 @@ public class CreateBookingController {
         }
     }
 
+    // Loop over vbox and if any child is null or empty alert is fired //
+    private void vboxfieldloop() {
+        nonullfound = true;
+        for (Node child : column2.getChildren()) {
+            if (child instanceof TextField) {
+                TextField T = (TextField) child;
+                if (T.getText().equals("")) {
+                    nonullfound = false;
+                    break;
+                }
+            } else if (child instanceof DatePicker) {
+                DatePicker D = (DatePicker) child;
+                if (D.getValue() == null) {
+                    nonullfound = false;
+                    break;
+                }
+            }
+        }
+        if (nonullfound == false) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information!");
+            alert.setHeaderText("All fields are required");
+            alert.showAndWait();
+        }
+    }
+
     // Add booking function //
     public void addBooking() {
-        if (freeroomcount != 0) {
-            // If user picked ID is found in database //
-            int guestID1 = 0;
-            if (selected_item != null) {
+        vboxfieldloop();
+        if (nonullfound == true) {
+            if (freeroomcount != 0) {
+                // If user picked ID is found in database //
+                int guestID1 = 0;
+                if (selected_item != null) {
+                    try {
+                        PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests WHERE " +
+                                "guestID = " + selected_item.getId());
+                        ResultSet R = P.executeQuery();
+
+                        if (R.first()) {
+                            guestID1 = R.getInt("guestID");
+                        }
+
+                        if (guestID1 != selected_item.getId()) {
+                            sendGuestDataToDatabase();
+                        }
+
+                    } catch (Exception ignored) {
+                    }
+                }
+
+
+                // If user is not picked method called //
+                if (selected_item == null) {
+                    sendGuestDataToDatabase();
+                }
+
+
+                // To get the correct ID from the created guest or the selected guest so it can be added to booking //
+                String guestID2 = null;
                 try {
-                    PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests WHERE " +
-                            "guestID = " + selected_item.getId());
+                    PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests " +
+                            "WHERE guests.firstName = ? AND guests.lastName = ? AND guests.birthDate = ? " +
+                            "AND guests.address = ?");
+                    P.setString(1, firstName.getText());
+                    P.setString(2, lastName.getText());
+                    P.setDate(3, Date.valueOf(birthDate.getValue()));
+                    P.setString(4, address.getText());
+
                     ResultSet R = P.executeQuery();
 
                     if (R.first()) {
-                        guestID1 = R.getInt("guestID");
+                        guestID2 = R.getString("guestID");
                     }
-
-                    if (guestID1 != selected_item.getId()) {
-                        sendGuestDataToDatabase();
-                    }
-
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    System.out.println("guest add not working");
                 }
-            }
 
+                Room R = Database.firstFreeRoom(roomType.getValue(), checkIn.getValue(), checkOut.getValue());
 
-            // If user is not picked method called //
-            if (selected_item == null) {
-                sendGuestDataToDatabase();
-            }
+                // Create booking //
+                try {
+                    PreparedStatement preparedStatement =
+                            Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, " +
+                                    "openAmount, bookingFrom, bookingUntil, bookingCanceled, checkedIn) " +
+                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+                    preparedStatement.setInt(1, R.getId());
+                    preparedStatement.setInt(2, Integer.parseInt(guestID2));
+                    preparedStatement.setInt(3, 5);
+                    preparedStatement.setInt(4, (int) (selectedRoomPrice));
+                    preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
+                    preparedStatement.setDate(6, Date.valueOf(checkOut.getValue()));
+                    preparedStatement.setDate(7, null);
+                    preparedStatement.setDate(8, null);
 
-
-            // To get the correct ID from the created guest or the selected guest so it can be added to booking //
-            String guestID2 = null;
-            try {
-                PreparedStatement P = Database.c.prepareStatement("SELECT guestID FROM guests " +
-                        "WHERE guests.firstName = ? AND guests.lastName = ? AND guests.birthDate = ? " +
-                        "AND guests.address = ?");
-                P.setString(1, firstName.getText());
-                P.setString(2, lastName.getText());
-                P.setDate(3, Date.valueOf(birthDate.getValue()));
-                P.setString(4, address.getText());
-
-                ResultSet R = P.executeQuery();
-
-                if (R.first()) {
-                    guestID2 = R.getString("guestID");
+                    preparedStatement.executeUpdate();
+                } catch (SQLException e) {
+                    System.out.println("Error booking cannot be created");
                 }
-            } catch (Exception e) {
-                System.out.println("guest add not working");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information!");
+                alert.setHeaderText("Booking created!");
+                alert.showAndWait();
+                close();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information!");
+                alert.setHeaderText("No free room for your selected roomtype available!");
+                alert.showAndWait();
             }
-
-            Room R = Database.firstFreeRoom(roomType.getValue(), checkIn.getValue(), checkOut.getValue());
-
-            // Create booking //
-            try {
-                PreparedStatement preparedStatement =
-                        Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, " +
-                                "openAmount, bookingFrom, bookingUntil, bookingCanceled, checkedIn) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-                preparedStatement.setInt(1, R.getId());
-                preparedStatement.setInt(2, Integer.parseInt(guestID2));
-                preparedStatement.setInt(3, 5);
-                preparedStatement.setInt(4, (int) (selectedRoomPrice));
-                preparedStatement.setDate(5, Date.valueOf(checkIn.getValue()));
-                preparedStatement.setDate(6, Date.valueOf(checkOut.getValue()));
-                preparedStatement.setDate(7, null);
-                preparedStatement.setDate(8, null);
-
-                preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-                System.out.println("Error booking cannot be created");
-            }
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information!");
-            alert.setHeaderText("Booking created!");
-            alert.showAndWait();
-            close();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information!");
-            alert.setHeaderText("No free room for your selected roomtype available!");
-            alert.showAndWait();
         }
     }
 }
