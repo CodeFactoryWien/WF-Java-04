@@ -68,6 +68,12 @@ public class CreateInvoiceController {
                     }
                 }
             });
+            btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    clsoe();
+                }
+            });
 
         }catch (Exception e){
             System.err.println(" Exception in initialize ");
@@ -98,7 +104,7 @@ public class CreateInvoiceController {
                 long lngNights = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                 nights = new BigDecimal(lngNights).intValueExact();
                 System.out.println(nights + " "+ ppn);
-                servicesInvoiceList.add(new InvoiceTable(roomID,arrival.toString(),nights," ",roomType,ppn,nights*ppn));
+                servicesInvoiceList.add(new InvoiceTable(roomID,arrival.toString(),nights,"nights ",roomType,ppn,nights*ppn));
 
                 lblRoomNr.setText(String.valueOf(roomID));
                 lblGuestName.setText(firstName + " " + lastName);
@@ -159,8 +165,13 @@ public class CreateInvoiceController {
         try {
             btnCreateInvoice.setText(" ---- ");
         }catch (Exception e){
-
+            System.out.println(" ..... ");
         }
+    }
+    @FXML
+    private void clsoe() {
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
+        stage.close();
     }
 
 }
