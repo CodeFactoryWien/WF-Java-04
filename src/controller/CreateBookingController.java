@@ -200,7 +200,8 @@ public class CreateBookingController {
                             "JOIN roomtype ON fk_roomTypeID = roomTypeID " +
                             "JOIN bookings ON fk_roomID = roomID " +
                             "WHERE roomTypeName = ? " +
-                            "AND bookingUntil >= ?");
+                            "AND bookingUntil >= ? " +
+                            "AND roomID >= 0 ");
             P2.setString(1, roomType.getValue());
             P2.setDate(2, Date.valueOf(LocalDate.now()));
 
