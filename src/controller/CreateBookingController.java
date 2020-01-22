@@ -95,6 +95,11 @@ public class CreateBookingController {
         email.setOnKeyTyped(e -> databaseSearch(email));
         passportNr.setOnKeyTyped(e -> databaseSearch(passportNr));
 
+        // CheckInput call on key typed //
+        zipCode.setOnKeyTyped(e -> checkInputInteger(zipCode));
+        phoneNumber.setOnKeyTyped(e -> checkInputInteger(phoneNumber));
+        passportNr.setOnKeyTyped(e -> checkInputInteger(passportNr));
+
         // Listview select call //
         listViewFoundGuest.setOnMouseClicked(e -> getSelectedObj());
 
@@ -130,39 +135,46 @@ public class CreateBookingController {
     }
 
     // Method is everytime called when choicebox, checkIn or checkOut is fired //
-    public void bookaroom() {
+    private void bookaroom() {
+            // All fields in column1 must be filled and checkIn must be before checkOut //
+            if (roomType.getValue() != null && checkIn.getValue() != null && checkOut.getValue() != null) {
+                if (checkIn.getValue().isBefore(LocalDate.now()) || checkOut.getValue().isBefore(LocalDate.now())) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information!");
+                    alert.setHeaderText("CheckIn or CheckOut date cannot be set in the past");
+                    alert.showAndWait();
+                } else {
+                    if (checkIn.getValue().isBefore(checkOut.getValue())) {
+                        column2.setDisable(false);
+                    } else {
+                        column2.setDisable(true);
+                    }
 
-        // All fields in column1 must be filled and checkIn must be before checkOut //
-        if (roomType.getValue() != null && checkIn.getValue() != null && checkOut.getValue() != null) {
-            if (checkIn.getValue().isBefore(checkOut.getValue())) {
-                column2.setDisable(false);
-            } else {
-                column2.setDisable(true);
+                    try {
+                        totalSelectedRoomCount();
+                        fillPricePerDay();
+                        if (checkIn.getValue() != null) {
+                            checkInDate = checkIn.getValue();
+                        }
+                        if (checkOut.getValue() != null) {
+                            checkOutDate = checkOut.getValue();
+                        }
+
+                        int days = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+
+                        if (column2.isDisable()) {
+                            totalPrice.setText("///");
+                        } else {
+                            totalPrice.setText(String.valueOf(selectedRoomPrice * days));
+                        }
+                    } catch (Exception ignored) {
+                    }
+                }
             }
         }
-        try {
-            totalSelectedRoomCount();
-            fillPricePerDay();
-            if (checkIn.getValue() != null) {
-                checkInDate = checkIn.getValue();
-            }
-            if (checkOut.getValue() != null) {
-                checkOutDate = checkOut.getValue();
-            }
-
-            int days = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
-
-            if (column2.isDisable()) {
-                totalPrice.setText("///");
-            } else {
-                totalPrice.setText(String.valueOf(selectedRoomPrice * days));
-            }
-            } catch (Exception ignored) {
-        }
-    }
 
     // Fill roomtypes from database called from when choicebox shown //
-    public void fillRoomTypes() {
+    private void fillRoomTypes() {
         try {
             PreparedStatement preparedStatement =
                     Database.c.prepareStatement("SELECT roomTypeName FROM roomtype");
@@ -182,7 +194,7 @@ public class CreateBookingController {
     }
 
     // Fill total count of free rooms from database based on selected roomtype//
-    public void totalSelectedRoomCount() {
+    private void totalSelectedRoomCount() {
 
         try {
             PreparedStatement P1 =
@@ -221,7 +233,7 @@ public class CreateBookingController {
     }
 
     // Fill roomPrice from selected roomType from database //
-    public void fillPricePerDay() {
+    private void fillPricePerDay() {
 
         String selectedRoomType = roomType.getSelectionModel().getSelectedItem();
 
@@ -243,7 +255,7 @@ public class CreateBookingController {
     }
 
     // Close Window(Stage) //
-    public void close() {
+    private void close() {
         bookStage = (Stage) cancel.getScene().getWindow();
         bookStage.close();
     }
@@ -251,7 +263,7 @@ public class CreateBookingController {
     // #####Guest create / search in database and create booking methods ##### //
 
     // New guest (not found in database) create //
-    public void sendGuestDataToDatabase() {
+    private void sendGuestDataToDatabase() {
         try {
             PreparedStatement P = Database.c.prepareStatement("INSERT INTO guests (firstName, lastName, birthDate, " +
                     "address, zipCode, country, phoneNumber, email, passportNr, fk_customerID)" +
@@ -275,7 +287,7 @@ public class CreateBookingController {
     }
 
     // Everytime a character is typed in a field in column2 the method is called //
-    public void databaseSearch(TextField obj) {
+    private void databaseSearch(TextField obj) {
         if (selected_item != null) {
             selected_item = null;
         }
@@ -305,7 +317,7 @@ public class CreateBookingController {
     }
 
     // Get data from the selected entry //
-    public  void  getSelectedObj() {
+    private void getSelectedObj() {
         selected_item = (Guest) listViewFoundGuest.getSelectionModel().getSelectedItem();
 
         try {
@@ -330,8 +342,17 @@ public class CreateBookingController {
         }
     }
 
+    private void checkInputInteger(TextField obj) {
+        ////
+        obj.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*")){
+                obj.setText(oldValue);
+            }
+        });
+    }
+
     // Loop over vbox and if any child is null or empty alert is fired //
-    private void vboxfieldloop() {
+    private void vboxFieldLoop() {
         nonullfound = true;
         for (Node child : column2.getChildren()) {
             if (child instanceof TextField) {
@@ -357,8 +378,8 @@ public class CreateBookingController {
     }
 
     // Add booking function //
-    public void addBooking() {
-        vboxfieldloop();
+    private void addBooking() {
+        vboxFieldLoop();
         if (nonullfound == true) {
             if (freeroomcount != 0) {
                 // If user picked ID is found in database //
