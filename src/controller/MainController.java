@@ -58,6 +58,8 @@ public class MainController {
 
     @FXML
     private Button buttonStorno;
+    @FXML
+    private Button btnCheckIn;
 
     @FXML
     private CheckBox checkBoxShowAll;
@@ -169,8 +171,7 @@ public class MainController {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        String s = sw.toString();
-        return s;
+        return  sw.toString();
     }
 
     public void setAdminStatus(){
@@ -178,7 +179,7 @@ public class MainController {
     }
 
     // Create new Booking //
-    public void call_createBookingController() throws Exception {
+    public void call_createBookingController(){
         try {
             CreateBookingController C = new CreateBookingController();
             C.start();
@@ -188,7 +189,7 @@ public class MainController {
     }
 
     // Details //
-    public void call_detailsController() throws Exception {
+    public void call_detailsController(){
         try {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         DetailsController C = new DetailsController();
@@ -198,7 +199,7 @@ public class MainController {
         }
     }
     // Create Invoice //
-    public void call_invoiceController()throws Exception{
+    public void call_invoiceController(){
         try {
         bookingID = tableOccupiedRooms.getSelectionModel().getSelectedItem().getBookingId();
         CreateInvoiceController C = new CreateInvoiceController();
@@ -259,8 +260,10 @@ public class MainController {
     public void toggleShowAll(){
         if(checkBoxShowAll.isSelected()){
             buttonStorno.setDisable(true);
+            btnCheckIn.setDisable(true);
         }else{
             buttonStorno.setDisable(false);
+            btnCheckIn.setDisable(false);
         }
         updateTableBookings();
     }
@@ -364,7 +367,11 @@ public class MainController {
     }
 
     public void loadRoomTypePrice(){
-       roomTypePrice.setText(Double.toString(Database.getRoomTypePrice(roomType1.getValue().toString())));
+        try {
+            roomTypePrice.setText(Double.toString(Database.getRoomTypePrice(roomType1.getValue().toString())));
+        }catch(NullPointerException e){
+            System.out.println("No price found for Roomtype");
+        }
     }
 
     public void sendNewRoomTypePrice(){
