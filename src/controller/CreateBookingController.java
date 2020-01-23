@@ -329,7 +329,7 @@ public class CreateBookingController {
     private void checkInputInteger(TextField obj) {
         ////
         obj.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*")){
+            if(!newValue.matches("[0-9P+]*")){
                 obj.setText(oldValue);
             }
         });
