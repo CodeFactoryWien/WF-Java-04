@@ -94,7 +94,6 @@ public class CreateBookingController {
         // Datepicker editable set false //
         checkIn.setEditable(false);
         checkOut.setEditable(false);
-        birthDate.setEditable(false);
 
         // close method on button click //
         cancel.setOnMouseClicked(e -> close());
