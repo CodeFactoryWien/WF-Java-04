@@ -427,6 +427,8 @@ public class CreateBookingController {
                                 Database.c.prepareStatement("INSERT INTO bookings (fk_roomID, fk_guestID, fk_customerID, " +
                                         "openAmount, bookingFrom, bookingUntil, bookingCanceled, checkedIn) " +
                                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+                        assert R != null;
+                        assert guestID2 != null;
                         preparedStatement.setInt(1, R.getId());
                         preparedStatement.setInt(2, Integer.parseInt(guestID2));
                         preparedStatement.setInt(3, 5);
