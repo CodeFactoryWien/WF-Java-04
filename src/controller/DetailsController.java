@@ -56,7 +56,6 @@ public class DetailsController{
     public void initialize(){
         try {
             bookingID = MainController.getBookingID();
-            System.out.println("bookingID in initialize " + bookingID);
             populateListService();
 
             populateMoviesChoice();
@@ -108,7 +107,6 @@ public class DetailsController{
             });
             btn_checkout.setOnAction(event -> {
                 try {
-                    System.out.println("checkout");
                     call_invoiceController();
                     Stage stage = (Stage) btn_checkout.getScene().getWindow();
                     stage.close();
@@ -130,7 +128,7 @@ public class DetailsController{
         if (serviceID!=0 && fixPrice!=0) {
             java.util.Date date=new java.util.Date();
             java.sql.Date sqlDate=new java.sql.Date(date.getTime());
-            System.out.println(bookingID+" "+ serviceID+" "+fixPrice);
+            //System.out.println(bookingID+" "+ serviceID+" "+fixPrice);
             PreparedStatement preparedStatement =
                     Database.c.prepareStatement("INSERT INTO services(fk_bookingID, serviceType, serviceDate, fk_serviceID, fixPrice) \n" +
                             "VALUES ('" + bookingID + "', '"+serviceType+"', '" + sqlDate +"', '" + serviceID + "','"+fixPrice+"' )");
@@ -153,7 +151,7 @@ public class DetailsController{
     }
     // calculate and show the amount of all services
     public void setServiceAmount()throws Exception{
-        System.out.println("bookingID in setServiceAmount" + bookingID);
+        //System.out.println("bookingID in setServiceAmount" + bookingID);
 
         PreparedStatement preparedStatement =
                 Database.c.prepareStatement("SELECT SUM(fixPrice) \n" +
@@ -163,13 +161,13 @@ public class DetailsController{
         int index=1;
         while (rsPrice.next()){
             int servicePrice = rsPrice.getInt(index);
-            System.out.println(servicePrice);
+            //System.out.println(servicePrice);
             lblAmount.setText(String.valueOf((double)servicePrice/100) + " €");
         }
     }
 
     public void setGuestDetails()throws Exception{
-        System.out.println("bookingID in setGuestDetails" + bookingID);
+        //System.out.println("bookingID in setGuestDetails" + bookingID);
         PreparedStatement preparedStatement =
                 Database.c.prepareStatement("SELECT fk_roomID, firstName, lastName, bookingUntil\n" +
                         "FROM bookings\n" +
@@ -179,7 +177,7 @@ public class DetailsController{
         while (rsHead.next()){
             int roomID   = rsHead.getInt("fk_roomID");
             lblRoomNr.setText(String.valueOf(roomID));
-                System.out.println("roomid angezeigt");
+            //System.out.println("roomid angezeigt");
             String firstName = rsHead.getString("firstName");
             String lastName = rsHead.getString("lastName");
             lblGuestName.setText(firstName+ " " + lastName);
@@ -189,14 +187,14 @@ public class DetailsController{
     }
 
     public void populateListService() throws  Exception {
-        System.out.println("bookingID in populate List: "+bookingID);
         String tableS;
         String tableMovie="serv_movies.movieName";
         String tableWellness="serv_wellness.wellnessName";
         String tableMinibar="serv_minibar.mbItem";
-        tableS = tableMovie + tableWellness + tableMinibar;
+        String comma = ", ";
+        tableS = tableMovie + comma + tableWellness + comma + tableMinibar;
         PreparedStatement preparedStatement =
-                Database.c.prepareStatement("SELECT servicesID, serviceType, serviceDate, coalesce(serv_movies.movieName, serv_wellness.wellnessName, serv_minibar.mbItem) as serviceName, fk_serviceID \n" +
+                Database.c.prepareStatement("SELECT servicesID, serviceType, serviceDate, coalesce("+tableS+") as serviceName, fk_serviceID \n" +
                         " FROM services  \n" +
                         " LEFT OUTER JOIN serv_movies ON (services.fk_serviceID = serv_movies.movieID AND services.serviceType = 'movie') \n" +
                         " LEFT OUTER JOIN serv_wellness ON (services.fk_serviceID = serv_wellness.wellnessID AND services.serviceType = 'wellness') \n" +
@@ -211,7 +209,6 @@ public class DetailsController{
             Date serviceDate = rsServicesList.getDate("serviceDate");
             String serviceName = rsServicesList.getString("serviceName");
             servicesList.add(new ServicesList(i,bookingID,serviceType,serviceDate,serviceName));
-            System.out.println(i);
         }
         serviceListView.setItems(servicesList);
         serviceListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
