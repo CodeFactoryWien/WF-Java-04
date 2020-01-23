@@ -9,8 +9,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -19,16 +17,14 @@ import javafx.stage.Stage;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class DetailsController{
     private Stage S;
     private int bookingID  ;
-    private int fixPrice;
-    private int serviceID = 0;
+    private int fixPriceMovie, fixPriceWellness, fixPriceMinibar =0;
+    private int serviceIdMovie, serviceIdWellness,serviceIdMinibar = 0;
     private int servicesID = 0;
     private boolean showMovie = true;
     private boolean showWellness = true;
@@ -73,10 +69,10 @@ public class DetailsController{
             showArr.add(showMovie);
             showArr.add(showWellness);
             showArr.add(showMinibar);
-
+            // init Buttons
             btn_add_movie.setOnAction(event -> {
                 try {
-                    addService("movie");
+                    addService("movie",serviceIdMovie,fixPriceMovie);
                     populateListService();
                     setServiceAmount();
                 } catch (Exception e) {
@@ -85,7 +81,7 @@ public class DetailsController{
             });
             btn_add_wellness.setOnAction(event -> {
                 try {
-                    addService("wellness");
+                    addService("wellness",serviceIdWellness,fixPriceWellness);
                     populateListService();
                     setServiceAmount();
                 } catch (Exception e) {
@@ -94,7 +90,7 @@ public class DetailsController{
             });
             btn_add_minibar.setOnAction(event -> {
                 try {
-                    addService("minibar");
+                    addService("minibar",serviceIdMinibar,fixPriceMinibar);
                     populateListService();
                     setServiceAmount();
                 } catch (Exception e) {
@@ -120,7 +116,8 @@ public class DetailsController{
                     e.printStackTrace();
                 }
             });
-            cb_movie.selectedProperty().addListener((observable, oldValue, newValue) -> showMovie = !newValue);
+            //init Choiceboxes
+            cb_movie.selectedProperty().addListener((observable, oldValue, newValue) -> showMovie = !newValue );
             cb_wellness.selectedProperty().addListener((observable, oldValue, newValue) -> showWellness = !newValue);
             cb_minibar.selectedProperty().addListener((observable, oldValue, newValue) -> showMinibar = !newValue);
 
@@ -128,8 +125,8 @@ public class DetailsController{
             System.err.println("Exception in initialize ");
         }
     }
-
-    public void addService(String serviceType)throws Exception{
+    // add Service to a booking
+    public void addService(String serviceType, int serviceID, int fixPrice)throws Exception{
         if (serviceID!=0 && fixPrice!=0) {
             java.util.Date date=new java.util.Date();
             java.sql.Date sqlDate=new java.sql.Date(date.getTime());
@@ -138,14 +135,14 @@ public class DetailsController{
                     Database.c.prepareStatement("INSERT INTO services(fk_bookingID, serviceType, serviceDate, fk_serviceID, fixPrice) \n" +
                             "VALUES ('" + bookingID + "', '"+serviceType+"', '" + sqlDate +"', '" + serviceID + "','"+fixPrice+"' )");
             preparedStatement.executeUpdate();
-            servicesID=0;
+
             fixPrice=0;
             btn_add_minibar.setText("select item to add");
             btn_add_wellness.setText("select item to add");
             btn_add_movie.setText("select item to add");
         }
     }
-
+    // delete a service from a booking
     public void deleteService()throws Exception{
         if (servicesID!=0){
             PreparedStatement preparedStatement =
@@ -154,7 +151,7 @@ public class DetailsController{
             btn_deleteService.setText("select item for deleting");
         }
     }
-
+    // calculate and show the amount of all services
     public void setServiceAmount()throws Exception{
         System.out.println("bookingID in setServiceAmount" + bookingID);
 
@@ -167,8 +164,6 @@ public class DetailsController{
         while (rsPrice.next()){
             int servicePrice = rsPrice.getInt(index);
             System.out.println(servicePrice);
-            //NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-            //lblAmount.setText(nf.format(((float)servicePrice/100)));
             lblAmount.setText(String.valueOf((double)servicePrice/100) + " €");
         }
     }
@@ -255,8 +250,8 @@ public class DetailsController{
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     btn_add_movie.setText("add movie "  + movieList.get(newValue.intValue()).getMovieID());
-                    serviceID = movieList.get(newValue.intValue()).getMovieID();
-                    fixPrice = movieList.get(newValue.intValue()).getMoviePrice();
+                    serviceIdMovie = movieList.get(newValue.intValue()).getMovieID();
+                    fixPriceMovie = movieList.get(newValue.intValue()).getMoviePrice();
                 } catch (Exception e) {
                     System.out.println("Error");
                 }
@@ -285,8 +280,8 @@ public class DetailsController{
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     btn_add_wellness.setText("add wellness service: " + wellnessList.get(newValue.intValue()).getWellnessID());
-                    serviceID=wellnessList.get(newValue.intValue()).getWellnessID();
-                    fixPrice=wellnessList.get(newValue.intValue()).getWellnessPrice();
+                    serviceIdWellness=wellnessList.get(newValue.intValue()).getWellnessID();
+                    fixPriceWellness=wellnessList.get(newValue.intValue()).getWellnessPrice();
                 } catch (Exception e) {
                     System.out.println("Error changelistener wellnesslist");
                 }
@@ -314,8 +309,8 @@ public class DetailsController{
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     btn_add_minibar.setText("add minibar Item " + minibarList.get(newValue.intValue()).getMbID());
-                    serviceID=minibarList.get(newValue.intValue()).getMbID();
-                    fixPrice=minibarList.get(newValue.intValue()).getMbPrice();
+                    serviceIdMinibar=minibarList.get(newValue.intValue()).getMbID();
+                    fixPriceMinibar=minibarList.get(newValue.intValue()).getMbPrice();
 
                 }catch (Exception e){
                     System.out.println("Error changelistener minibarlist");

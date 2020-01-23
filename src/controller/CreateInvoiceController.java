@@ -138,8 +138,8 @@ public class CreateInvoiceController {
                 servicesInvoiceList.add(new InvoiceTable(i,serviceDate,serviceQuant,serviceType,serviceName,servicePPS,servicePPS*serviceQuant));
                 total = total+(servicePPS*serviceQuant);
             }
-            lblTotal.setText(String.valueOf(total));
-            lblTax.setText(String.valueOf(total-(total*0.9)));
+            lblTotal.setText(String.format("%.2f",(double)total/100) + " €");
+            lblTax.setText(String.format("%.2f",(double)(total-(total*0.9))/100) + " €");
         }catch (Exception e){
             System.out.println("getdata exption");
         }

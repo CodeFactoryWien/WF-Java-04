@@ -7,8 +7,8 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class InvoiceTable {
 
-    private final SimpleIntegerProperty servicesID, quant, pps, price;
-    private final SimpleStringProperty serviceType, serviceName, serviceDate ;
+    private final SimpleIntegerProperty servicesID, quant;
+    private final SimpleStringProperty serviceType, serviceName, serviceDate, pps, price ;
 
 
     public InvoiceTable(int servicesID,  String serviceDate,  int quant, String serviceType, String serviceName, int pps, int price ) {
@@ -17,8 +17,8 @@ public class InvoiceTable {
         this.quant = new SimpleIntegerProperty(quant);
         this.serviceType = new SimpleStringProperty(serviceType);
         this.serviceName = new SimpleStringProperty(serviceName);
-        this.pps = new SimpleIntegerProperty(pps);
-        this.price = new SimpleIntegerProperty(price);
+        this.pps = new SimpleStringProperty(String.format("%.2f", (double)pps/100) + " €");
+        this.price = new SimpleStringProperty(String.format("%.2f", (double)price/100) + " €");
     }
 
     public int getServicesID() {
@@ -37,19 +37,19 @@ public class InvoiceTable {
         return quant;
     }
 
-    public int getPps() {
+    public String getPps() {
         return pps.get();
     }
 
-    public SimpleIntegerProperty ppsProperty() {
+    public SimpleStringProperty ppsProperty() {
         return pps;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price.get();
     }
 
-    public SimpleIntegerProperty priceProperty() {
+    public SimpleStringProperty priceProperty() {
         return price;
     }
 
