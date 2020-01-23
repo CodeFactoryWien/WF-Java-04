@@ -4,12 +4,10 @@ import hotel.Guest;
 import hotel.Room;
 import javafx.scene.control.Alert;
 
-
 import java.sql.*;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class Database {
@@ -59,25 +57,7 @@ public class Database {
         return null;
     }
 
-    public static Guest getGuest(String email){
-        try{
-            PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM guests WHERE email = ?");
-            preparedStatement.setString(1,email);
-            ResultSet rs = getData(preparedStatement);
 
-            if(rs.first()){
-                return new Guest(rs.getInt("guestID"), rs.getString("firstName"),
-                        rs.getString("lastName"), rs.getDate("birthDate").toLocalDate(),
-                        rs.getString("address"), rs.getInt("zipCode"),
-                        rs.getString("country"), rs.getString("phoneNumber"),
-                        rs.getString("email"),Integer.toString(rs.getInt("passportNr")));
-            }
-            //TODO: Password implementation for Data-Privacy
-        }catch(Exception e){
-            System.err.println("SQL Query Error");
-        }
-        return null;
-    }
     public static Guest getGuest(int guestID){
         try{
             PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM guests WHERE guestID = ?");
@@ -124,27 +104,25 @@ public class Database {
         }
     }
 
-    public static ArrayList<Room> getOccupiedRooms() {
-        Date today = new Date(new java.util.Date().getTime());
-        ArrayList<Room> list = new ArrayList<>();
-        try{
-            PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM (rooms INNER JOIN roomtype " +
-                    "ON fk_roomTypeID = roomTypeID) INNER JOIN bookings " +
-                    "ON fk_roomID = roomID WHERE bookingFrom <= ? AND bookingUntil >= ?");
-            preparedStatement.setDate(1,today);
-            preparedStatement.setDate(2,today);
-
-            ResultSet rs = Database.getData(preparedStatement);
-
-            while(rs.next()){
-                list.add(new Room(rs.getInt("roomID"), rs.getString("roomTypeName") ,
-                        rs.getInt("price"), rs.getInt("roomTypeCapacity"),
-                        rs.getInt("roomSize"),"",rs.getString("roomTypeFacilities")));
-            }
-        }catch(Exception e){
-            System.err.println("SQL Query Error");
+    public static void insertNewCustomer(String compName, Guest guest){
+        try {
+            PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO customers (firstName, " +
+                    "lastName, companyName, birthDate, address, zipCode, country, phoneNumber, email) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?)");
+            preparedStatement.setString(1, guest.getFirstName());
+            preparedStatement.setString(2, guest.getLastName());
+            preparedStatement.setString(3, compName);
+            preparedStatement.setDate(
+                    4, new Date(Date.from(guest.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()));
+            preparedStatement.setString(5, guest.getAddress());
+            preparedStatement.setInt(6, guest.getZipCode());
+            preparedStatement.setString(7, guest.getCountry());
+            preparedStatement.setString(8, guest.getPhone());
+            preparedStatement.setString(9, guest.getEmail());
+            setData(preparedStatement);
+        } catch (Exception e) {
+            System.out.println("Exception preparing statement");
         }
-        return list;
     }
 
     public static String checkUserName(String username){
@@ -194,7 +172,7 @@ public class Database {
             System.err.println("SQL Query Error");
             System.err.println(e.toString());
         }
-        return null;
+        return "";
     }
 
     public static void setNewRoomTypePrice(String roomTypeName, String roomTypePrice){

@@ -437,6 +437,7 @@ public class CreateBookingController {
                         preparedStatement.setDate(8, null);
 
                         preparedStatement.executeUpdate();
+                        MainController.updateTables();
                     } catch (SQLException e) {
                         System.out.println("Error booking cannot be created");
                     }

@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
 
     <HBox prefHeight="768.0" prefWidth="1024.0">
         <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
@@ -30,8 +40,7 @@
                                         <TableColumn fx:id="columnDeparture" prefWidth="94.0" text="est. Departure" />
                                     </columns>
                                 </TableView>
-                                <Button layoutX="651.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="View Details" />
-                                <Button layoutX="781.0" layoutY="21.0" mnemonicParsing="false" text="Add a Service" />
+                                <Button layoutX="781.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="Add a Service" />
                                 <Button fx:id="buttonCheckOut" layoutX="907.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_invoiceController" text="CHECK OUT" />
                                 <Button fx:id="logoutButton" layoutX="930.0" layoutY="670.0" mnemonicParsing="false" onMouseClicked="#logout" text="Log Out" />
                             </children>
@@ -46,6 +55,7 @@
                                 <Button fx:id="createBooking" layoutX="128.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
                                 <TableView fx:id="tableBookings" layoutX="29.0" layoutY="57.0" prefHeight="600.0" prefWidth="965.0">
                                     <columns>
+                              <TableColumn fx:id="columnBookingRoomNr" prefWidth="75.0" text="Room Nr" />
                                         <TableColumn fx:id="columnBookingArrival" prefWidth="90.0" text="Arrival" />
                                         <TableColumn fx:id="columnBookingDeparture" prefWidth="93.0" text="est. Departure" />
                                         <TableColumn fx:id="columnBookingGuest" prefWidth="191.0" text="Guest" />
@@ -72,35 +82,13 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                        <Label layoutX="668.0" layoutY="50.0" text="Create a Room:">
+                        <Label layoutX="43.0" layoutY="50.0" text="Create External Guest:">
                            <font>
                               <Font name="System Bold" size="30.0" />
                            </font>
                         </Label>
-                        <Label layoutX="668.0" layoutY="122.0" text="Choose the Room Type:">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <ChoiceBox fx:id="roomType" layoutX="668.0" layoutY="143.0" value="Single Room"/>
-                        <Label layoutX="668.0" layoutY="551.0" text="Enter the Room Price per Night:">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="roomTypePrice" layoutX="668.0" layoutY="572.0" prefHeight="25.0" prefWidth="295.0" />
-                        <Label layoutX="668.0" layoutY="217.0" text="Enter the Room Size:">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="roomTypeSize" layoutX="668.0" layoutY="238.0" prefHeight="25.0" prefWidth="294.0" />
-                        <Button layoutX="778.0" layoutY="316.0" onMouseClicked="#sendNewRoomCreation" prefHeight="44.0" prefWidth="74.0" text="Submit" />
-                        <Label layoutX="43.0" layoutY="50.0" text="Create/Edit Guest:">
-                           <font>
-                              <Font name="System Bold" size="30.0" />
-                           </font>
-                        </Label>
+                        <Label layoutX="42.0" layoutY="136.0" text="Company Name" />
+                        <TextField fx:id="compName" layoutX="43.0" layoutY="161.0" />
                         <Label layoutX="43.0" layoutY="190.0" text="Last Name" />
                         <TextField fx:id="lastName" layoutX="42.0" layoutY="215.0" />
                         <Label layoutX="42.0" layoutY="247.0" text="First Name" />
@@ -119,13 +107,11 @@
                         <TextField fx:id="email" layoutX="42.0" layoutY="619.0" />
                         <Label layoutX="44.0" layoutY="653.0" text="Passport Number" />
                         <TextField fx:id="passportNr" layoutX="43.0" layoutY="675.0" />
-                        <Label layoutX="42.0" layoutY="136.0" text="Company Name" />
-                        <TextField fx:id="compName" layoutX="43.0" layoutY="161.0" />
                         <CheckBox fx:id="billingCheck" layoutX="42.0" layoutY="102.0" mnemonicParsing="false" text="Guest and Customer have the same Billing Address" />
-                        <VBox alignment="CENTER" layoutX="263.0" layoutY="102.0" prefHeight="630.0" prefWidth="293.0">
+                        <VBox alignment="CENTER" layoutX="264.0" layoutY="117.0" prefHeight="630.0" prefWidth="293.0">
                            <children>
                               <Label alignment="TOP_LEFT" text="Entries in our Database:" />
-                              <ListView fx:id="listViewFoundGuest" fixedCellSize="0.0" prefHeight="255.0" prefWidth="273.0">
+                              <ListView fx:id="listViewFoundGuest" fixedCellSize="0.0" prefHeight="277.0" prefWidth="273.0">
                                  <VBox.margin>
                                     <Insets bottom="200.0" left="10.0" right="10.0" />
                                  </VBox.margin>
@@ -133,14 +119,31 @@
                                     <Insets />
                                  </opaqueInsets>
                               </ListView>
-                              <Button fx:id="addGuest" onMouseClicked="#sendGuestData" prefHeight="23.0" prefWidth="120.0" text="Create Guest">
+                              <Button onMouseClicked="#sendGuestData" prefHeight="23.0" prefWidth="120.0" text="Create Guest">
                                  <VBox.margin>
                                     <Insets bottom="20.0" top="20.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button fx:id="editGuest" onMouseClicked="#sendGuestData" prefHeight="23.0" prefWidth="120.0" text="Edit Guest" />
                            </children>
                         </VBox>
+                        <Label layoutX="668.0" layoutY="50.0" text="Create a Room:">
+                           <font>
+                              <Font name="System Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="668.0" layoutY="122.0" text="Choose the Room Type:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="roomType" layoutX="668.0" layoutY="143.0" value="Single Room" />
+                        <Label layoutX="668.0" layoutY="217.0" text="Enter the Room Size:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="roomTypeSize" layoutX="668.0" layoutY="238.0" prefHeight="25.0" prefWidth="294.0" />
+                        <Button layoutX="778.0" layoutY="316.0" onMouseClicked="#sendNewRoomCreation" prefHeight="44.0" prefWidth="74.0" text="Submit" />
                         <Label layoutX="671.0" layoutY="383.0" text="Edit Room Type Price:">
                            <font>
                               <Font name="System Bold" size="30.0" />
@@ -151,8 +154,14 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
+                        <ChoiceBox fx:id="roomType1" layoutX="668.0" layoutY="481.0" value="Single Room" />
+                        <Label layoutX="668.0" layoutY="551.0" text="Enter the Room Price per Night:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="roomTypePrice" layoutX="668.0" layoutY="572.0" prefHeight="25.0" prefWidth="295.0" />
                         <Button layoutX="778.0" layoutY="653.0" onMouseClicked="#sendNewRoomTypePrice" prefHeight="44.0" prefWidth="74.0" text="Submit" />
-                        <ChoiceBox fx:id="roomType1" layoutX="668.0" layoutY="481.0" value="Single Room"/>
                             </children>
                         </AnchorPane>
                     </content>

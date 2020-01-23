@@ -1,16 +1,15 @@
 package controller;
 
+import javafx.fxml.FXML;
 import database.Database;
-import hotel.Booking;
-import hotel.Guest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import hotel.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,6 +32,7 @@ public class MainController {
 
     private ObservableList<String> roomtypeslist;
 
+    //Table of occupied Rooms
     @FXML
     private TableView<Booking> tableOccupiedRooms;
     @FXML
@@ -40,20 +40,21 @@ public class MainController {
     @FXML
     private TableColumn<Booking, String> columnGuestName, columnArrival, columnDeparture;
 
+    //Table of upcoming bookings
     @FXML
     private TableView<Booking> tableBookings;
     @FXML
+    private TableColumn<Booking, Integer> columnBookingRoomNr;
+    @FXML
     private TableColumn<Booking, String> columnBookingGuest, columnBookingArrival, columnBookingDeparture, columnBookingStatus;
 
+    //Bookings Table control elements
     @FXML
-    private Button buttonStorno;
-    @FXML
-    private Button btnCheckIn;
-
+    private Button buttonStorno, btnCheckIn;
     @FXML
     private CheckBox checkBoxShowAll;
     @FXML
-    private DatePicker dateFrom, dateUntil, birthDate;
+    private DatePicker dateFrom, dateUntil;
 
     public ObservableList<Booking> occupiedRooms, bookings;
 
@@ -68,6 +69,8 @@ public class MainController {
     private TextField roomTypePrice, roomTypeSize, compName, firstName, lastName,
             address, zipCode, country, phoneNumber, email, passportNr;
 
+    @FXML
+    private DatePicker birthDate;
     @FXML
     private ListView<Guest> listViewFoundGuest;
 
@@ -84,20 +87,27 @@ public class MainController {
 
     @FXML
     public void initialize(){
+        // Set default bookingTable period to today until 7 days later
         dateFrom.setValue(LocalDate.now());
         dateUntil.setValue(LocalDate.now().plusDays(7));
-        fillRoomTypes();
+        // Initialize tableviews with Data
         updateTableOccupied();
         updateTableBookings();
         initializeTableOccupied();
         initializeTableBookings();
-        birthDate.setEditable(false);
+
+        //State login status
         if(MainController.userIsAdmin){
             System.out.println("Admin logged in.");
         } else {
             tabPane.getTabs().remove(adminTab);
             System.out.println("User logged in.");
         }
+
+        //Initialize Admin Interface
+        fillRoomTypes();
+        birthDate.setEditable(false);
+
         roomType1.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
             try {
                 loadRoomTypePrice();
@@ -204,6 +214,7 @@ public class MainController {
     }
 
     private void initializeTableBookings(){
+        columnBookingRoomNr.setCellValueFactory(new PropertyValueFactory<>("roomId"));
         columnBookingGuest.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnBookingArrival.setCellValueFactory(new PropertyValueFactory<>("arrivalProperty"));
         columnBookingDeparture.setCellValueFactory(new PropertyValueFactory<>("departureProperty"));
@@ -254,8 +265,8 @@ public class MainController {
         try {
             PreparedStatement preparedStatement = Database.c.prepareStatement("SELECT * FROM (bookings INNER JOIN guests " +
                     "ON fk_guestID = guestID) INNER JOIN (rooms INNER JOIN roomtype ON roomTypeID = fk_roomTypeID) " +
-                    "ON fk_roomID = roomID WHERE ((checkedIn IS NULL OR checkedIn = '0000-00-00') AND (bookingCanceled IS NULL OR bookingCanceled = '0000-00-00'))" +
-                    " AND (bookingFrom >= ? AND bookingFrom <= ?)");
+                    "ON fk_roomID = roomID WHERE ((checkedIn IS NULL OR checkedIn = '0000-00-00') AND (bookingCanceled IS NULL OR bookingCanceled = '0000-00-00')) " +
+                    "AND (bookingFrom >= ? AND bookingFrom <= ?)");
             preparedStatement.setDate(1, start);
             preparedStatement.setDate(2, end);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -342,13 +353,65 @@ public class MainController {
     }
 
     public void sendGuestData(){
-        Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
-        Database.insertNewGuest(guest);
+        if(billCheck) {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewGuest(guest);
+        }
+        else {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewCustomer(compName.getText(), guest);
+        }
+    }
+
+    public void editGuestData(){
+        if(billCheck) {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewGuest(guest);
+        }
+        else {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewCustomer(compName.getText(), guest);
+        }
     }
 
     public void loadRoomTypePrice(){
-       roomTypePrice.setText(Database.getRoomTypePrice(roomType1.getValue()));
+       roomTypePrice.setText(Database.getRoomTypePrice(roomType1.getValue()).toString());
     }
 
     public void sendNewRoomTypePrice(){
