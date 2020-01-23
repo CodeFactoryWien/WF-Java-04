@@ -72,7 +72,8 @@
               <TableColumn fx:id="columnType" prefWidth="81.0" text="group" />
              <TableColumn fx:id="columnName" prefWidth="188.0" text="service" />
               <TableColumn fx:id="columnPPS" prefWidth="69.0" text="Price/service" />
-              <TableColumn fx:id="columnPrice" prefWidth="73.0" text="Price" />
+              <TableColumn fx:id="columnPrice" prefWidth="73.0" text="Price"  />
+
            </columns>
          </TableView>
          <Label layoutX="102.0" layoutY="64.0" text="Extras Services:" />
