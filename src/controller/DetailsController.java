@@ -114,10 +114,31 @@ public class DetailsController{
                     e.printStackTrace();
                 }
             });
-            //init Choiceboxes
-            cb_movie.selectedProperty().addListener((observable, oldValue, newValue) -> showMovie = !newValue );
-            cb_wellness.selectedProperty().addListener((observable, oldValue, newValue) -> showWellness = !newValue);
-            cb_minibar.selectedProperty().addListener((observable, oldValue, newValue) -> showMinibar = !newValue);
+            //init Choiceboxes --------------------------
+            cb_movie.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                showMovie = !newValue;
+                try {
+                    populateListService();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } );
+            cb_wellness.selectedProperty().addListener((observable, oldValue, newValue) ->  {
+                showMovie = !newValue;
+                try {
+                    populateListService();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } );
+            cb_minibar.selectedProperty().addListener((observable, oldValue, newValue) ->  {
+                showMovie = !newValue;
+                try {
+                    populateListService();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } );
 
         }catch (Exception e){
             System.err.println("Exception in initialize ");
@@ -134,7 +155,6 @@ public class DetailsController{
                             "VALUES ('" + bookingID + "', '"+serviceType+"', '" + sqlDate +"', '" + serviceID + "','"+fixPrice+"' )");
             preparedStatement.executeUpdate();
 
-            fixPrice=0;
             btn_add_minibar.setText("select item to add");
             btn_add_wellness.setText("select item to add");
             btn_add_movie.setText("select item to add");
