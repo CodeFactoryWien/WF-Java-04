@@ -107,7 +107,14 @@ public class CreateInvoiceController {
                 long lngNights = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                 nights = new BigDecimal(lngNights).intValueExact();
                 System.out.println(nights + " "+ ppn);
-                servicesInvoiceList.add(new InvoiceTable(roomID,arrival.toString(),nights,"nights ",roomType,ppn,nights*ppn));
+                String serviceType = "nights";
+                if (nights==0){
+                    nights=1;
+                    roomType="charge";
+                    serviceType= "STORNO";
+                }
+
+                servicesInvoiceList.add(new InvoiceTable(roomID,arrival.toString(),nights,serviceType,roomType,ppn,nights*ppn));
 
                 lblRoomNr.setText(String.valueOf(roomID));
                 lblGuestName.setText(firstName + " " + lastName);

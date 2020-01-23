@@ -171,7 +171,7 @@ public class Database {
             System.err.println("SQL Query Error");
             System.err.println(e.toString());
         }
-        return null;
+        return "";
     }
 
     public static void setNewRoomTypePrice(String roomTypeName, String roomTypePrice){

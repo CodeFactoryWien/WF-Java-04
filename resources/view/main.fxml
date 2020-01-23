@@ -55,6 +55,7 @@
                                 <Button fx:id="createBooking" layoutX="128.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
                                 <TableView fx:id="tableBookings" layoutX="29.0" layoutY="57.0" prefHeight="600.0" prefWidth="965.0">
                                     <columns>
+                              <TableColumn fx:id="columnBookingRoomNr" prefWidth="75.0" text="Room Nr" />
                                         <TableColumn fx:id="columnBookingArrival" prefWidth="90.0" text="Arrival" />
                                         <TableColumn fx:id="columnBookingDeparture" prefWidth="93.0" text="est. Departure" />
                                         <TableColumn fx:id="columnBookingGuest" prefWidth="191.0" text="Guest" />
