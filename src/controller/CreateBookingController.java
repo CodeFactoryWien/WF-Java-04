@@ -139,6 +139,7 @@ public class CreateBookingController {
             // All fields in column1 must be filled and checkIn must be before checkOut //
             if (roomType.getValue() != null && checkIn.getValue() != null && checkOut.getValue() != null) {
                 if (checkIn.getValue().isBefore(LocalDate.now()) || checkOut.getValue().isBefore(LocalDate.now())) {
+                    column2.setDisable(true);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information!");
                     alert.setHeaderText("CheckIn or CheckOut date cannot be set in the past");
