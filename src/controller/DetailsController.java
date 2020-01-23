@@ -38,8 +38,6 @@ public class DetailsController{
     @FXML
     private Button btn_add_movie, btn_add_wellness, btn_add_minibar, btn_deleteService ,btn_checkout;
     @FXML
-    private CheckBox cb_movie, cb_wellness, cb_minibar;
-    @FXML
     private ListView serviceListView;
 
     public DetailsController(){}
@@ -115,30 +113,7 @@ public class DetailsController{
                 }
             });
             //init Choiceboxes --------------------------
-            cb_movie.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                showMovie = !newValue;
-                try {
-                    populateListService();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } );
-            cb_wellness.selectedProperty().addListener((observable, oldValue, newValue) ->  {
-                showMovie = !newValue;
-                try {
-                    populateListService();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } );
-            cb_minibar.selectedProperty().addListener((observable, oldValue, newValue) ->  {
-                showMovie = !newValue;
-                try {
-                    populateListService();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } );
+            
 
         }catch (Exception e){
             System.err.println("Exception in initialize ");
@@ -249,7 +224,7 @@ public class DetailsController{
 
     public void populateMoviesChoice() throws Exception {
         PreparedStatement preparedStatement =
-        Database.c.prepareStatement("SELECT * FROM serv_movies");
+                Database.c.prepareStatement("SELECT * FROM serv_movies");
         ResultSet rsMovies = preparedStatement.executeQuery();
         ObservableList<Movie> movieList = FXCollections.observableArrayList();
 
