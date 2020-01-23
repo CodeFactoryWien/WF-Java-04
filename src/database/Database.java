@@ -124,28 +124,6 @@ public class Database {
         }
     }
 
-    public static ArrayList<Room> getOccupiedRooms() {
-        Date today = new Date(new java.util.Date().getTime());
-        ArrayList<Room> list = new ArrayList<>();
-        try{
-            PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM (rooms INNER JOIN roomtype " +
-                    "ON fk_roomTypeID = roomTypeID) INNER JOIN bookings " +
-                    "ON fk_roomID = roomID WHERE bookingFrom <= ? AND bookingUntil >= ?");
-            preparedStatement.setDate(1,today);
-            preparedStatement.setDate(2,today);
-
-            ResultSet rs = Database.getData(preparedStatement);
-
-            while(rs.next()){
-                list.add(new Room(rs.getInt("roomID"), rs.getString("roomTypeName") ,
-                        rs.getInt("price"), rs.getInt("roomTypeCapacity"),
-                        rs.getInt("roomSize"),"",rs.getString("roomTypeFacilities")));
-            }
-        }catch(Exception e){
-            System.err.println("SQL Query Error");
-        }
-        return list;
-    }
 
     public static String checkUserName(String username){
         try{
