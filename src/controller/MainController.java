@@ -353,9 +353,61 @@ public class MainController {
     }
 
     public void sendGuestData(){
-        Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
-        Database.insertNewGuest(guest);
+        if(billCheck) {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewGuest(guest);
+        }
+        else {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewCustomer(compName.getText(), guest);
+        }
+    }
+
+    public void editGuestData(){
+        if(billCheck) {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewGuest(guest);
+        }
+        else {
+            Guest guest = new Guest(1,
+                    lastName.getText(),
+                    firstName.getText(),
+                    birthDate.getValue(),
+                    address.getText(),
+                    Integer.parseInt(zipCode.getText()),
+                    country.getText(),
+                    phoneNumber.getText(),
+                    email.getText(),
+                    passportNr.getText());
+            Database.insertNewCustomer(compName.getText(), guest);
+        }
     }
 
     public void loadRoomTypePrice(){

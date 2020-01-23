@@ -4,12 +4,10 @@ import hotel.Guest;
 import hotel.Room;
 import javafx.scene.control.Alert;
 
-
 import java.sql.*;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class Database {
@@ -106,6 +104,26 @@ public class Database {
         }
     }
 
+    public static void insertNewCustomer(String compName, Guest guest){
+        try {
+            PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO customers (firstName, " +
+                    "lastName, companyName, birthDate, address, zipCode, country, phoneNumber, email) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?)");
+            preparedStatement.setString(1, guest.getFirstName());
+            preparedStatement.setString(2, guest.getLastName());
+            preparedStatement.setString(3, compName);
+            preparedStatement.setDate(
+                    4, new Date(Date.from(guest.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime()));
+            preparedStatement.setString(5, guest.getAddress());
+            preparedStatement.setInt(6, guest.getZipCode());
+            preparedStatement.setString(7, guest.getCountry());
+            preparedStatement.setString(8, guest.getPhone());
+            preparedStatement.setString(9, guest.getEmail());
+            setData(preparedStatement);
+        } catch (Exception e) {
+            System.out.println("Exception preparing statement");
+        }
+    }
 
     public static String checkUserName(String username){
         try{
