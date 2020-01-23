@@ -66,6 +66,7 @@ public class MainController {
     @FXML
     private TextField roomTypePrice, roomTypeSize, compName, firstName, lastName,
             address, zipCode, country, phoneNumber, email, passportNr;
+
     @FXML
     private DatePicker birthDate;
     @FXML
@@ -355,17 +356,14 @@ public class MainController {
     }
 
     public void loadRoomTypePrice(){
-        try {
-            roomTypePrice.setText(Double.toString(Database.getRoomTypePrice(roomType1.getValue())));
-        }catch(NullPointerException e){
-            System.out.println("No price found for Roomtype");
-        }
+       roomTypePrice.setText(Database.getRoomTypePrice(roomType1.getValue()).toString());
     }
 
     public void sendNewRoomTypePrice(){
         System.out.println(roomType1.getValue());
-        System.out.println(roomTypePrice.getText());
-        Database.setNewRoomTypePrice(roomType1.getValue(), roomTypePrice.getText());
+        String input = roomTypePrice.getText().replaceAll("[€,]","");
+        String inpEuro = input.substring(0, input.length() - 1);
+        Database.setNewRoomTypePrice(roomType1.getValue(), inpEuro);
     }
 
     public void sendNewRoomCreation(){
@@ -384,7 +382,7 @@ public class MainController {
         }
     }
 
-    // Everytime a character is typed in a field in column2 the method is called //
+    // Everytime a character is typed in a field //
     private void databaseSearch(TextField obj) {
         if (obj.getText() != null) {
             String userInput = obj.getText();

@@ -2,12 +2,15 @@ package database;
 
 import hotel.Guest;
 import hotel.Room;
+import javafx.scene.control.Alert;
 
 
 import java.sql.*;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Database {
 
@@ -177,13 +180,15 @@ public class Database {
         return "0";
     }
 
-    public static Double getRoomTypePrice(String roomTypeName) {
+    public static String getRoomTypePrice(String roomTypeName) {
         try{
             PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM roomtype WHERE roomTypeName = ?");
             preparedStatement.setString(1, roomTypeName);
             ResultSet rs = Database.getData(preparedStatement);
             if(rs.first()){
-                return rs.getDouble("roomTypePrice");
+                int dbCents = rs.getInt("roomTypePrice");
+                NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+                return nf.format(dbCents/100.0);
             }
         }catch(Exception e){
             System.err.println("SQL Query Error");
@@ -195,10 +200,15 @@ public class Database {
     public static void setNewRoomTypePrice(String roomTypeName, String roomTypePrice){
         try{
             PreparedStatement preparedStatement = c.prepareStatement("UPDATE `roomtype` SET `roomTypePrice` = ? WHERE `roomtype`.`roomTypeName` = ?");
-            preparedStatement.setDouble(1, Double.parseDouble(roomTypePrice));
+            preparedStatement.setInt(1, Integer.parseInt(roomTypePrice));
             preparedStatement.setString(2, roomTypeName);
             setData(preparedStatement);
-            System.out.println("Room price from " + roomTypeName + " has been changed successfully.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success!");
+            alert.setHeaderText(null);
+            alert.setContentText("The price for " + roomTypeName + " has been successfully updated!");
+
+            alert.showAndWait();
         } catch(Exception e){
             System.err.println("SQL Query Error");
             System.err.println(e.toString());

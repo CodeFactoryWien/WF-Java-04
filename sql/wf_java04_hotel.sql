@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 21. Jan 2020 um 15:47
+-- Erstellungszeit: 23. Jan 2020 um 14:07
 -- Server-Version: 10.4.10-MariaDB
 -- PHP-Version: 7.3.12
 
@@ -45,8 +45,8 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`bookingID`, `fk_roomID`, `fk_guestID`, `fk_customerID`, `openAmount`, `bookingFrom`, `bookingUntil`, `bookingCanceled`, `checkedIn`) VALUES
-(3, 3, 5, 0, 0, '2020-01-16', '2020-01-24', NULL, '2020-01-16'),
-(4, 11, 1, 5, 899, '2020-01-24', '2020-02-02', '2017-05-22', '2020-01-24'),
+(3, 3, 5, 0, 0, '2020-01-22', '2020-01-24', NULL, '2020-01-22'),
+(4, 11, 1, 5, 899, '2020-01-22', '2020-02-02', '2017-05-22', '2020-01-22'),
 (5, 12, 7, 5, 99, '2020-01-21', '2020-01-21', '2020-01-21', NULL);
 
 -- --------------------------------------------------------
@@ -183,7 +183,8 @@ INSERT INTO `rooms` (`roomID`, `fk_roomTypeID`, `roomSize`) VALUES
 (37, 8, 124),
 (38, 8, 125),
 (39, 8, 125),
-(40, 8, 126);
+(40, 8, 126),
+(42, 1, 69);
 
 -- --------------------------------------------------------
 
@@ -196,7 +197,7 @@ CREATE TABLE `roomtype` (
   `roomTypeName` varchar(155) NOT NULL,
   `roomTypeCapacity` int(4) NOT NULL,
   `roomTypeFacilities` varchar(555) NOT NULL,
-  `roomTypePrice` double NOT NULL
+  `roomTypePrice` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -204,14 +205,14 @@ CREATE TABLE `roomtype` (
 --
 
 INSERT INTO `roomtype` (`roomTypeID`, `roomTypeName`, `roomTypeCapacity`, `roomTypeFacilities`, `roomTypePrice`) VALUES
-(1, 'Single Room', 1, 'WLAN, Shower, TV, Safe, ', 59.9),
-(2, 'Single Room with Balcony', 1, 'WLAN, Shower, TV, Safe, Balcony', 69.9),
-(3, 'Double Room', 2, 'WLAN, Shower, TV, Safe', 99.9),
-(4, 'Double Room with Balcony', 2, 'WLAN, Shower, TV, Safe, Balcony', 109.9),
-(5, 'Suite', 4, 'WLAN, Bathtub, TV, Safe,', 199.9),
-(6, 'Suite with Balcony', 4, 'WLAN, Bathtub, TV, Safe, Balcony', 229.9),
-(7, 'Superior Double Room', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine,', 299.9),
-(8, 'Superior Double Room with Balcony', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine, Balcony', 339.9);
+(1, 'Single Room', 1, 'WLAN, Shower, TV, Safe, ', 5990),
+(2, 'Single Room with Balcony', 1, 'WLAN, Shower, TV, Safe, Balcony', 6990),
+(3, 'Double Room', 2, 'WLAN, Shower, TV, Safe', 9990),
+(4, 'Double Room with Balcony', 2, 'WLAN, Shower, TV, Safe, Balcony', 10990),
+(5, 'Suite', 4, 'WLAN, Bathtub, TV, Safe,', 19990),
+(6, 'Suite with Balcony', 4, 'WLAN, Bathtub, TV, Safe, Balcony', 22990),
+(7, 'Superior Double Room', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine,', 29990),
+(8, 'Superior Double Room with Balcony', 4, 'WLAN, Bathtub, TV, Safe, Coffeemachine, Balcony', 33990);
 
 -- --------------------------------------------------------
 
@@ -434,7 +435,7 @@ ALTER TABLE `invoices`
 -- AUTO_INCREMENT für Tabelle `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `roomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `roomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT für Tabelle `services`
