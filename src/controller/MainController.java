@@ -44,6 +44,8 @@ public class MainController {
     @FXML
     private TableView<Booking> tableBookings;
     @FXML
+    private TableColumn<Booking, Integer> columnBookingRoomNr;
+    @FXML
     private TableColumn<Booking, String> columnBookingGuest, columnBookingArrival, columnBookingDeparture, columnBookingStatus;
 
     //Bookings Table control elements
@@ -212,6 +214,7 @@ public class MainController {
     }
 
     private void initializeTableBookings(){
+        columnBookingRoomNr.setCellValueFactory(new PropertyValueFactory<>("roomId"));
         columnBookingGuest.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnBookingArrival.setCellValueFactory(new PropertyValueFactory<>("arrivalProperty"));
         columnBookingDeparture.setCellValueFactory(new PropertyValueFactory<>("departureProperty"));
