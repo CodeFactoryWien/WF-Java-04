@@ -113,7 +113,7 @@ public class DetailsController{
                 }
             });
             //init Choiceboxes --------------------------
-            
+
 
         }catch (Exception e){
             System.err.println("Exception in initialize ");

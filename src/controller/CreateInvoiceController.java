@@ -45,7 +45,7 @@ public class CreateInvoiceController {
 
     void start() throws Exception {
         Stage S = new Stage();
-        S.setTitle("Showing Details for Selection");
+        S.setTitle("Creating an Invoice");
         S.setScene(FXMLLoader.load(getClass().getResource("/view/createInvoice.fxml")));
         S.setResizable(false);
         S.show();
