@@ -1,16 +1,16 @@
 package controller;
 
-import javafx.fxml.FXML;
 import database.Database;
+import hotel.Booking;
+import hotel.Guest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import hotel.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -20,8 +20,6 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-
-import sample.Main;
 
 public class MainController {
     @FXML
@@ -33,7 +31,7 @@ public class MainController {
 
     static boolean userIsAdmin;
 
-    private ObservableList roomtypeslist;
+    private ObservableList<String> roomtypeslist;
 
     @FXML
     private TableView<Booking> tableOccupiedRooms;
@@ -71,7 +69,7 @@ public class MainController {
             address, zipCode, country, phoneNumber, email, passportNr;
 
     @FXML
-    private ListView listViewFoundGuest;
+    private ListView<Guest> listViewFoundGuest;
 
     boolean billCheck;
 
@@ -350,23 +348,20 @@ public class MainController {
     }
 
     public void loadRoomTypePrice(){
-        try {
-            roomTypePrice.setText(Double.toString(Database.getRoomTypePrice(roomType1.getValue().toString())));
-        }catch(NullPointerException e){
-            System.out.println("No price found for Roomtype");
-        }
+       roomTypePrice.setText(Database.getRoomTypePrice(roomType1.getValue()));
     }
 
     public void sendNewRoomTypePrice(){
-        System.out.println(roomType1.getValue().toString());
-        System.out.println(roomTypePrice.getText());
-        Database.setNewRoomTypePrice(roomType1.getValue().toString(), roomTypePrice.getText());
+        System.out.println(roomType1.getValue());
+        String input = roomTypePrice.getText().replaceAll("[€,]","");
+        String inpEuro = input.substring(0, input.length() - 1);
+        Database.setNewRoomTypePrice(roomType1.getValue(), inpEuro);
     }
 
     public void sendNewRoomCreation(){
-        System.out.println(roomType.getValue().toString());
+        System.out.println(roomType.getValue());
         System.out.println(roomTypeSize.getText());
-        Database.createNewRoom(roomType1.getValue().toString(), roomTypeSize.getText());
+        Database.createNewRoom(roomType1.getValue(), roomTypeSize.getText());
     }
 
     public void billingCheck(){
@@ -379,7 +374,7 @@ public class MainController {
         }
     }
 
-    // Everytime a character is typed in a field in column2 the method is called //
+    // Everytime a character is typed in a field //
     private void databaseSearch(TextField obj) {
         if (obj.getText() != null) {
             String userInput = obj.getText();
