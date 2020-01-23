@@ -59,25 +59,7 @@ public class Database {
         return null;
     }
 
-    public static Guest getGuest(String email){
-        try{
-            PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM guests WHERE email = ?");
-            preparedStatement.setString(1,email);
-            ResultSet rs = getData(preparedStatement);
 
-            if(rs.first()){
-                return new Guest(rs.getInt("guestID"), rs.getString("firstName"),
-                        rs.getString("lastName"), rs.getDate("birthDate").toLocalDate(),
-                        rs.getString("address"), rs.getInt("zipCode"),
-                        rs.getString("country"), rs.getString("phoneNumber"),
-                        rs.getString("email"),Integer.toString(rs.getInt("passportNr")));
-            }
-            //TODO: Password implementation for Data-Privacy
-        }catch(Exception e){
-            System.err.println("SQL Query Error");
-        }
-        return null;
-    }
     public static Guest getGuest(int guestID){
         try{
             PreparedStatement preparedStatement = c.prepareStatement("SELECT * FROM guests WHERE guestID = ?");
