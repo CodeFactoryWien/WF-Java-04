@@ -33,28 +33,19 @@ public class MainController {
 
     static boolean userIsAdmin;
 
+    private ObservableList roomtypeslist;
 
     @FXML
     private TableView<Booking> tableOccupiedRooms;
     @FXML
     private TableColumn<Booking, Integer> columnRoomNr;
     @FXML
-    private TableColumn<Booking, String> columnGuestName;
-    @FXML
-    private TableColumn<Booking, String> columnArrival;
-    @FXML
-    private TableColumn<Booking, String> columnDeparture;
+    private TableColumn<Booking, String> columnGuestName, columnArrival, columnDeparture;
 
     @FXML
     private TableView<Booking> tableBookings;
     @FXML
-    private TableColumn<Booking, String> columnBookingGuest;
-    @FXML
-    private TableColumn<Booking, String> columnBookingArrival;
-    @FXML
-    private TableColumn<Booking, String> columnBookingDeparture;
-    @FXML
-    private TableColumn<Booking, String> columnBookingStatus;
+    private TableColumn<Booking, String> columnBookingGuest, columnBookingArrival, columnBookingDeparture, columnBookingStatus;
 
     @FXML
     private Button buttonStorno;
@@ -62,44 +53,24 @@ public class MainController {
     @FXML
     private CheckBox checkBoxShowAll;
     @FXML
-    private DatePicker dateFrom;
-    @FXML
-    private DatePicker dateUntil;
+    private DatePicker dateFrom, dateUntil, birthDate;
 
-    public ObservableList<Booking> occupiedRooms;
-    public ObservableList<Booking> bookings;
+    public ObservableList<Booking> occupiedRooms, bookings;
+
     public static int bookingID;
 
     @FXML
-    private ChoiceBox roomType;
-    @FXML
-    private ChoiceBox roomType1;
-    @FXML
-    private TextField roomTypePrice;
-    @FXML
-    private TextField roomTypeSize;
+    private ChoiceBox<String> roomType, roomType1;
+
     @FXML
     private CheckBox billingCheck;
     @FXML
-    private TextField compName;
+    private TextField roomTypePrice, roomTypeSize, compName, firstName, lastName,
+            address, zipCode, country, phoneNumber, email, passportNr;
+
     @FXML
-    private TextField firstName;
-    @FXML
-    private TextField lastName;
-    @FXML
-    private DatePicker birthDate;
-    @FXML
-    private TextField address;
-    @FXML
-    private TextField zipCode;
-    @FXML
-    private TextField country;
-    @FXML
-    private TextField phone;
-    @FXML
-    private TextField eMail;
-    @FXML
-    private TextField passportNumber;
+    private ListView listViewFoundGuest;
+
     boolean billCheck;
 
     private static MainController controller;
@@ -115,10 +86,12 @@ public class MainController {
     public void initialize(){
         dateFrom.setValue(LocalDate.now());
         dateUntil.setValue(LocalDate.now().plusDays(7));
+        fillRoomTypes();
         updateTableOccupied();
         updateTableBookings();
         initializeTableOccupied();
         initializeTableBookings();
+        birthDate.setEditable(false);
         if(MainController.userIsAdmin){
             System.out.println("Admin logged in.");
         } else {
@@ -140,6 +113,16 @@ public class MainController {
             }
         });
         controller = this;
+
+        // Database search //
+        lastName.setOnKeyTyped(e -> databaseSearch(lastName));
+        firstName.setOnKeyTyped(e -> databaseSearch(firstName));
+        address.setOnKeyTyped(e -> databaseSearch(address));
+        zipCode.setOnKeyTyped(e -> databaseSearch(zipCode));
+        country.setOnKeyTyped(e -> databaseSearch(country));
+        phoneNumber.setOnKeyTyped(e -> databaseSearch(phoneNumber));
+        email.setOnKeyTyped(e -> databaseSearch(email));
+        passportNr.setOnKeyTyped(e -> databaseSearch(passportNr));
     }
 
 
@@ -379,7 +362,7 @@ public class MainController {
 
     public void sendGuestData(){
         Guest guest = new Guest(1, lastName.getText(), firstName.getText(), birthDate.getValue(), address.getText(),
-                Integer.parseInt(zipCode.getText()), country.getText(), phone.getText(), eMail.getText(), passportNumber.getText());
+                Integer.parseInt(zipCode.getText()), country.getText(), phoneNumber.getText(), email.getText(), passportNr.getText());
         Database.insertNewGuest(guest);
     }
 
@@ -407,5 +390,53 @@ public class MainController {
             compName.setDisable(true);
             billCheck = true;
         }
+    }
+
+    // Everytime a character is typed in a field in column2 the method is called //
+    private void databaseSearch(TextField obj) {
+        if (obj.getText() != null) {
+            String userInput = obj.getText();
+            String objID = obj.getId();
+
+            ObservableList<Guest> O = FXCollections.observableArrayList();
+
+            ResultSet R;
+            try {
+                PreparedStatement P = Database.c.prepareStatement("SELECT * FROM guests WHERE " + objID + " LIKE ?");
+                P.setString(1, userInput + "%");
+                R = P.executeQuery();
+
+                while (R.next()) {
+                    Guest G = new Guest(R);
+                    O.add(G);
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error database search not possible");
+            }
+
+            listViewFoundGuest.setItems(O);
+        }
+    }
+
+    // Fill roomtypes from database called from when choicebox shown //
+    private void fillRoomTypes() {
+        try {
+            PreparedStatement preparedStatement =
+                    Database.c.prepareStatement("SELECT roomTypeName FROM roomtype");
+
+            ResultSet R = preparedStatement.executeQuery();
+
+            roomtypeslist = FXCollections.observableArrayList();
+
+            while (R.next()) {
+                String typeName = R.getString("roomTypeName");
+                roomtypeslist.add(typeName);
+            }
+        } catch (Exception e) {
+            System.out.println("Error fillroomtypes not working");
+        }
+        roomType.setItems(roomtypeslist);
+        roomType1.setItems(roomtypeslist);
     }
 }

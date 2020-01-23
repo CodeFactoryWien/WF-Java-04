@@ -18,21 +18,16 @@ import javafx.stage.Stage;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 
 public class CreateBookingController {
 
     private Stage bookStage;
 
     // Important fields //
-    private int totalcount;
-    private int bookedroomscount;
-    private int freeroomcount;
+    private int totalcount, bookedroomscount, freeroomcount;
     private double selectedRoomPrice;
-    private LocalDate checkInDate;
-    private LocalDate checkOutDate;
+    private LocalDate checkInDate, checkOutDate;
     private ObservableList<String> roomtypeslist;
     private Guest selected_item;
     private boolean nonullfound;
@@ -41,15 +36,9 @@ public class CreateBookingController {
     @FXML
     private ChoiceBox<String> roomType;
     @FXML
-    private DatePicker checkIn;
+    private DatePicker checkIn, checkOut;
     @FXML
-    private DatePicker checkOut;
-    @FXML
-    private Label freeRooms;
-    @FXML
-    private Label pricePerDay;
-    @FXML
-    private Label totalPrice;
+    private Label freeRooms, pricePerDay, totalPrice;
 
     // Vbox of guest fields //
     @FXML
@@ -57,31 +46,15 @@ public class CreateBookingController {
 
     // Guest fields//
     @FXML
-    private TextField lastName;
-    @FXML
-    private TextField firstName;
+    private TextField lastName, firstName, address, zipCode, country, phoneNumber, email, passportNr;
     @FXML
     private DatePicker birthDate;
-    @FXML
-    private TextField address;
-    @FXML
-    private TextField zipCode;
-    @FXML
-    private TextField country;
-    @FXML
-    private TextField phoneNumber;
-    @FXML
-    private TextField email;
-    @FXML
-    private TextField passportNr;
     @FXML
     private ListView listViewFoundGuest;
 
     // Cancel and booking button //
     @FXML
-    private Button cancel;
-    @FXML
-    private Button booking;
+    private Button cancel, booking;
 
     // Init method //
     public void initialize() {
@@ -109,7 +82,7 @@ public class CreateBookingController {
         // Fill choicebox on init with roomtypes from database //
         fillRoomTypes();
 
-        // Listener for choicebox -> call //
+        // Listener for choicebox -> call bookaroom //
         roomType.getSelectionModel().selectedItemProperty().addListener((observableValue, d, t1) -> {
                 bookaroom();
         });
@@ -117,6 +90,7 @@ public class CreateBookingController {
         // Datepicker call -> bookaroom //
         checkIn.setOnAction(e -> bookaroom());
         checkOut.setOnAction(e -> bookaroom());
+
         // Datepicker editable set false //
         checkIn.setEditable(false);
         checkOut.setEditable(false);
@@ -136,8 +110,9 @@ public class CreateBookingController {
 
     // Method is everytime called when choicebox, checkIn or checkOut is fired //
     private void bookaroom() {
-            // All fields in column1 must be filled and checkIn must be before checkOut //
+            // All fields in column1 must be filled //
             if (roomType.getValue() != null && checkIn.getValue() != null && checkOut.getValue() != null) {
+                // CheckIn or CheckOut cannot be in the past //
                 if (checkIn.getValue().isBefore(LocalDate.now()) || checkOut.getValue().isBefore(LocalDate.now())) {
                     column2.setDisable(true);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -145,6 +120,7 @@ public class CreateBookingController {
                     alert.setHeaderText("CheckIn or CheckOut date cannot be set in the past");
                     alert.showAndWait();
                 } else {
+                    // CheckIn must be set before CheckOut //
                     if (checkIn.getValue().isBefore(checkOut.getValue())) {
                         column2.setDisable(false);
                     } else {
@@ -152,7 +128,9 @@ public class CreateBookingController {
                     }
 
                     try {
+                        // Total room count of selected room type //
                         totalSelectedRoomCount();
+                        // Price per day of selected roomtype //
                         fillPricePerDay();
                         if (checkIn.getValue() != null) {
                             checkInDate = checkIn.getValue();
@@ -343,6 +321,7 @@ public class CreateBookingController {
         }
     }
 
+    // for ZIPCode, phonenumber and passport field so only numbers can be typed in //
     private void checkInputInteger(TextField obj) {
         ////
         obj.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -352,7 +331,7 @@ public class CreateBookingController {
         });
     }
 
-    // Loop over vbox and if any child is null or empty alert is fired //
+    // Loop over vbox (column2) and if any child is null or empty alert is fired //
     private void vboxFieldLoop() {
         nonullfound = true;
         for (Node child : column2.getChildren()) {

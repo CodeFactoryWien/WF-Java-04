@@ -94,20 +94,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="roomType" layoutX="668.0" layoutY="143.0" value="Single Room">
-                           <items>
-                              <FXCollections fx:factory="observableArrayList">
-                                  <String fx:value="Single Room" />
-                                  <String fx:value="Single Room with Balcony" />
-                                  <String fx:value="Double Room" />
-                                  <String fx:value="Double Room with Balcony" />
-                                  <String fx:value="Suite" />
-                                  <String fx:value="Suite with Balcony" />
-                                  <String fx:value="Superior Double Room" />
-                                  <String fx:value="Superior Double Room with Balcony" />
-                              </FXCollections>
-                           </items>
-                        </ChoiceBox>
+                        <ChoiceBox fx:id="roomType" layoutX="668.0" layoutY="143.0" value="Single Room"/>
                         <Label layoutX="668.0" layoutY="551.0" text="Enter the Room Price per Night:">
                            <font>
                               <Font size="15.0" />
@@ -139,11 +126,11 @@
                         <Label layoutX="42.0" layoutY="474.0" text="Country" />
                         <TextField fx:id="country" layoutX="42.0" layoutY="498.0" />
                         <Label layoutX="42.0" layoutY="537.0" text="Phone" />
-                        <TextField fx:id="phone" layoutX="42.0" layoutY="561.0" />
+                        <TextField fx:id="phoneNumber" layoutX="42.0" layoutY="561.0" />
                         <Label layoutX="43.0" layoutY="595.0" text="E-Mail Address" />
-                        <TextField fx:id="eMail" layoutX="42.0" layoutY="619.0" />
+                        <TextField fx:id="email" layoutX="42.0" layoutY="619.0" />
                         <Label layoutX="44.0" layoutY="653.0" text="Passport Number" />
-                        <TextField fx:id="passportNumber" layoutX="43.0" layoutY="675.0" />
+                        <TextField fx:id="passportNr" layoutX="43.0" layoutY="675.0" />
                         <Label layoutX="42.0" layoutY="136.0" text="Company Name" />
                         <TextField fx:id="compName" layoutX="43.0" layoutY="161.0" />
                         <CheckBox fx:id="billingCheck" layoutX="42.0" layoutY="102.0" mnemonicParsing="false" text="Guest and Customer have the same Billing Address" />
@@ -177,20 +164,7 @@
                            </font>
                         </Label>
                         <Button layoutX="778.0" layoutY="653.0" onMouseClicked="#sendNewRoomTypePrice" prefHeight="44.0" prefWidth="74.0" text="Submit" />
-                        <ChoiceBox fx:id="roomType1" layoutX="668.0" layoutY="481.0" value="Single Room">
-                           <items>
-                              <FXCollections fx:factory="observableArrayList">
-                                 <String fx:value="Single Room" />
-                                  <String fx:value="Single Room with Balcony" />
-                                  <String fx:value="Double Room" />
-                                  <String fx:value="Double Room with Balcony" />
-                                 <String fx:value="Suite" />
-                                  <String fx:value="Suite with Balcony" />
-                                 <String fx:value="Superior Double Room" />
-                                  <String fx:value="Superior Double Room with Balcony" />
-                              </FXCollections>
-                           </items>
-                        </ChoiceBox>
+                        <ChoiceBox fx:id="roomType1" layoutX="668.0" layoutY="481.0" value="Single Room"/>
                             </children>
                         </AnchorPane>
                     </content>
