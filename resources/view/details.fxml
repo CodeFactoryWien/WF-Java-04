@@ -47,7 +47,7 @@
       <Button fx:id="btn_add_movie" layoutX="33.0" layoutY="191.0" mnemonicParsing="false" text="add Movie" />
       <Button fx:id="btn_add_wellness" layoutX="226.0" layoutY="191.0" mnemonicParsing="false" text="add Wellness service" />
       <Button fx:id="btn_add_minibar" layoutX="423.0" layoutY="191.0" mnemonicParsing="false" text="add Minibar Item" />
-      
+
          <Button fx:id="btn_checkout" layoutX="472.0" layoutY="68.0" mnemonicParsing="false" text="CHECK OUT">
             <font>
                <Font size="18.0" />
