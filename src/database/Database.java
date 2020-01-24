@@ -94,8 +94,12 @@ public class Database {
                 preparedStatement.setString(7, guest.getPhone());
                 preparedStatement.setString(8, guest.getEmail());
                 preparedStatement.setInt(9, Integer.parseInt(guest.getPassportNumber()));
-
                 setData(preparedStatement);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success!");
+                alert.setHeaderText(null);
+                alert.setContentText("Guest has been successfully added to Database.");
+                alert.showAndWait();
             } catch (Exception e) {
                 System.out.println("Exception preparing statement");
             }
@@ -120,6 +124,11 @@ public class Database {
             preparedStatement.setString(8, guest.getPhone());
             preparedStatement.setString(9, guest.getEmail());
             setData(preparedStatement);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success!");
+            alert.setHeaderText(null);
+            alert.setContentText("Customer has been successfully added to Database.");
+            alert.showAndWait();
         } catch (Exception e) {
             System.out.println("Exception preparing statement");
         }
@@ -185,7 +194,6 @@ public class Database {
             alert.setTitle("Success!");
             alert.setHeaderText(null);
             alert.setContentText("The price for " + roomTypeName + " has been successfully updated!");
-
             alert.showAndWait();
         } catch(Exception e){
             System.err.println("SQL Query Error");
@@ -228,7 +236,11 @@ public class Database {
             }
             preparedStatement.setString(2, roomTypeSize);
             setData(preparedStatement);
-            System.out.println("New room has been created.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success!");
+            alert.setHeaderText(null);
+            alert.setContentText("New Room has successfully been added to Database.");
+            alert.showAndWait();
         }
         catch (Exception e){
             System.err.println("SQL Query Error");

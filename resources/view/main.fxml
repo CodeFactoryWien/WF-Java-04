@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Scene?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<Scene xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
 
     <HBox prefHeight="768.0" prefWidth="1024.0">
         <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
@@ -34,26 +22,26 @@
                                 </Label>
                                 <TableView fx:id="tableOccupiedRooms" layoutX="24.0" layoutY="55.0" prefHeight="600.0" prefWidth="965.0">
                                     <columns>
-                                        <TableColumn fx:id="columnRoomNr" prefWidth="62.0" text="Room Nr." />
+                                        <TableColumn fx:id="columnRoomNr" prefWidth="75.0" text="Room Nr." />
                                         <TableColumn fx:id="columnGuestName" prefWidth="130.0" text="Guest" />
                                         <TableColumn fx:id="columnArrival" prefWidth="81.0" text="Arrival" />
                                         <TableColumn fx:id="columnDeparture" prefWidth="94.0" text="est. Departure" />
                                     </columns>
                                 </TableView>
-                                <Button layoutX="781.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="Add a Service" />
+                                <Button layoutX="781.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_detailsController" text="View/Add Services" />
                                 <Button fx:id="buttonCheckOut" layoutX="907.0" layoutY="21.0" mnemonicParsing="false" onAction="#call_invoiceController" text="CHECK OUT" />
                                 <Button fx:id="logoutButton" layoutX="930.0" layoutY="670.0" mnemonicParsing="false" onMouseClicked="#logout" text="Log Out" />
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab text="Reservations">
+                <Tab text="Bookings">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <!-- Booking -->
                                 <Button fx:id="createBooking" layoutX="128.0" layoutY="18.0" onMouseClicked="#call_createBookingController" text="New Booking" />
-                                <TableView fx:id="tableBookings" layoutX="29.0" layoutY="57.0" prefHeight="600.0" prefWidth="965.0">
+                                <TableView fx:id="tableBookings" layoutX="24.0" layoutY="55.0" prefHeight="600.0" prefWidth="965.0">
                                     <columns>
                               <TableColumn fx:id="columnBookingRoomNr" prefWidth="75.0" text="Room Nr" />
                                         <TableColumn fx:id="columnBookingArrival" prefWidth="90.0" text="Arrival" />

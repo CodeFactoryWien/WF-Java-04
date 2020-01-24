@@ -318,8 +318,8 @@ public class MainController {
     }
 
     public void cancelBooking(){
-        int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
         try {
+            int bookingId = tableBookings.getSelectionModel().getSelectedItem().getBookingId();
             Date today = new Date(new java.util.Date().getTime());
             PreparedStatement preparedStatement = Database.c.prepareStatement("UPDATE bookings SET bookingUntil = ?, " +
                     "bookingCanceled = ?, fk_roomID = 0 WHERE bookingID = ?");
