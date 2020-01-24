@@ -1,0 +1,33 @@
+Presentation
+
+##1. Column##
+1) RoomType -> Price per day is shown;
+		All roomtypes are get from database when you open "New Booking";
+		Free rooms of selected type is shown;
+		When no free rooms of the selected type are available -> alert is fired; 
+2) TotalPrice -> Is shown only when all 3 fields in column1 are filled;
+		They also can be changed and values change;
+		CheckIn must be before CheckOut date otherwise totalprice = "///"
+*) When the fields are empty and the user try to book -> alert is fired;
+*) When all fields are correctly filled the 2. column is activated;
+*) When the checkIn date is changed back to after checkOut the 2. column is deactivated;
+*) CheckIn and CheckOut are not possible to set in the past;
+
+##2. Column##
+
+1) ZIPCode, Phone and Passport fields only accepts numbers or P/+ as input;
+2) When not all fields are filled -> alert is fired;
+3) All fields except the birthdate(i think) search for the correct rows in database;
+4) When you click on an entry found in the list right of the column than all
+the data is collected from the database and auto filled in the correct textfields;
+
+5) when all fields are correct and all data is filled and it was selected from the right list
+than a new booking with the next free room and correct selected roomtype is created
+and this room is reservated for the user found in database
+6) IF the user is not selected from the list so it is a new user than also a booking is created
+but also a new user is created in database;
+7) If you make a mistake and select a user and than delete the fields and write a new one it also works;
+8) You can close the window with cancel and it closes automatically when a booking is created;
+
+Even when you try to trick the program and fill all fields in column 1 and autofill all fields in column2
+and then set any date to the past and try to book it dont work ;-)
